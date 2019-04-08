@@ -1,13 +1,13 @@
 FROM php:7.2-fpm
 
 # Copy composer.lock and composer.json
+USER root
 RUN mkdir -p /var/www/api.mobcamp.net
 COPY composer.json composer.lock /var/www/api.mobcamp.net/
 
 # Set working directory
 WORKDIR /var/www/api.mobcamp.net
 
-USER root
 RUN apt-get update
 
 # Install dependencies
