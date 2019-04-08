@@ -1,5 +1,5 @@
-# sharepic
-An instagram-like mobile app for an ETNA project (TIC-MOB2).
+# Mobcamp
+ETNA MobCamp for the topic "Empowerment of women in agriculture".
 
 ## API
 
@@ -17,6 +17,7 @@ Please run the following commands :
 docker-compose up -d
 cd api
 composer install
+php artisan key:generate
 php artisan migrate
 php artisan db:seed
 ```
@@ -29,11 +30,6 @@ You can connect with theses demo credentials :
 
 - Username : `username`
 - Password : `password`
-
-OR
-
-- Username : `flavienb`
-- Password : `flav`
 
 ## Features
 
