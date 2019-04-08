@@ -1,0 +1,63 @@
+version: "3"
+services:
+  #PHP Service
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: mobcamp_api
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./api:/var/www/api.mobcamp.net
+      - ./api/php.local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - mobcamp-network
+    links:
+      - database
+
+  #Nginx Service
+  nginx:
+    build:
+      context: ./api
+      dockerfile: Dockerfile_nginx
+    container_name: mobcamp_nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./api:/var/www/api.mobcamp.net
+      - ./api/mobcamp.nginx.conf:/etc/nginx/conf.d/mobcamp.nginx.conf
+    networks:
+      - mobcamp-network
+
+  #MySQL Service
+  database:
+    image: mysql:5.7.22
+    container_name: mobcamp_database
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: mobcamp
+      MYSQL_ROOT_PASSWORD: mobcamp_root_password
+      MYSQL_USER: mobcamp_user
+      MYSQL_PASSWORD: mobcamp_password
+    volumes:
+      - database:/var/lib/mysql
+      - ./api/mysql.my.cnf:/etc/mysql/my.cnf
+    networks:
+      - mobcamp-network
+
+#Docker Networks
+networks:
+  mobcamp-network:
+    driver: bridge
+
+volumes:
+    database:
