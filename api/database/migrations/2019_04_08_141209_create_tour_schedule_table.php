@@ -14,6 +14,8 @@ class CreateTourScheduleTable extends Migration
     public function up()
     {
         Schema::create('tour_schedule', function (Blueprint $table) {
+            $table->integer('tour_id')->unsigned();
+            $table->integer('schedule_id')->unsigned();
             $table->foreign('tour_id')->references('id')->on('tour');
             $table->foreign('schedule_id')->references('id')->on('schedule');
             $table->timestamps();

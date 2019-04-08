@@ -14,6 +14,10 @@ class CreateCooperativeUserFormationAnswerTable extends Migration
     public function up()
     {
         Schema::create('cooperative_user_formation_answer', function (Blueprint $table) {
+            $table->bigInteger('user_id')->unsigned();
+            $table->integer('formation_id')->unsigned();
+            $table->integer('answer_id')->unsigned();
+            $table->integer('question_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('user');
             $table->foreign('formation_id')->references('id')->on('formation');
             $table->foreign('answer_id')->references('id')->on('answer');

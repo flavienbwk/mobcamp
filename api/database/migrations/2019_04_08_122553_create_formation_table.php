@@ -18,6 +18,7 @@ class CreateFormationTable extends Migration
             $table->string('name');
             $table->integer('estimated_duration');
             $table->string('level');
+            $table->integer('cooperative_id')->unsigned();
             $table->foreign('cooperative_id')->references('id')->on('cooperative');
             $table->timestamps();
         });

@@ -15,6 +15,9 @@ class CreateCertificateTable extends Migration
     {
         Schema::create('certificate', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('formation_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->integer('cooperative_id')->unsigned();
             $table->foreign('formation_id')->references('id')->on('formation');
             $table->foreign('user_id')->references('id')->on('user');
             $table->foreign('cooperative_id')->references('id')->on('cooperative');

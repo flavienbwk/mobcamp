@@ -15,6 +15,10 @@ class CreateOrderTable extends Migration
     {
         Schema::create('order', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('item_id')->unsigned();
+            $table->bigInteger('buyer_user_id')->unsigned();
+            $table->bigInteger('seller_user_id')->unsigned();
+            $table->integer('cooperative_id')->unsigned();
             $table->foreign('item_id')->references('id')->on('item');
             $table->foreign('buyer_user_id')->references('id')->on('user');
             $table->foreign('seller_user_id')->references('id')->on('user');

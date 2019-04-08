@@ -14,6 +14,8 @@ class CreateItemMediaTable extends Migration
     public function up()
     {
         Schema::create('item_media', function (Blueprint $table) {
+            $table->integer('item_id')->unsigned();
+            $table->integer('media_id')->unsigned();
             $table->foreign('item_id')->references('id')->on('item');
             $table->foreign('media_id')->references('id')->on('media');
         });

@@ -18,6 +18,9 @@ class CreateChapterTable extends Migration
             $table->string('name');
             $table->text('content')->nullable();
             $table->tinyInteger('order');
+            $table->integer('lesson_id')->unsigned();
+            $table->integer('quizz_id')->unsigned();
+            $table->integer('activity_id')->unsigned();
             $table->foreign('lesson_id')->references('id')->on('lesson')->nullable();
             $table->foreign('quizz_id')->references('id')->on('quizz')->nullable();
             $table->foreign('activity_id')->references('id')->on('activity')->nullable();

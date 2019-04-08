@@ -17,6 +17,8 @@ class CreateAnswerTable extends Migration
             $table->increments('id');
             $table->string('value');
             $table->tinyInteger('is_correct');
+            $table->integer('quizz_id')->unsigned();
+            $table->integer('question_id')->unsigned();
             $table->foreign('quizz_id')->references('id')->on('quizz');
             $table->foreign('question_id')->references('id')->on('question');
             $table->timestamps();

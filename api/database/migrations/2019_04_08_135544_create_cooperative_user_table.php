@@ -14,6 +14,8 @@ class CreateCooperativeUserTable extends Migration
     public function up()
     {
         Schema::create('cooperative_user', function (Blueprint $table) {
+            $table->bigInteger('user_id')->unsigned();
+            $table->integer('cooperative_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('user');
             $table->foreign('cooperative_id')->references('id')->on('cooperative');
             $table->timestamps();

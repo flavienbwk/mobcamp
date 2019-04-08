@@ -14,8 +14,10 @@ class CreateOrderScheduleTable extends Migration
     public function up()
     {
         Schema::create('order_schedule', function (Blueprint $table) {
+            $table->integer('order_id')->unsigned();
+            $table->integer('schedule_id')->unsigned();
             $table->foreign('order_id')->references('id')->on('order');
-            $table->foreign('schedule_id')->references('id')->on('schedule_id');
+            $table->foreign('schedule_id')->references('id')->on('schedule');
             $table->tinyInteger('is_validated')->nullable();
         });
     }

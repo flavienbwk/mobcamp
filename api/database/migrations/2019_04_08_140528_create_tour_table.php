@@ -17,6 +17,7 @@ class CreateTourTable extends Migration
             $table->increments('id');
             $table->string('name')->nullable();
             $table->string('type');
+            $table->integer('cooperative_id')->unsigned();
             $table->foreign('cooperative_id')->references('id')->on('cooperative');
             $table->timestamps();
         });

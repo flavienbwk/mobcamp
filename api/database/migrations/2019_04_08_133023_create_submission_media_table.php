@@ -14,6 +14,8 @@ class CreateSubmissionMediaTable extends Migration
     public function up()
     {
         Schema::create('submission_media', function (Blueprint $table) {
+            $table->integer('submission_id')->unsigned();
+            $table->integer('media_id')->unsigned();
             $table->foreign('submission_id')->references('id')->on('submission');
             $table->foreign('media_id')->references('id')->on('media');
         });

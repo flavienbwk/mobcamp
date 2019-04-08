@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubmissionTable extends Migration
+class CreateFormationItemTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateSubmissionTable extends Migration
      */
     public function up()
     {
-        Schema::create('submission', function (Blueprint $table) {
-            $table->increments('id');
-            $table->bigInteger('user_id')->unsigned();
+        Schema::create('formation_item', function (Blueprint $table) {
+            $table->integer('quantity');
             $table->integer('formation_id')->unsigned();
-            $table->integer('activity_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('user');
+            $table->integer('cooperative_id')->unsigned();
+            $table->integer('item_id')->unsigned();
             $table->foreign('formation_id')->references('id')->on('formation');
-            $table->foreign('activity_id')->references('id')->on('activity');
+            $table->foreign('cooperative_id')->references('id')->on('cooperative');
+            $table->foreign('item_id')->references('id')->on('item');
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateSubmissionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('submission');
+        Schema::dropIfExists('formation_item');
     }
 }
