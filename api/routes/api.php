@@ -48,6 +48,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('account/issubscribed', 'AccountController@issubscribed');
     Route::post('account/search', 'AccountController@searchUsername');
 
+    // Formations (base)
+    Route::post('formations/add', 'FormationController@add');
+    Route::post('formations/remove', 'FormationController@remove');
+
     // Publications (base)
     Route::post('publications/add', 'PublicationController@add');
     Route::post('publications/remove', 'PublicationController@remove');

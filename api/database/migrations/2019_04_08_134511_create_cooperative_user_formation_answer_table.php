@@ -18,10 +18,10 @@ class CreateCooperativeUserFormationAnswerTable extends Migration
             $table->integer('formation_id')->unsigned();
             $table->integer('answer_id')->unsigned();
             $table->integer('question_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('user');
-            $table->foreign('formation_id')->references('id')->on('formation');
-            $table->foreign('answer_id')->references('id')->on('answer');
-            $table->foreign('question_id')->references('id')->on('question');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('formation_id')->references('id')->on('formation')->onDelete('cascade');
+            $table->foreign('answer_id')->references('id')->on('answer')->onDelete('cascade');
+            $table->foreign('question_id')->references('id')->on('question')->onDelete('cascade');
         });
     }
 

@@ -16,8 +16,8 @@ class CreateSubmissionMediaTable extends Migration
         Schema::create('submission_media', function (Blueprint $table) {
             $table->integer('submission_id')->unsigned();
             $table->integer('media_id')->unsigned();
-            $table->foreign('submission_id')->references('id')->on('submission');
-            $table->foreign('media_id')->references('id')->on('media');
+            $table->foreign('submission_id')->references('id')->on('submission')->onDelete('cascade');
+            $table->foreign('media_id')->references('id')->on('media')->onDelete('cascade');
         });
     }
 

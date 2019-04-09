@@ -19,8 +19,8 @@ class CreateAnswerTable extends Migration
             $table->tinyInteger('is_correct');
             $table->integer('quizz_id')->unsigned();
             $table->integer('question_id')->unsigned();
-            $table->foreign('quizz_id')->references('id')->on('quizz');
-            $table->foreign('question_id')->references('id')->on('question');
+            $table->foreign('quizz_id')->references('id')->on('quizz')->onDelete('cascade');
+            $table->foreign('question_id')->references('id')->on('question')->onDelete('cascade');
             $table->timestamps();
         });
     }

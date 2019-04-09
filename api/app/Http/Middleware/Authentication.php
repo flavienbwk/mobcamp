@@ -26,7 +26,7 @@ class Authentication {
                     $Connection->expires_at = date('Y-m-d H:i:s', strtotime('+2 day', time()));
                     try {
                         $Connection->save();
-                        $User = User::find($Connection->User_id);
+                        $User = User::find($Connection->user_id);
                     } catch (\Exception $e) {
                         $ApiResponse->setErrorMessage($e->getMessage());
                     }
