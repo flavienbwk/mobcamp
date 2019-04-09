@@ -47,7 +47,7 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('account/cooperatives', 'CooperativeController@userCooperatives');
     
     // Roles routes
-    Route::post('account/roles', 'AccountController@roles');
+    Route::post('cooperative/roles', 'CooperativeController@roles');
     
 });
 

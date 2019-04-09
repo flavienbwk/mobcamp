@@ -240,12 +240,15 @@ The response will be an array of objects of the following format :
 | geolocation | _string_ | Geolocation of the cooperative |
 | created_at | _datetime(string)_ | Date of addition of the cooperative in the database |
 
-## User roles regarding to cooperative
+## User cooperative roles
+
+User roles regarding to a cooperative.
 
 ### Query
 
-| Endpoint | `/api/account/roles` | Description |
+| Endpoint | `/api/cooperative/roles` | Description |
 |----------|-------------|-------------|
+| user_ids | _int_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
 | cooperative_id | _int_ | id of the cooperative |
 
 ### Response
