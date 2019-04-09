@@ -189,7 +189,7 @@ The response will be an array of objects of the following format :
 | ids | _string_ ||
 | username | _string_ ||
 
-## List of cooperatives
+## Cooperatives list
 
 ### Query
 
@@ -206,3 +206,54 @@ The response will be an array of objects of the following format :
 | id | _int_ | Identifier of the cooperative |
 | name | _string_ | Name of the cooperative |
 | geolocation | _string_ | Geolocation of the cooperative |
+
+## User cooperatives
+
+### Query
+
+| Endpoint | `/api/account/cooperatives` | Description |
+|----------|-------------|-------------|
+| _No parameter_ |||
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | Identifier of the cooperative |
+| name | _string_ | Name of the cooperative |
+
+## Cooperative information
+
+### Query
+
+| Endpoint | `/api/cooperative` | Description |
+|----------|-------------|-------------|
+| id | _int_ | id of the cooperative |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| name | _string_ | Name of the cooperative |
+| geolocation | _string_ | Geolocation of the cooperative |
+| created_at | _datetime(string)_ | Date of addition of the cooperative in the database |
+
+## User roles regarding to cooperative
+
+### Query
+
+| Endpoint | `/api/account/roles` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+
+### Response
+
+Returns an empty response if no role were found.
+Else, the response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| name | _string_ | Role of the user |
+| created_at | _datetime(string)_ | Date of addition of the user role in the database |

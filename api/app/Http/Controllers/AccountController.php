@@ -7,16 +7,50 @@ use App\Avatar;
 use App\ApiResponse;
 use App\Notification;
 use App\Subscription;
+use App\Role;
+use App\CooperativeUserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Middleware\Authentication;
+use App\Repositories\CooperativeRepository;
+use App\Repositories\UserRepository;
 
 define("UPLOAD_PATH", 'uploads'); // Inside /public
 
 class AccountController extends Controller {
+
+    public function roles(Request $request) {
+        $ApiResponse = new ApiResponse();
+        $User = \Request::get("User");
+        $validator = Validator::make($request->post(), [
+                    'cooperative_id' => "required|integer"
+        ]);
+
+        if ($validator->fails()) {
+            $ApiResponse->setErrorMessage($validator->messages()->first());
+        } else {
+            $Roles = CooperativeRepository::getUserRoles($User->id, Input::get("cooperative_id"));
+            $in_cooperative = UserRepository::inCooperative($User->id, Input::get("cooperative_id"));
+            if ($in_cooperative) {
+                if ($Roles) {
+                    $ApiResponse->setResponse($Roles->toArray());
+                } else {
+                    $ApiResponse->setResponse([]);
+                }
+            } else {
+                $ApiResponse->setErrorMessage("Vous n'êtes pas dans cette coopérative.");
+            }
+        }
+
+        if ($ApiResponse->getError()) {
+            return response()->json($ApiResponse->getResponse(), 400);
+        } else {
+            return response()->json($ApiResponse->getResponse(), 200);
+        }
+    }
 
     public function searchUsername(Request $request) {
         $ApiResponse = new ApiResponse();

@@ -37,14 +37,24 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('account/avatar/add', 'AccountController@addAvatar');
     Route::post('account/avatar', 'AccountController@avatar');
 
-    // Notifications route
+    // Notifications routes
     Route::post('account/notifications', 'AccountController@notifications');
     Route::post('account/notification/seen', 'AccountController@notificationSeen');
     
-    // Cooperatives
+    // Cooperatives routes
     Route::post('cooperatives', 'CooperativeController@cooperatives');
-
+    Route::post('cooperative', 'CooperativeController@cooperative');
+    Route::post('account/cooperatives', 'CooperativeController@userCooperatives');
+    
+    // Roles routes
+    Route::post('account/roles', 'AccountController@roles');
+    
 });
+
+Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], function() {
+    
+});
+
 
 Route::get('{any?}', function ($any = null) {
     $ApiResponse = new \App\ApiResponse();
