@@ -6,8 +6,7 @@ use App\User;
 use App\Connection;
 use App\ApiResponse;
 use App\Cooperative;
-use App\CooperativeUser;
-use App\CooperativeUserRole;
+use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -68,16 +67,29 @@ class CooperativeController extends Controller {
         }
     }
 
+    public function rolesList(Request $request) {
+        $ApiResponse = new ApiResponse();
+        $User = \Request::get("User");
+
+        $ApiResponse->setResponse(Role::select("id", "name")->get()->toArray());
+
+        if ($ApiResponse->getError()) {
+            return response()->json($ApiResponse->getResponse(), 400);
+        } else {
+            return response()->json($ApiResponse->getResponse(), 200);
+        }
+    }
+
     public function userCooperatives(Request $request) {
         $ApiResponse = new ApiResponse();
         $User = \Request::get("User");
 
-        $cooperatives = Cooperative::select("cooperative.id", "cooperative.name")
-                ->join("cooperative_user", "cooperative_user.cooperative_id", "=", "cooperative.id")
-                ->where([["cooperative_user.user_id", $User->id]])
-                ->get()
-                ->toArray();
-        $ApiResponse->setResponse($cooperatives);
+        $cooperatives = CooperativeRepository::getUserCooperatives($User->id);
+        if ($cooperatives) {
+            $ApiResponse->setResponse($cooperatives->toArray());
+        } else {
+            $ApiResponse->setErrorMessage("Vous n'avez aucune coopérative.");
+        }
 
         if ($ApiResponse->getError()) {
             return response()->json($ApiResponse->getResponse(), 400);

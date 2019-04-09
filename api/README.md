@@ -260,3 +260,86 @@ Else, the response will be an array of objects of the following format :
 |----------|-------------|-------------|
 | name | _string_ | Role of the user |
 | created_at | _datetime(string)_ | Date of addition of the user role in the database |
+
+## Roles list
+
+### Query
+
+| Endpoint | `/api/cooperative/roles` | Description |
+|----------|-------------|-------------|
+| _No parameter_ |||
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | Role id |
+| name | _string_ | Role name |
+
+## Add user to cooperative
+
+### Query
+
+| Endpoint | `/api/cooperative/roles/add` | Description |
+|----------|-------------|-------------|
+| user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
+| cooperative_id | _int_ | id of the cooperative |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Remove user from coopérative
+
+### Query
+
+| Endpoint | `/api/cooperative/roles/remove` | Description |
+|----------|-------------|-------------|
+| user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
+| cooperative_id | _int_ | id of the cooperative |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Add role to user in cooperative
+
+The user adding the role to a user must be an administration member of the cooperative.
+
+### Query
+
+| Endpoint | `/api/cooperative/roles/add` | Description |
+|----------|-------------|-------------|
+| user_ids | _int_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
+| cooperative_id | _int_ | id of the cooperative |
+| role_id | _int_ | id of the role to add |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Remove role to user in cooperative
+
+The user removing the role to a user must be an administration member of the cooperative.
+
+### Query
+
+| Endpoint | `/api/cooperative/roles/remove` | Description |
+|----------|-------------|-------------|
+| user_ids | _int_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
+| cooperative_id | _int_ | id of the cooperative |
+| role_id | _int_ | id of the role to remove |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||

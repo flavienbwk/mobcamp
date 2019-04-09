@@ -4,8 +4,16 @@ namespace App\Repositories;
 
 use App\User;
 use App\Role;
+use App\Cooperative;
 
 class CooperativeRepository {
+
+    public static function getUserCooperatives($user_id) {
+        return Cooperative::select("cooperative.id", "cooperative.name")
+                        ->join("cooperative_user", "cooperative_user.cooperative_id", "=", "cooperative.id")
+                        ->where([["cooperative_user.user_id", $user_id]])
+                        ->get();
+    }
 
     public static function getUserRoles($user_id, $cooperative_id) {
         return Role::select("role.id", "role.name", "cooperative_user_role.created_at")
