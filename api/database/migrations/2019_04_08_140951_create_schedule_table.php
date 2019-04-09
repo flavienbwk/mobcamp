@@ -13,6 +13,8 @@ class CreateScheduleTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('schedule', function (Blueprint $table) {
             $table->increments('id');
             $table->dateTime('from');
@@ -27,6 +29,6 @@ class CreateScheduleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schedule');
+        
     }
 }

@@ -13,6 +13,8 @@ class CreateNotificationTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('notification', function (Blueprint $table) {
             $table->increments('id');
             $table->string('message');
@@ -30,6 +32,6 @@ class CreateNotificationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notification');
+        
     }
 }

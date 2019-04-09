@@ -13,6 +13,8 @@ class CreateCertificateTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('certificate', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('formation_id')->unsigned();
@@ -32,6 +34,6 @@ class CreateCertificateTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('certificate');
+        
     }
 }

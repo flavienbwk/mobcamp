@@ -13,6 +13,8 @@ class CreateSubmissionMediaTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('submission_media', function (Blueprint $table) {
             $table->integer('submission_id')->unsigned();
             $table->integer('media_id')->unsigned();
@@ -28,6 +30,6 @@ class CreateSubmissionMediaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('submission_media');
+        
     }
 }

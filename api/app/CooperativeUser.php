@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Cooperative extends Model {
+class CooperativeUser extends Model {
 
-    protected $table = "cooperative";
+    protected $table = "cooperative_user";
 
     /**
      * The attributes that are mass assignable.
@@ -14,9 +14,8 @@ class Cooperative extends Model {
      * @var array
      */
     protected $fillable = [
-        'name',
-        'geolocation',
-        'lang',
+        'user_id', 
+        'cooperative_id', 
         'created_at',
         'updated_at',
     ];

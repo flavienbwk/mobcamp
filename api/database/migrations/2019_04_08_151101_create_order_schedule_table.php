@@ -13,6 +13,8 @@ class CreateOrderScheduleTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('order_schedule', function (Blueprint $table) {
             $table->integer('order_id')->unsigned();
             $table->integer('schedule_id')->unsigned();
@@ -29,6 +31,6 @@ class CreateOrderScheduleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_schedule');
+        
     }
 }

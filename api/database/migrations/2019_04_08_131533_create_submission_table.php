@@ -13,6 +13,8 @@ class CreateSubmissionTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('submission', function (Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('user_id')->unsigned();
@@ -32,6 +34,6 @@ class CreateSubmissionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('submission');
+        
     }
 }

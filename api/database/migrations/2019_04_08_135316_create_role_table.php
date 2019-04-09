@@ -13,6 +13,8 @@ class CreateRoleTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('role', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
@@ -26,6 +28,6 @@ class CreateRoleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('role');
+        
     }
 }

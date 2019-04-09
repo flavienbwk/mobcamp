@@ -13,6 +13,8 @@ class CreateQuestionTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('question', function (Blueprint $table) {
             $table->increments('id');
             $table->string('value');
@@ -29,6 +31,6 @@ class CreateQuestionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('question');
+        
     }
 }

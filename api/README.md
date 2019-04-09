@@ -189,30 +189,13 @@ The response will be an array of objects of the following format :
 | ids | _string_ ||
 | username | _string_ ||
 
-## Conversation creation
+## List of cooperatives
 
 ### Query
 
-| Endpoint | `/api/conversations/add` | Description |
+| Endpoint | `/api/cooperatives` | Description |
 |----------|-------------|-------------|
-| name | _string_ ||
-
-### Response
-
-| Key name | Value type | Description |
-|----------|-------------|-------------|
-| id | _int_ | Identifier of the created conversation |
-
-## Conversation adding users
-
-Adding users to conversation.
-
-### Query
-
-| Endpoint | `/api/conversation/add_user` | Description |
-|----------|-------------|-------------|
-| conversation_id | _string_ || 
-| User_ids | _string_ ||
+| _No parameter_ |||
 
 ### Response
 
@@ -220,76 +203,6 @@ The response will be an array of objects of the following format :
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|
-| _No response_ |||
-
-## Conversation message
-
-Send message to a conversation.
-
-### Query
-
-| Endpoint | `/api/conversation/message` | Description |
-|----------|-------------|-------------|
-| conversation_id | _int_ ||
-| value | _string_ | Message |
-
-### Response
-
-| Key name | Value type | Description |
-|----------|-------------|-------------|
-| _No data_ |||
-
-## Conversation messages
-
-Messages of the current connected user.
-
-### Query
-
-| Endpoint | `/api/conversation/messages` | Description |
-|----------|-------------|-------------|
-| conversation_id | _int_ ||
-
-### Response
-
-The response will be an array of objects of the following format :
-
-| Key name | Value type | Description |
-|----------|-------------|-------------|
-| value | _string_ ||
-| User_ids | _string_ | ids of the user sending the message |
-
-## Conversation users
-
-Returns the list of the users of a conversation if the currently connected user is part of the conversation.
-
-### Query
-
-| Endpoint | `/api/conversation/users` | Description |
-|----------|-------------|-------------|
-| conversation_id | _string_ ||
-
-### Response
-
-The response will be an array of objects of the following format :
-
-| Key name | Value type | Description |
-|----------|-------------|-------------|
-| ids | _array<string>_ | ids of the users |
-
-## User conversations
-
-### Query
-
-| Endpoint | `/api/conversations` | Description |
-|----------|-------------|-------------|
-| _No data_ |||
-
-### Response
-
-The response will be an array of objects of the following format :
-
-| Key name | Value type | Description |
-|----------|-------------|-------------|
-| id | _int_ ||
-| name | _string_ ||
-| User_ids | _string_ | The person who has created the conversation. |
+| id | _int_ | Identifier of the cooperative |
+| name | _string_ | Name of the cooperative |
+| geolocation | _string_ | Geolocation of the cooperative |

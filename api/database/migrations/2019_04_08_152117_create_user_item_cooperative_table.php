@@ -13,6 +13,8 @@ class CreateUserItemCooperativeTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('user_item_cooperative', function (Blueprint $table) {
             $table->integer('item_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
@@ -30,6 +32,6 @@ class CreateUserItemCooperativeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_item_cooperative');
+        
     }
 }

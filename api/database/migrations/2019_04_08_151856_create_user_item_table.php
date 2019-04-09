@@ -13,6 +13,8 @@ class CreateUserItemTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('user_item', function (Blueprint $table) {
             $table->float('price');
             $table->integer('quantity');
@@ -31,6 +33,6 @@ class CreateUserItemTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_item');
+        
     }
 }

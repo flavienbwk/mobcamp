@@ -13,6 +13,8 @@ class CreateItemTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('item', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -29,6 +31,6 @@ class CreateItemTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('item');
+        
     }
 }

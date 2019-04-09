@@ -13,6 +13,8 @@ class CreateOrderTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('order', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('item_id')->unsigned();
@@ -36,6 +38,6 @@ class CreateOrderTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order');
+        
     }
 }
