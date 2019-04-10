@@ -5,10 +5,10 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use \Illuminate\Database\Eloquent\Model;
 
-class Formation extends Model
+class ChapterCooperativeUser extends Model
 {
     use Notifiable;
-    protected $table = "formation";
+    protected $table = "chapter_cooperative_user";
     public $timestamps = true;
 
     /**
@@ -17,11 +17,10 @@ class Formation extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 
-        'name', 
-        'estimated_duration',
-        'level',
-        'cooperative_id'
+        'chapter_id',
+        'user_id',
+        'cooperative_id',
+        'is_achieved' 
     ];
     
     public static function getAll() {

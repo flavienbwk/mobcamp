@@ -16,8 +16,11 @@ class CreateChapterTable extends Migration
         Schema::create('chapter', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('type');
             $table->text('content')->nullable();
             $table->tinyInteger('order');
+            $table->integer('formation_id')->unsigned();
+            $table->foreign('formation_id')->references('id')->on('formation')->onDelete('cascade');
             $table->timestamps();
         });
     }

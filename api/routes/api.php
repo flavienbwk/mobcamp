@@ -51,6 +51,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     // Formations (base)
     Route::post('formations/add', 'FormationController@add');
     Route::post('formations/remove', 'FormationController@remove');
+    Route::post('formations', 'FormationController@formations');
+    Route::post('formation', 'FormationController@formation');
+
+    // Lessons (base)
+
 
     // Publications (base)
     Route::post('publications/add', 'PublicationController@add');
