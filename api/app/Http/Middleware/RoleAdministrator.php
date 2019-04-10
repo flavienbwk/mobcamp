@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Repositories\CooperativeRepository;
 use App\Repositories\UserRepository;
 
-class RoleAdministration {
+class RoleAdministrator {
     
     private $_role = "administrateur";
 

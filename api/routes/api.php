@@ -40,20 +40,24 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     // Notifications routes
     Route::post('account/notifications', 'AccountController@notifications');
     Route::post('account/notification/seen', 'AccountController@notificationSeen');
-    
+
     // Cooperatives routes
     Route::post('cooperatives', 'CooperativeController@cooperatives');
     Route::post('cooperative', 'CooperativeController@cooperative');
     Route::post('account/cooperatives', 'CooperativeController@userCooperatives');
-    
+
     // Roles routes
     Route::post('cooperative/roles', 'CooperativeController@roles');
     Route::post('roles', 'CooperativeController@rolesList');
-    
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], function() {
-    
+
+    // Cooperative user roles
+    Route::post('cooperative/user/add', 'CooperativeController@addUser');
+    Route::post('cooperative/user/remove', 'CooperativeController@removeUser');
+    Route::post('cooperative/roles/add', 'CooperativeController@addRoles');
+    Route::post('cooperative/roles/remove', 'CooperativeController@removeRoles');
 });
 
 

@@ -240,6 +240,23 @@ The response will be an array of objects of the following format :
 | geolocation | _string_ | Geolocation of the cooperative |
 | created_at | _datetime(string)_ | Date of addition of the cooperative in the database |
 
+## Roles list
+
+### Query
+
+| Endpoint | `/api/cooperative/roles` | Description |
+|----------|-------------|-------------|
+| _No parameter_ |||
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | Role id |
+| name | _string_ | Role name |
+
 ## User cooperative roles
 
 User roles regarding to a cooperative.
@@ -261,31 +278,14 @@ Else, the response will be an array of objects of the following format :
 | name | _string_ | Role of the user |
 | created_at | _datetime(string)_ | Date of addition of the user role in the database |
 
-## Roles list
-
-### Query
-
-| Endpoint | `/api/cooperative/roles` | Description |
-|----------|-------------|-------------|
-| _No parameter_ |||
-
-### Response
-
-The response will be an array of objects of the following format :
-
-| Key name | Value type | Description |
-|----------|-------------|-------------|
-| id | _int_ | Role id |
-| name | _string_ | Role name |
-
 ## Add user to cooperative
 
 ### Query
 
-| Endpoint | `/api/cooperative/roles/add` | Description |
+| Endpoint | `/api/cooperative/user/add` | Description |
 |----------|-------------|-------------|
-| user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
 | cooperative_id | _int_ | id of the cooperative |
+| user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
 
 ### Response
 
@@ -297,10 +297,10 @@ The response will be an array of objects of the following format :
 
 ### Query
 
-| Endpoint | `/api/cooperative/roles/remove` | Description |
+| Endpoint | `/api/cooperative/user/remove` | Description |
 |----------|-------------|-------------|
-| user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
 | cooperative_id | _int_ | id of the cooperative |
+| user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
 
 ### Response
 
@@ -316,8 +316,8 @@ The user adding the role to a user must be an administration member of the coope
 
 | Endpoint | `/api/cooperative/roles/add` | Description |
 |----------|-------------|-------------|
-| user_ids | _int_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
 | cooperative_id | _int_ | id of the cooperative |
+| user_ids | _int_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
 | role_id | _int_ | id of the role to add |
 
 ### Response
@@ -334,8 +334,8 @@ The user removing the role to a user must be an administration member of the coo
 
 | Endpoint | `/api/cooperative/roles/remove` | Description |
 |----------|-------------|-------------|
-| user_ids | _int_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
 | cooperative_id | _int_ | id of the cooperative |
+| user_ids | _int_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
 | role_id | _int_ | id of the role to remove |
 
 ### Response
