@@ -43,6 +43,10 @@ class Kernel extends HttpKernel
         'role_administrator' => [
             \App\Http\Middleware\RoleAdministrator::class,
         ],
+        
+        'role_enseignant' => [
+            \App\Http\Middleware\RoleEnseignant::class,
+        ],
 
         'api' => [
             'throttle:60,1',

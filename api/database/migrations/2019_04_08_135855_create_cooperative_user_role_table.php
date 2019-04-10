@@ -19,9 +19,9 @@ class CreateCooperativeUserRoleTable extends Migration
             $table->integer('role_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
             $table->integer('cooperative_id')->unsigned();
-            $table->foreign('role_id')->references('id')->on('role');
-            $table->foreign('user_id')->references('id')->on('user');
-            $table->foreign('cooperative_id')->references('id')->on('cooperative');
+            $table->foreign('role_id')->references('id')->on('role')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('cooperative_id')->references('id')->on('cooperative')->onDelete('cascade');
             $table->timestamps();
         });
     }

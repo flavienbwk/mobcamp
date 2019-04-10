@@ -17,6 +17,8 @@ class CreateQuizzTable extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('quizz', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('chapter_id')->unsigned();
+            $table->foreign('chapter_id')->references('id')->on('chapter')->onDelete('cascade');
             $table->timestamps();
         });
     }

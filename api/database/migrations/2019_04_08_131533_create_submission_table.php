@@ -20,9 +20,9 @@ class CreateSubmissionTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->integer('formation_id')->unsigned();
             $table->integer('activity_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('user');
-            $table->foreign('formation_id')->references('id')->on('formation');
-            $table->foreign('activity_id')->references('id')->on('activity');
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('formation_id')->references('id')->on('formation')->onDelete('cascade');
+            $table->foreign('activity_id')->references('id')->on('activity')->onDelete('cascade');
             $table->timestamps();
         });
     }

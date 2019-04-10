@@ -18,14 +18,11 @@ class CreateChapterTable extends Migration
         Schema::create('chapter', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('type');
             $table->text('content')->nullable();
             $table->tinyInteger('order');
-            $table->integer('lesson_id')->unsigned();
-            $table->integer('quizz_id')->unsigned();
-            $table->integer('activity_id')->unsigned();
-            $table->foreign('lesson_id')->references('id')->on('lesson')->nullable();
-            $table->foreign('quizz_id')->references('id')->on('quizz')->nullable();
-            $table->foreign('activity_id')->references('id')->on('activity')->nullable();
+            $table->integer('formation_id')->unsigned();
+            $table->foreign('formation_id')->references('id')->on('formation')->onDelete('cascade');
             $table->timestamps();
         });
     }

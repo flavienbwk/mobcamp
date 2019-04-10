@@ -19,7 +19,7 @@ class CreateQuestionTable extends Migration
             $table->increments('id');
             $table->string('value');
             $table->integer('quizz_id')->unsigned();
-            $table->foreign('quizz_id')->references('id')->on('quizz');
+            $table->foreign('quizz_id')->references('id')->on('quizz')->onDelete('cascade');
             $table->timestamps();
         });
     }

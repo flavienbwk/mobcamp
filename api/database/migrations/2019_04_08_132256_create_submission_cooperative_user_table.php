@@ -20,12 +20,12 @@ class CreateSubmissionCooperativeUserTable extends Migration
             $table->integer('formation_id')->unsigned();
             $table->integer('activity_id')->unsigned();
             $table->integer('cooperative_id')->unsigned();
-            $table->bigInteger('corrector_user_id')->unsigned();
-            $table->foreign('submission_id')->references('id')->on('submission');
-            $table->foreign('formation_id')->references('id')->on('formation');
-            $table->foreign('activity_id')->references('id')->on('activity');
-            $table->foreign('cooperative_id')->references('id')->on('cooperative');
-            $table->foreign('corrector_user_id')->references('id')->on('user');
+            $table->bigInteger('corrector_user_id')->unsigned()->nullable();
+            $table->foreign('submission_id')->references('id')->on('submission')->onDelete('cascade');
+            $table->foreign('formation_id')->references('id')->on('formation')->onDelete('cascade');
+            $table->foreign('activity_id')->references('id')->on('activity')->onDelete('cascade');
+            $table->foreign('cooperative_id')->references('id')->on('cooperative')->onDelete('cascade');
+            $table->foreign('corrector_user_id')->references('id')->on('user')->onDelete('set null');
             $table->tinyInteger('is_validated');
             $table->text('message');
             $table->integer('grade');
