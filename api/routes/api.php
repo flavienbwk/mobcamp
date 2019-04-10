@@ -52,7 +52,7 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('formation', 'FormationController@formation');
 
     // Formations (subscribe)
-    Route::post('formations/subscribe', 'FormationController@subscribe');
+    Route::post('formations/follow', 'FormationController@follow');
 
     // Formations (chapter)
     Route::post('formations/chapter', 'FormationController@chapter');

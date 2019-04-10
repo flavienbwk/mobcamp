@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Chapter;
 use App\Formation;
 use App\CooperativeUser;
+use App\CooperativeUserFormation;
 use App\ChapterCooperativeUser;
 use App\ApiResponse;
 use Illuminate\Http\Request;
@@ -39,13 +40,20 @@ class FormationController extends Controller
         if (($key = array_search(Input::get("cooperative_id"), $cooperative_id_column)) !== FALSE) {
             try {
                 DB::beginTransaction();
-                // Add formation
                 $Formation = Formation::create([
                     "name" => Input::get("name"),
                     'estimated_duration' => Input::get("estimated_duration"),
                     'level' => Input::get("level"),
                     'cooperative_id' => Input::get("cooperative_id")
                 ]);
+
+                CooperativeUserFormation::create([
+                    'user_id' => $User->id,
+                    'formation_id' => $Formation->id,
+                    'cooperative_id' => Input::get("cooperative_id"),
+                    'type' => "collaborator"
+                ]);
+
                 $ApiResponse->setMessage("Your formation was created.");
                 DB::commit();
             } catch (\PDOException $e) {
@@ -97,8 +105,9 @@ class FormationController extends Controller
 
         foreach ($cooperative_ids as $cooperative_id) {
             $formations = Formation::select('*')->where('cooperative_id', $cooperative_id)->orderBy("created_at", "desc")->offset($pagination_start)->limit($pagination_end)->get()->toArray();
-            foreach ($formations as $formation)
+            foreach ($formations as $formation) {
                 $formations_response[] = $formation;
+            }
         }
 
         if ($formations_response && !empty($formations_response))
@@ -133,7 +142,19 @@ class FormationController extends Controller
         if ($Formation->first()) {
             if (($key = array_search($Formation->first()->cooperative_id, $cooperative_id_column)) !== FALSE) {
                 $formation = $Formation->first()->toArray();
-                $formation['chapters'] = Chapter::select('id', 'name', 'type')->where('formation_id', Input::get('formation_id'))->orderBy('order', 'asc')->get()->toArray();
+                $formation['collaborators'] = DB::table('user')
+                    ->join('cooperative_user_formation', 'user.id', '=', 'user_id')
+                    ->where([
+                        ['cooperative_id', '=', $Formation->first()->cooperative_id],
+                        ['formation_id', '=', Input::get("formation_id")], 
+                        ['type', '=', 'collaborator']
+                    ])
+                    ->select('first_name', 'last_name')
+                    ->get()->toArray();
+                $formation['chapters'] = Chapter::select('id', 'name', 'type')
+                    ->where('formation_id', Input::get('formation_id'))
+                    ->orderBy('order', 'asc')
+                    ->get()->toArray();
                 for ($i = 0; isset($formation['chapters'][$i]); $i++) {
                     $z = ChapterCooperativeUser::select('is_achieved')->where([['chapter_id', $formation['chapters'][$i]['id']], ['user_id', $User->id]])->get()->first();
                     if (isset($z))
@@ -191,7 +212,7 @@ class FormationController extends Controller
                 }
             }
             else
-                $ApiResponse->setErrorMessage("You must be part of the cooperative to see this formation.");;
+                $ApiResponse->setErrorMessage("You must be part of the cooperative to see this formation.");
         } else
             $ApiResponse->setErrorMessage("Formation not found.");
 
@@ -201,7 +222,7 @@ class FormationController extends Controller
             return response()->json($ApiResponse->getResponse(), 200);
     }
 
-    public function subscribe(Request $request)
+    public function follow(Request $request)
     {
         $User = \Request::get("User");
         $ApiResponse = new ApiResponse();
@@ -215,6 +236,37 @@ class FormationController extends Controller
         if ($validator->fails()) {
             $ApiResponse->setErrorMessage($validator->messages()->first());
             return response()->json($ApiResponse->getResponse(), 400);
+        }
+
+        $Formation = Formation::where('id', Input::get('formation_id'));
+        if ($Formation->first()) {
+            // check cooperative
+            if (Input::get('cooperative_id') != $Formation->first()->cooperative_id) {
+                $ApiResponse->setErrorMessage("bad cooperative_id");
+                return response()->json($ApiResponse->getResponse(), 400);
+            }
+
+            $cooperative_id_formation = CooperativeUser::select('cooperative_id')->where('user_id', $User->id)->get()->toArray();
+            $cooperative_id_column = array_column($cooperative_id_formation, 'cooperative_id');
+            if (($key = array_search($Formation->first()->cooperative_id, $cooperative_id_column)) !== FALSE) {
+                try {
+                    DB::beginTransaction();
+                    // Add formation
+                    $Formation = CooperativeUserFormation::create([
+                        'user_id' => $User->id,
+                        'formation_id' => Input::get("formation_id"),
+                        'cooperative_id' => Input::get("cooperative_id"),
+                        'type' => "student"
+                    ]);
+                    $ApiResponse->setMessage("Formation followed.");
+                    DB::commit();
+                } catch (\PDOException $e) {
+                    DB::rollBack();
+                    $ApiResponse->setErrorMessage($e->getMessage());
+                }
+            }
+            else
+                $ApiResponse->setErrorMessage("You must be part of the cooperative to follow this formation.");
         }
     }
 }
