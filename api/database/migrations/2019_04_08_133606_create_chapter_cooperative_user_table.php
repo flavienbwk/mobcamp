@@ -13,6 +13,8 @@ class CreateChapterCooperativeUserTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('chapter_cooperative_user', function (Blueprint $table) {
             $table->integer('formation_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
@@ -31,6 +33,6 @@ class CreateChapterCooperativeUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chapter_cooperative_user');
+        
     }
 }

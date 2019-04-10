@@ -13,7 +13,8 @@ class CreateConnectionTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('connection');
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('connection', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('token');
@@ -31,6 +32,6 @@ class CreateConnectionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('connection');
+        
     }
 }

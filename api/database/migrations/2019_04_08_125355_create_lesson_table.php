@@ -13,6 +13,8 @@ class CreateLessonTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('lesson', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
@@ -26,6 +28,6 @@ class CreateLessonTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lesson');
+        
     }
 }

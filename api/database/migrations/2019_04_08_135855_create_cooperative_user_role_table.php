@@ -13,6 +13,8 @@ class CreateCooperativeUserRoleTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('cooperative_user_role', function (Blueprint $table) {
             $table->integer('role_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
@@ -31,6 +33,6 @@ class CreateCooperativeUserRoleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cooperative_user_role');
+        
     }
 }

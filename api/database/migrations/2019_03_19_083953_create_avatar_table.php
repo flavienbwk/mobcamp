@@ -13,7 +13,8 @@ class CreateAvatarTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('avatar');
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('avatar', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('local_uri');
@@ -29,6 +30,6 @@ class CreateAvatarTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('avatar');
+        
     }
 }

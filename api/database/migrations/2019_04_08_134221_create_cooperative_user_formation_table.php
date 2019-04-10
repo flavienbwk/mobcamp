@@ -13,6 +13,8 @@ class CreateCooperativeUserFormationTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('cooperative_user_formation', function (Blueprint $table) {
             $table->integer('formation_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
@@ -30,6 +32,6 @@ class CreateCooperativeUserFormationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cooperative_user_formation');
+        
     }
 }

@@ -189,30 +189,13 @@ The response will be an array of objects of the following format :
 | ids | _string_ ||
 | username | _string_ ||
 
-## Conversation creation
+## Cooperatives list
 
 ### Query
 
-| Endpoint | `/api/conversations/add` | Description |
+| Endpoint | `/api/cooperatives` | Description |
 |----------|-------------|-------------|
-| name | _string_ ||
-
-### Response
-
-| Key name | Value type | Description |
-|----------|-------------|-------------|
-| id | _int_ | Identifier of the created conversation |
-
-## Conversation adding users
-
-Adding users to conversation.
-
-### Query
-
-| Endpoint | `/api/conversation/add_user` | Description |
-|----------|-------------|-------------|
-| conversation_id | _string_ || 
-| User_ids | _string_ ||
+| _No parameter_ |||
 
 ### Response
 
@@ -220,18 +203,89 @@ The response will be an array of objects of the following format :
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|
-| _No response_ |||
+| id | _int_ | Identifier of the cooperative |
+| name | _string_ | Name of the cooperative |
+| geolocation | _string_ | Geolocation of the cooperative |
 
-## Conversation message
-
-Send message to a conversation.
+## User cooperatives
 
 ### Query
 
-| Endpoint | `/api/conversation/message` | Description |
+| Endpoint | `/api/account/cooperatives` | Description |
 |----------|-------------|-------------|
-| conversation_id | _int_ ||
-| value | _string_ | Message |
+| _No parameter_ |||
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | Identifier of the cooperative |
+| name | _string_ | Name of the cooperative |
+
+## Cooperative information
+
+### Query
+
+| Endpoint | `/api/cooperative` | Description |
+|----------|-------------|-------------|
+| id | _int_ | id of the cooperative |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| name | _string_ | Name of the cooperative |
+| geolocation | _string_ | Geolocation of the cooperative |
+| created_at | _datetime(string)_ | Date of addition of the cooperative in the database |
+
+## Roles list
+
+### Query
+
+| Endpoint | `/api/cooperative/roles` | Description |
+|----------|-------------|-------------|
+| _No parameter_ |||
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | Role id |
+| name | _string_ | Role name |
+
+## User cooperative roles
+
+User roles regarding to a cooperative.
+
+### Query
+
+| Endpoint | `/api/cooperative/roles` | Description |
+|----------|-------------|-------------|
+| user_ids | _int_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
+| cooperative_id | _int_ | id of the cooperative |
+
+### Response
+
+Returns an empty response if no role were found.
+Else, the response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| name | _string_ | Role of the user |
+| created_at | _datetime(string)_ | Date of addition of the user role in the database |
+
+## Add user to cooperative
+
+### Query
+
+| Endpoint | `/api/cooperative/user/add` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
 
 ### Response
 
@@ -239,57 +293,53 @@ Send message to a conversation.
 |----------|-------------|-------------|
 | _No data_ |||
 
-## Conversation messages
-
-Messages of the current connected user.
+## Remove user from coopérative
 
 ### Query
 
-| Endpoint | `/api/conversation/messages` | Description |
+| Endpoint | `/api/cooperative/user/remove` | Description |
 |----------|-------------|-------------|
-| conversation_id | _int_ ||
+| cooperative_id | _int_ | id of the cooperative |
+| user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
 
 ### Response
 
-The response will be an array of objects of the following format :
-
 | Key name | Value type | Description |
-|----------|-------------|-------------|
-| value | _string_ ||
-| User_ids | _string_ | ids of the user sending the message |
-
-## Conversation users
-
-Returns the list of the users of a conversation if the currently connected user is part of the conversation.
-
-### Query
-
-| Endpoint | `/api/conversation/users` | Description |
-|----------|-------------|-------------|
-| conversation_id | _string_ ||
-
-### Response
-
-The response will be an array of objects of the following format :
-
-| Key name | Value type | Description |
-|----------|-------------|-------------|
-| ids | _array<string>_ | ids of the users |
-
-## User conversations
-
-### Query
-
-| Endpoint | `/api/conversations` | Description |
 |----------|-------------|-------------|
 | _No data_ |||
 
-### Response
+## Add role to user in cooperative
 
-The response will be an array of objects of the following format :
+The user adding the role to a user must be an administration member of the cooperative.
+
+### Query
+
+| Endpoint | `/api/cooperative/roles/add` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| user_ids | _int_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
+| role_id | _int_ | id of the role to add |
+
+### Response
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|
-| id | _int_ ||
-| name | _string_ ||
-| User_ids | _string_ | The person who has created the conversation. |
+| _No data_ |||
+
+## Remove role to user in cooperative
+
+The user removing the role to a user must be an administration member of the cooperative.
+
+### Query
+
+| Endpoint | `/api/cooperative/roles/remove` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| user_ids | _int_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
+| role_id | _int_ | id of the role to remove |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||

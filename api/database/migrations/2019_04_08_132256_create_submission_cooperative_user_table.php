@@ -13,6 +13,8 @@ class CreateSubmissionCooperativeUserTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('submission_cooperative_user', function (Blueprint $table) {
             $table->integer('submission_id')->unsigned();
             $table->integer('formation_id')->unsigned();
@@ -37,6 +39,6 @@ class CreateSubmissionCooperativeUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('submission_cooperative_user');
+        
     }
 }

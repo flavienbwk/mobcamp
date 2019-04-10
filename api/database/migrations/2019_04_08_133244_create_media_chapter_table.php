@@ -13,6 +13,8 @@ class CreateMediaChapterTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('media_chapter', function (Blueprint $table) {
             $table->integer('media_id')->unsigned();
             $table->integer('chapter_id')->unsigned();
@@ -28,6 +30,6 @@ class CreateMediaChapterTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('media_chapter');
+        
     }
 }

@@ -37,46 +37,29 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('account/avatar/add', 'AccountController@addAvatar');
     Route::post('account/avatar', 'AccountController@avatar');
 
-    // Notifications route
+    // Notifications routes
     Route::post('account/notifications', 'AccountController@notifications');
     Route::post('account/notification/seen', 'AccountController@notificationSeen');
 
-    // User subscriptions
-    Route::post('account/subscriptions', 'AccountController@subscriptionsList');
-    Route::post('account/subscribed', 'AccountController@subscribedList');
-    Route::post('account/subscription', 'AccountController@subscription');
-    Route::post('account/issubscribed', 'AccountController@issubscribed');
-    Route::post('account/search', 'AccountController@searchUsername');
+    // Cooperatives routes
+    Route::post('cooperatives', 'CooperativeController@cooperatives');
+    Route::post('cooperative', 'CooperativeController@cooperative');
+    Route::post('account/cooperatives', 'CooperativeController@userCooperatives');
 
-    // Publications (base)
-    Route::post('publications/add', 'PublicationController@add');
-    Route::post('publications/remove', 'PublicationController@remove');
-    Route::post('publications', 'PublicationController@publications');
-    Route::post('publication', 'PublicationController@publication');
-    
-    // Publications (comments)
-    Route::post('publication/comments', 'PublicationController@comments');
-    Route::post('publication/comment', 'PublicationController@comment');
-
-    // Publications (reactions)
-    Route::post('publication/reactions', 'PublicationController@reactions');
-    Route::post('reaction', 'ReactionController@reaction');
-    Route::post('reactions', 'ReactionController@reactions');
-    
-    // Conversations
-    Route::post('conversations', 'ConversationController@conversations');
-    Route::post('conversations/add', 'ConversationController@add');
-    Route::post('conversations/add_user', 'ConversationController@addUser');
-    Route::post('conversation/messages', 'ConversationController@messages');
-    Route::post('conversation/message', 'ConversationController@message');
-    Route::post('conversation/users', 'ConversationController@conversationUsers');
-    
-    // - Populate the database with images, users and publications
-    // - Seeders & migrate tests
-    // - Remove docker compose init.d sql file
-    // - Commit on GitLab
-
+    // Roles routes
+    Route::post('cooperative/roles', 'CooperativeController@roles');
+    Route::post('roles', 'CooperativeController@rolesList');
 });
+
+Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], function() {
+
+    // Cooperative user roles
+    Route::post('cooperative/user/add', 'CooperativeController@addUser');
+    Route::post('cooperative/user/remove', 'CooperativeController@removeUser');
+    Route::post('cooperative/roles/add', 'CooperativeController@addRoles');
+    Route::post('cooperative/roles/remove', 'CooperativeController@removeRoles');
+});
+
 
 Route::get('{any?}', function ($any = null) {
     $ApiResponse = new \App\ApiResponse();

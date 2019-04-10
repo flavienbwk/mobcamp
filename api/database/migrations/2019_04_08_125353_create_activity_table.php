@@ -13,6 +13,8 @@ class CreateActivityTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('activity', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
@@ -26,6 +28,6 @@ class CreateActivityTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('activity');
+        
     }
 }

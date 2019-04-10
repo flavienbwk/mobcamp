@@ -13,6 +13,8 @@ class CreateTourTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('tour', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
@@ -30,6 +32,6 @@ class CreateTourTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tour');
+        
     }
 }

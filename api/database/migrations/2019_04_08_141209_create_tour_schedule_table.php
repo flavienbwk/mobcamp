@@ -13,6 +13,8 @@ class CreateTourScheduleTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('tour_schedule', function (Blueprint $table) {
             $table->integer('tour_id')->unsigned();
             $table->integer('schedule_id')->unsigned();
@@ -29,6 +31,6 @@ class CreateTourScheduleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tour_schedule');
+        
     }
 }

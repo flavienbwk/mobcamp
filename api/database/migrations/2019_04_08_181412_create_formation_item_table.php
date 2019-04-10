@@ -13,6 +13,8 @@ class CreateFormationItemTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('formation_item', function (Blueprint $table) {
             $table->integer('quantity');
             $table->integer('formation_id')->unsigned();
@@ -32,6 +34,6 @@ class CreateFormationItemTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('formation_item');
+        
     }
 }

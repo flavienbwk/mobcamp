@@ -13,6 +13,8 @@ class CreateChapterTable extends Migration
      */
     public function up()
     {
+        
+        Schema::disableForeignKeyConstraints();
         Schema::create('chapter', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -35,6 +37,6 @@ class CreateChapterTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chapter');
+        
     }
 }
