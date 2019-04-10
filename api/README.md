@@ -393,9 +393,17 @@ The response will be object of the following format :
 | cooperative_id | _int_ | Cooperative id of the formation |
 | created_at | _datetime(string)_ | Date of addition of the formation in the database |
 | updated_at | _datetime(string)_ | Date of modification of the formation in the database |
+| collaborators | _array(object)_ | List of authors |
 | chapters | _array(object)_ | List of chapters that the formation contains |
 
-The chapters be an array of objects of the following format:
+Collaborators be an array of objects of the following format:
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| first_name | _string_ | first name of user    |
+| last_name | _string_ | last name of user    |
+
+Chapters be an array of objects of the following format:
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|
