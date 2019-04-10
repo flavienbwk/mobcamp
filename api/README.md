@@ -242,6 +242,14 @@ The response will be an array of objects of the following format :
 
 ## Roles list
 
+- administrateur
+- enseignant
+- contrôleur
+- correcteur
+- commercial
+- acheteur
+- vendeur
+
 ### Query
 
 | Endpoint | `/api/cooperative/roles` | Description |
