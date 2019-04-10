@@ -343,3 +343,97 @@ The user removing the role to a user must be an administration member of the coo
 | Key name | Value type | Description |
 |----------|-------------|-------------|
 | _No data_ |||
+
+## Formations list
+
+Get all formations existings in the user's cooperatives
+
+### Query
+
+| Endpoint | `/api/formations` | Description |
+|----------|-------------|-------------|
+|   cooperative_id    |  _int_ |   optional, id of the cooperative you want to see its formations. By default, will get formations in all user's cooperatives |
+|   pagination_start    |  _int_ |   optional |
+|   interval    |  _int_ |   optional |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | Formation id |
+| name | _string_ | Formation name |
+| estimated_duration | _int_ | Formation estimated_duration to finish |
+| level | _int_ | Formation level of difficulty |
+| cooperative_id | _int_ | Cooperative id of the formation |
+| created_at | _datetime(string)_ | Date of addition of the formation in the database |
+| updated_at | _datetime(string)_ | Date of modification of the formation in the database |
+
+## Formation detail
+
+Get all detail about a formation in particular
+
+### Query
+
+| Endpoint | `/api/formations` | Description |
+|----------|-------------|-------------|
+|   formation_id    |  _int_ |   id of the formation  |
+
+### Response
+
+The response will be object of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | Formation id |
+| name | _string_ | Formation name |
+| estimated_duration | _int_ | Formation estimated_duration to finish |
+| level | _int_ | Formation level of difficulty |
+| cooperative_id | _int_ | Cooperative id of the formation |
+| created_at | _datetime(string)_ | Date of addition of the formation in the database |
+| updated_at | _datetime(string)_ | Date of modification of the formation in the database |
+| chapters | _array(object)_ | List of chapters that the formation contains |
+
+The chapters be an array of objects of the following format:
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | chapter id |
+| name | _string_ | chapter name |
+| type | _string_ | chapter type (lesson, quizz or activity) |
+| is_achieved | _boolean_ | return if the user doing the request have done this chapter |
+
+## Add formation in cooperative
+
+The user adding the formation to a cooperative must be an "enseignant" member of this cooperative.
+
+### Query
+
+| Endpoint | `/api/formations/add` | Description |
+|----------|-------------|-------------|
+|   cooperative_id    |  _int_ |   id of the cooperative  |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Remove formation in cooperative
+
+The user removing the formation to a cooperative must be an "enseignant" member of this cooperative.
+
+### Query
+
+| Endpoint | `/api/formations/add` | Description |
+|----------|-------------|-------------|
+|   formation_id    |  _int_ |   id of the formation  |
+|   cooperative_id    |  _int_ |   id of the cooperative  |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
