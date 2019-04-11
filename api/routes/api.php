@@ -52,6 +52,7 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
 
     // Formations (follow)
     Route::post('formations/follow', 'FormationController@follow');
+    Route::post('formations/unfollow', 'FormationController@unfollow');
     Route::post('formations/isFollowed', 'FormationController@isFollowed');
 
     // Formations (chapter)

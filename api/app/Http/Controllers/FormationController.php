@@ -70,8 +70,7 @@ class FormationController extends Controller
                 DB::rollBack();
                 $ApiResponse->setErrorMessage($e->getMessage());
             }
-        }
-        else
+        } else
             $ApiResponse->setErrorMessage("You must be part of the cooperative to add this formation.");
 
         if ($ApiResponse->getError())
@@ -144,7 +143,7 @@ class FormationController extends Controller
             $ApiResponse->setErrorMessage($validator->messages()->first());
             return response()->json($ApiResponse->getResponse(), 400);
         }
-        
+
         $Formation = Formation::where("id", Input::get("formation_id"));
         $cooperative_id_formation = CooperativeUser::select('cooperative_id')->where('user_id', $User->id)->get()->toArray();
         $cooperative_id_column = array_column($cooperative_id_formation, 'cooperative_id');
@@ -156,7 +155,7 @@ class FormationController extends Controller
                     ->join('cooperative_user_formation', 'user.id', '=', 'user_id')
                     ->where([
                         ['cooperative_id', '=', $Formation->first()->cooperative_id],
-                        ['formation_id', '=', Input::get("formation_id")], 
+                        ['formation_id', '=', Input::get("formation_id")],
                         ['type', '=', 'collaborator']
                     ])
                     ->select('first_name', 'last_name')
@@ -173,11 +172,9 @@ class FormationController extends Controller
                         $formation['chapters'][$i]['is_achieved'] = "false";
                 }
                 $ApiResponse->setData($formation);
-            } 
-            else
+            } else
                 $ApiResponse->setErrorMessage("You must be part of the cooperative to see this formation.");
-        } 
-        else
+        } else
             $ApiResponse->setErrorMessage("Formation not found.");
 
         if ($ApiResponse->getError()) {
@@ -186,7 +183,7 @@ class FormationController extends Controller
             return response()->json($ApiResponse->getResponse(), 200);
         }
     }
-    
+
     public function follow(Request $request)
     {
         $User = \Request::get("User");
@@ -230,14 +227,11 @@ class FormationController extends Controller
                         DB::rollBack();
                         $ApiResponse->setErrorMessage($e->getMessage());
                     }
-                }
-                else
+                } else
                     $ApiResponse->setErrorMessage("Formation already followed.");
-            }
-            else
+            } else
                 $ApiResponse->setErrorMessage("You must be part of the cooperative to follow this formation.");
-        }
-        else
+        } else
             $ApiResponse->setErrorMessage("Formation not found.");
 
         if ($ApiResponse->getError())
@@ -270,9 +264,58 @@ class FormationController extends Controller
                 return response()->json($ApiResponse->getResponse(), 400);
             }
             $result = CooperativeUserFormation::where([['user_id', $User->id], ['cooperative_id', Input::get('cooperative_id')], ['formation_id', Input::get('formation_id')], ['type', 'student']])->exists();
-            $response = ['is_followed'=> (bool)$result];
+            $response = ['is_followed' => (bool)$result];
             $ApiResponse->setData($response);
+        } else
+            $ApiResponse->setErrorMessage("Formation not found.");
+
+        if ($ApiResponse->getError())
+            return response()->json($ApiResponse->getResponse(), 400);
+        else
+            return response()->json($ApiResponse->getResponse(), 200);
+    }
+
+    public function unfollow(Request $request)
+    {
+        $ApiResponse = new ApiResponse();
+        $User = \Request::get("User");
+        $validator = Validator::make($request->post(), [
+            'formation_id' => 'bail|required|numeric',
+            'cooperative_id' => 'required|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            $ApiResponse->setErrorMessage($validator->messages()->first());
+            return response()->json($ApiResponse->getResponse(), 400);
         }
+
+        // Delete formation
+        $Formation = Formation::where('id', Input::get('formation_id'));
+        if ($Formation->first()) {
+            // check cooperative
+            if (Input::get('cooperative_id') != $Formation->first()->cooperative_id) {
+                $ApiResponse->setErrorMessage("bad cooperative_id");
+                return response()->json($ApiResponse->getResponse(), 400);
+            }
+
+            $follow = CooperativeUserFormation::where([
+                ['user_id', $User->id],
+                ['cooperative_id', Input::get('cooperative_id')],
+                ['formation_id', Input::get('formation_id')],
+                ['type', 'student']
+            ]);
+
+            if ($follow->first()) {
+                try {
+                    $follow->delete();
+                    $ApiResponse->setMessage("Successfuly unfollow this formation.");
+                } catch (Exception $ex) {
+                    $ApiResponse->setErrorMessage("Failed to unfollow this formation. Please try again.");
+                }
+            }
+            else
+                $ApiResponse->setErrorMessage("You must follow this formation.");
+        } 
         else
             $ApiResponse->setErrorMessage("Formation not found.");
 
@@ -281,6 +324,7 @@ class FormationController extends Controller
         else
             return response()->json($ApiResponse->getResponse(), 200);
     }
+
 
     public function remove(Request $request)
     {
@@ -295,7 +339,7 @@ class FormationController extends Controller
             $ApiResponse->setErrorMessage($validator->messages()->first());
             return response()->json($ApiResponse->getResponse(), 400);
         }
-        
+
         // Delete formation
         $Formation = Formation::where('id', Input::get('formation_id'));
         if ($Formation->first()) {
@@ -307,9 +351,10 @@ class FormationController extends Controller
 
             $type = CooperativeUserFormation::select('type')
                 ->where([
-                    ['user_id', $User->id], 
-                    ['cooperative_id', Input::get('cooperative_id')], 
-                    ['formation_id', Input::get('formation_id')]])
+                    ['user_id', $User->id],
+                    ['cooperative_id', Input::get('cooperative_id')],
+                    ['formation_id', Input::get('formation_id')]
+                ])
                 ->get();
 
             if ($type->first() && $type->first()->type == 'collaborator') {
@@ -322,8 +367,7 @@ class FormationController extends Controller
                 } catch (Exception $ex) {
                     $ApiResponse->setErrorMessage("Failed to remove this formation. Please try again.");
                 }
-            }
-            else
+            } else
                 $ApiResponse->setErrorMessage("You must be collaborator of this formation.");
         } else
             $ApiResponse->setErrorMessage("Formation not found.");
