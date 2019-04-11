@@ -46,13 +46,14 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('cooperative', 'CooperativeController@cooperative');
     Route::post('account/cooperatives', 'CooperativeController@userCooperatives');
 
-
     // Formations (base)
     Route::post('formations', 'FormationController@formations');
     Route::post('formation', 'FormationController@formation');
 
-    // Formations (subscribe)
-    Route::post('formations/subscribe', 'FormationController@subscribe');
+    // Formations (follow)
+    Route::post('formations/follow', 'FormationController@follow');
+    Route::post('formations/unfollow', 'FormationController@unfollow');
+    Route::post('formations/isFollowed', 'FormationController@isFollowed');
 
     // Formations (chapter)
     Route::post('formations/chapter', 'FormationController@chapter');

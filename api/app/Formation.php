@@ -21,7 +21,8 @@ class Formation extends Model
         'name', 
         'estimated_duration',
         'level',
-        'cooperative_id'
+        'cooperative_id',
+        'local_uri'
     ];
     
     public static function getAll() {
