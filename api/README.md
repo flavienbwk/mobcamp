@@ -290,7 +290,7 @@ Else, the response will be an array of objects of the following format :
 
 ### Query
 
-| Endpoint | `/api/cooperative/user/add` | Description |
+| Endpoint | `/api/cooperative/users/add` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
 | user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
@@ -305,7 +305,7 @@ Else, the response will be an array of objects of the following format :
 
 ### Query
 
-| Endpoint | `/api/cooperative/user/remove` | Description |
+| Endpoint | `/api/cooperative/users/remove` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
 | user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
@@ -390,7 +390,7 @@ Get all detail about a formation in particular
 
 ### Response
 
-The response will be object of the following format :
+The response will be an array of objects of the following format :
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|
@@ -445,3 +445,58 @@ The user removing the formation to a cooperative must be an "enseignant" member 
 |----------|-------------|-------------|
 | _No data_ |||
 
+===========
+
+## Cooperative tours list
+
+### Query
+
+| Endpoint | `/api/cooperative/tours` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| tour_id | _int_ | identifier of the tour |
+| name | _string_ | name of the tour (can be empty) |
+| type | _string_ | 'gathering' or 'distribution' |
+| created_at | _datetime(string)_ | Date to which the distribution has been created |
+
+## Cooperative tours add
+
+### Query
+
+| Endpoint | `/api/cooperative/tours/add` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| name | _string_ | can be empty, name of the tour to add |
+| type | _string_ | 'gathering' or 'distribution' |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| tour_id | _int_ | identifier of the tour created |
+
+## Cooperative tours remove
+
+### Query
+
+| Endpoint | `/api/cooperative/tours/remove` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| tour_id | _int_ | identifier of the tour to remove |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
