@@ -376,7 +376,7 @@ Get all detail about a formation in particular
 
 ### Query
 
-| Endpoint | `/api/formations` | Description |
+| Endpoint | `/api/formation` | Description |
 |----------|-------------|-------------|
 |   formation_id    |  _int_ |   id of the formation  |
 
@@ -434,7 +434,7 @@ The user removing the formation to a cooperative must be an "enseignant" member 
 
 ### Query
 
-| Endpoint | `/api/formations/add` | Description |
+| Endpoint | `/api/formations/remove` | Description |
 |----------|-------------|-------------|
 |   formation_id    |  _int_ |   id of the formation  |
 |   cooperative_id    |  _int_ |   id of the cooperative  |
@@ -445,3 +445,34 @@ The user removing the formation to a cooperative must be an "enseignant" member 
 |----------|-------------|-------------|
 | _No data_ |||
 
+## Follow a formation in cooperative
+
+The user following the formation of a cooperative must be a member of this cooperative.
+
+### Query
+
+| Endpoint | `/api/formations/follow` | Description |
+|----------|-------------|-------------|
+|   formation_id    |  _int_ |   id of the formation  |
+|   cooperative_id    |  _int_ |   id of the cooperative  |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Check if a formation is followed by the user
+
+### Query
+
+| Endpoint | `/api/formations/isFollowed` | Description |
+|----------|-------------|-------------|
+|   formation_id    |  _int_ |   id of the formation  |
+|   cooperative_id    |  _int_ |   id of the cooperative  |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| is_followed | _boolean(string)_   |   "true" or "false"    |
