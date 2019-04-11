@@ -367,6 +367,7 @@ The response will be an array of objects of the following format :
 | estimated_duration | _int_ | Formation estimated_duration to finish |
 | level | _int_ | Formation level of difficulty |
 | cooperative_id | _int_ | Cooperative id of the formation |
+| local_uri | _string_ | local_uri of the picture |
 | created_at | _datetime(string)_ | Date of addition of the formation in the database |
 | updated_at | _datetime(string)_ | Date of modification of the formation in the database |
 
@@ -391,6 +392,7 @@ The response will be object of the following format :
 | estimated_duration | _int_ | Formation estimated_duration to finish |
 | level | _int_ | Formation level of difficulty |
 | cooperative_id | _int_ | Cooperative id of the formation |
+| local_uri | _string_ | local_uri of the picture |
 | created_at | _datetime(string)_ | Date of addition of the formation in the database |
 | updated_at | _datetime(string)_ | Date of modification of the formation in the database |
 | collaborators | _array(object)_ | List of authors |
@@ -420,7 +422,12 @@ The user adding the formation to a cooperative must be an "enseignant" member of
 
 | Endpoint | `/api/formations/add` | Description |
 |----------|-------------|-------------|
-|   cooperative_id    |  _int_ |   id of the cooperative  |
+| name | _string_ | Formation name |
+| estimated_duration | _int_ | Formation estimated_duration to finish |
+| level | _int_ | Formation level of difficulty |
+| cooperative_id | _int_ | Cooperative id of the formation |
+|   main_pic    | _FILE_ | local_uri of the picture |
+
 
 ### Response
 
