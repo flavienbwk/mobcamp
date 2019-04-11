@@ -495,14 +495,16 @@ The response will be an array of objects of the following format :
 |----------|-------------|-------------|
 | _No data_ |||
 
-## Cooperative tours schedules list
+=======
+
+## Cooperative tour schedules list
 
 ### Query
 
 | Endpoint | `/api/cooperative/tour/schedules` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
-| tour_id | _int_ | identifier of the tour to remove |
+| tour_id | _int_ | identifier of the tour to list the schedules |
 
 ### Response
 
@@ -514,15 +516,16 @@ The response will be an array of objects of the following format :
 | to | _datetime(string)_ ||
 | place | _string_ | Place where the tour will operate. Generally, a postal address |
 
-## Cooperative tours schedule add
+## Cooperative tour schedule add
 
 ### Query
 
-| Endpoint | `/api/cooperative/tours/add` | Description |
+| Endpoint | `/api/cooperative/tour/schedules/add` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
-| from | _int_ | unix timestamp of the start of the tour |
-| to | _int_ | identifier of the tour to remove |
+| tour_id | _int_ | identifier of the tour to list the schedules |
+| from | _datetime_ | datetime of the start of the tour |
+| to | _datetime_ | datetime of the stop of the tour |
 | place | _string_ | Place where the tour will operate. Generally, a postal address |
 
 ### Response
@@ -531,15 +534,15 @@ The response will be an array of objects of the following format :
 |----------|-------------|-------------|
 | schedule_id | _int_ | identifier of the tour added |
 
-## Cooperative tours schedule remove
+## Cooperative tour schedule remove
 
 ### Query
 
-| Endpoint | `/api/cooperative/tours/remove` | Description |
+| Endpoint | `/api/cooperative/tour/schedules/remove` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
-| tour_id | _int_ | identifier of the tour to remove |
-| schedule_id | _int_ | identifier of the tour to remove |
+| tour_id | _int_ | identifier of the tour of the schedule|
+| schedule_id | _int_ | identifier of the schedule tour to remove |
 
 ### Response
 

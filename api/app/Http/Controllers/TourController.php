@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use App\Repositories\CooperativeRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\TourRepository;
 
 class TourController extends Controller
 {
@@ -121,6 +122,127 @@ class TourController extends Controller
                 }
             } else {
                 $ApiResponse->setErrorMessage("Cette tournée n'a pas été trouvée.");
+            }
+        }
+
+        if ($ApiResponse->getError()) {
+            return response()->json($ApiResponse->getResponse(), 400);
+        } else {
+            return response()->json($ApiResponse->getResponse(), 200);
+        }
+    }
+
+    public function listSchedules(Request $request)
+    {
+        $ApiResponse = new ApiResponse();
+        $User = \Request::get("User");
+        $validator = Validator::make($request->post(), [
+            'cooperative_id' => "required|integer",
+            'tour_id' => "required|integer"
+        ]);
+
+        if ($validator->fails()) {
+            $ApiResponse->setErrorMessage($validator->messages()->first());
+        } else {
+            if (TourRepository::inCooperative(Input::get("tour_id"), Input::get("cooperative_id"))) {
+                $Schedules = TourRepository::getTourSchedules(Input::get("tour_id"), Input::get("cooperative_id"));
+                $ApiResponse->setResponse($Schedules->toArray());
+                $ApiResponse->setMessage("Results found.");
+            } else {
+                $ApiResponse->setErrorMessage("Cette tournée n'appartient pas à cette coopérative ou n'existe pas.");
+            }
+        }
+
+        if ($ApiResponse->getError()) {
+            return response()->json($ApiResponse->getResponse(), 400);
+        } else {
+            return response()->json($ApiResponse->getResponse(), 200);
+        }
+    }
+
+    public function addSchedule(Request $request)
+    {
+        $ApiResponse = new ApiResponse();
+        $User = \Request::get("User");
+        $validator = Validator::make($request->post(), [
+            'cooperative_id' => "required|integer",
+            'from' => "required|date",
+            'to' => "required|date",
+            'place' => "required|string|min:1",
+            'tour_id' => "required|integer"
+        ]);
+
+        if ($validator->fails()) {
+            $ApiResponse->setErrorMessage($validator->messages()->first());
+        } else {
+            if (TourRepository::inCooperative(Input::get("tour_id"), Input::get("cooperative_id"))) {
+                $from = strtotime(Input::get("from"));
+                $to = strtotime(Input::get("to"));
+                if ($from && $to) {
+                    try {
+                        $Schedule = new Schedule();
+                        $Schedule->from = gmdate("Y-m-d H:i:s", $from);
+                        $Schedule->to = gmdate("Y-m-d H:i:s", $to);
+                        $Schedule->save();
+
+                        $TourSchedule = new TourSchedule();
+                        $TourSchedule->place = Input::get("place");
+                        $TourSchedule->tour_id = Input::get("tour_id");
+                        $TourSchedule->schedule_id = $Schedule->id;
+                        $TourSchedule->save();
+
+                        $ApiResponse->setData([
+                            "schedule_id" => $Schedule->id
+                        ]);
+                    } catch (\Exception $ex) {
+                        $ApiResponse->setErrorMessage($ex->getMessage());
+                    }
+                } else {
+                    $ApiResponse->setErrorMessage("Invalid datetimes provided.");
+                }
+            } else {
+                $ApiResponse->setErrorMessage("Cette tournée n'appartient pas à cette coopérative ou n'existe pas.");
+            }
+        }
+
+        if ($ApiResponse->getError()) {
+            return response()->json($ApiResponse->getResponse(), 400);
+        } else {
+            return response()->json($ApiResponse->getResponse(), 200);
+        }
+    }
+
+    public function removeSchedule(Request $request)
+    {
+        $ApiResponse = new ApiResponse();
+        $User = \Request::get("User");
+        $validator = Validator::make($request->post(), [
+            'cooperative_id' => "required|integer",
+            'tour_id' => "required|integer",
+            'schedule_id' => "required|integer"
+        ]);
+
+        if ($validator->fails()) {
+            $ApiResponse->setErrorMessage($validator->messages()->first());
+        } else {
+            if (TourRepository::inCooperative(Input::get("tour_id"), Input::get("cooperative_id"))) {
+                $TourSchedule = TourSchedule::where([
+                    ["tour_id", Input::get("tour_id")],
+                    ["schedule_id", Input::get("schedule_id")]
+                ]);
+                if ($TourSchedule->count()) {
+                    try {
+                        $TourSchedule->delete();
+                        Schedule::find(Input::get("schedule_id"))->delete();
+                        $ApiResponse->setMessage("Supprimé avec succès.");
+                    } catch (Exception $ex) {
+                        $ApiResponse->setErrorMessage($ex->getMessage());
+                    }
+                } else {
+                    $ApiResponse->setErrorMessage("Horaire de tournée introuvable.");
+                }
+            } else {
+                $ApiResponse->setErrorMessage("Cette tournée n'appartient pas à cette coopérative ou n'existe pas.");
             }
         }
 
