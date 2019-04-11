@@ -445,8 +445,6 @@ The user removing the formation to a cooperative must be an "enseignant" member 
 |----------|-------------|-------------|
 | _No data_ |||
 
-===========
-
 ## Cooperative tours list
 
 ### Query
@@ -478,8 +476,6 @@ The response will be an array of objects of the following format :
 
 ### Response
 
-The response will be an array of objects of the following format :
-
 | Key name | Value type | Description |
 |----------|-------------|-------------|
 | tour_id | _int_ | identifier of the tour created |
@@ -495,7 +491,57 @@ The response will be an array of objects of the following format :
 
 ### Response
 
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Cooperative tours schedules list
+
+### Query
+
+| Endpoint | `/api/cooperative/tour/schedules` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| tour_id | _int_ | identifier of the tour to remove |
+
+### Response
+
 The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| from | _datetime(string)_ ||
+| to | _datetime(string)_ ||
+| place | _string_ | Place where the tour will operate. Generally, a postal address |
+
+## Cooperative tours schedule add
+
+### Query
+
+| Endpoint | `/api/cooperative/tours/add` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| from | _int_ | unix timestamp of the start of the tour |
+| to | _int_ | identifier of the tour to remove |
+| place | _string_ | Place where the tour will operate. Generally, a postal address |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| schedule_id | _int_ | identifier of the tour added |
+
+## Cooperative tours schedule remove
+
+### Query
+
+| Endpoint | `/api/cooperative/tours/remove` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| tour_id | _int_ | identifier of the tour to remove |
+| schedule_id | _int_ | identifier of the tour to remove |
+
+### Response
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|

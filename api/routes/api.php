@@ -83,9 +83,7 @@ Route::group(['middleware' => ['web', 'authenticated', "role_commercial"]], func
     Route::post('cooperative/tour/schedules/add', 'TourController@addSchedule');
     Route::post('cooperative/tour/schedules/remove', 'TourController@removeSchedule');
 
-    // Confirm orders
-    // - Confirm order schedule
-    // - Confirm order reception ==> besoin de ça ?
+    // Confirm order reception
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], function() {
@@ -96,7 +94,6 @@ Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], f
     Route::post('cooperative/roles/add', 'CooperativeController@addRoles');
     Route::post('cooperative/roles/remove', 'CooperativeController@removeRoles');
 });
-
 
 Route::get('{any?}', function ($any = null) {
     $ApiResponse = new \App\ApiResponse();
