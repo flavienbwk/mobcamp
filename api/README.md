@@ -495,8 +495,6 @@ The response will be an array of objects of the following format :
 |----------|-------------|-------------|
 | _No data_ |||
 
-=======
-
 ## Cooperative tour schedules list
 
 ### Query
