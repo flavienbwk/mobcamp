@@ -242,6 +242,14 @@ The response will be an array of objects of the following format :
 
 ## Roles list
 
+- administrateur
+- enseignant
+- contrôleur
+- correcteur
+- commercial
+- acheteur
+- vendeur
+
 ### Query
 
 | Endpoint | `/api/cooperative/roles` | Description |
@@ -282,7 +290,7 @@ Else, the response will be an array of objects of the following format :
 
 ### Query
 
-| Endpoint | `/api/cooperative/user/add` | Description |
+| Endpoint | `/api/cooperative/users/add` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
 | user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
@@ -297,7 +305,7 @@ Else, the response will be an array of objects of the following format :
 
 ### Query
 
-| Endpoint | `/api/cooperative/user/remove` | Description |
+| Endpoint | `/api/cooperative/users/remove` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
 | user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
@@ -383,7 +391,7 @@ Get all detail about a formation in particular
 
 ### Response
 
-The response will be object of the following format :
+The response will be an array of objects of the following format :
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|
@@ -452,6 +460,23 @@ The user removing the formation to a cooperative must be an "enseignant" member 
 |----------|-------------|-------------|
 | _No data_ |||
 
+
+
+## Check if a formation is followed by the user
+
+### Query
+
+| Endpoint | `/api/formations/isFollowed` | Description |
+|----------|-------------|-------------|
+|   formation_id    |  _int_ |   id of the formation  |
+|   cooperative_id    |  _int_ |   id of the cooperative  |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| is_followed | _boolean(string)_   |   "true" or "false"    |
+
 ## Follow a formation in cooperative
 
 The user following the formation of a cooperative must be a member of this cooperative.
@@ -469,17 +494,93 @@ The user following the formation of a cooperative must be a member of this coope
 |----------|-------------|-------------|
 | _No data_ |||
 
-## Check if a formation is followed by the user
+## Cooperative tours list
 
 ### Query
 
-| Endpoint | `/api/formations/isFollowed` | Description |
+| Endpoint | `/api/cooperative/tours` | Description |
 |----------|-------------|-------------|
-|   formation_id    |  _int_ |   id of the formation  |
-|   cooperative_id    |  _int_ |   id of the cooperative  |
+| cooperative_id | _int_ | id of the cooperative |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| tour_id | _int_ | identifier of the tour |
+| name | _string_ | name of the tour (can be empty) |
+| type | _string_ | 'gathering' or 'distribution' |
+| created_at | _datetime(string)_ | Date to which the distribution has been created |
+
+## Cooperative tours add
+
+### Query
+
+| Endpoint | `/api/cooperative/tours/add` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| name | _string_ | can be empty, name of the tour to add |
+| type | _string_ | 'gathering' or 'distribution' |
 
 ### Response
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|
-| is_followed | _boolean(string)_   |   "true" or "false"    |
+| tour_id | _int_ | identifier of the tour created |
+
+## Cooperative tours remove
+
+### Query
+
+| Endpoint | `/api/cooperative/tours/remove` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| tour_id | _int_ | identifier of the tour to remove |
+
+## Cooperative tour schedules list
+
+### Query
+
+| Endpoint | `/api/cooperative/tour/schedules` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| tour_id | _int_ | identifier of the tour to list the schedules |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| from | _datetime(string)_ ||
+| to | _datetime(string)_ ||
+| place | _string_ | Place where the tour will operate. Generally, a postal address |
+
+## Cooperative tour schedule add
+
+### Query
+
+| Endpoint | `/api/cooperative/tour/schedules/add` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| tour_id | _int_ | identifier of the tour to list the schedules |
+| from | _datetime_ | datetime of the start of the tour |
+| to | _datetime_ | datetime of the stop of the tour |
+| place | _string_ | Place where the tour will operate. Generally, a postal address |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| schedule_id | _int_ | identifier of the tour added |
+
+## Cooperative tour schedule remove
+
+### Query
+
+| Endpoint | `/api/cooperative/tour/schedules/remove` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| tour_id | _int_ | identifier of the tour of the schedule|
+| schedule_id | _int_ | identifier of the schedule tour to remove |
