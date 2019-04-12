@@ -20,7 +20,8 @@ class CreateItemTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('unit');
-            $table->int('formation_id');
+            $table->foreign('formation_id')->references('id')->on('formation')->nullable();
+            $table->foreign('cooperative_id')->references('id')->on('cooperative');
             $table->timestamps();
         });
     }

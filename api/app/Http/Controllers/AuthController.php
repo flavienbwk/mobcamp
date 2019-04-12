@@ -36,7 +36,7 @@ class AuthController extends Controller {
         $ApiResponse = new ApiResponse();
         if (\Request::get("Connection")) {
             $Connection = \Request::get("Connection");
-            $User = User::find($Connection->User_id);
+            $User = User::find($Connection->user_id);
             if ($User) {
                 $details = [
                     "ids" => $User->ids,

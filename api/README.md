@@ -584,3 +584,52 @@ The response will be an array of objects of the following format :
 | cooperative_id | _int_ | id of the cooperative |
 | tour_id | _int_ | identifier of the tour of the schedule|
 | schedule_id | _int_ | identifier of the schedule tour to remove |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+=======
+
+## Cooperative items inventory
+
+### Query
+
+| Endpoint | `/api/cooperative/items` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ ||
+| name | _string_ ||
+| description | _string_ ||
+| created_at | _datetime(string)_ ||
+| updated_at | _datetime(string)_ ||
+| unit | _string_ | Unit on which the quentity is expressed |
+| formation_id | _int_ | identifier of the formation to acquiere to be able to sell the product |
+| formation_name | _string_ | nullable, name of the formation to acquiere to be able to sell the product |
+
+## Cooperative items add
+
+### Query
+
+| Endpoint | `/api/cooperative/items/add` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| formation_id | _string_ | nullable, identifier of the formation to acquiere to be able to sell the product |
+| name | _string_ ||
+| description | _string_ ||
+| unit | _string_ | unit with which the quantities will be expressed (can be L, mL, ) |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| item_id | _int_ | identifier of the tour added |

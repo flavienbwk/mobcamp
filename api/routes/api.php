@@ -65,7 +65,8 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     // Tours
     Route::post('cooperative/tours', 'TourController@list');
 
-    // Panier
+    // Cooperative items
+    Route::post('cooperative/items', 'ItemController@list');
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], function() {
@@ -84,7 +85,9 @@ Route::group(['middleware' => ['web', 'authenticated', "role_commercial"]], func
     Route::post('cooperative/tour/schedules/add', 'TourController@addSchedule');
     Route::post('cooperative/tour/schedules/remove', 'TourController@removeSchedule');
 
-    // Confirm order reception
+    // Cooperative items
+    Route::post('cooperative/items/add', 'ItemController@add');
+    Route::post('cooperative/items/remove', 'ItemController@remove');
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], function() {
