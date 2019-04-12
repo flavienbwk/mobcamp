@@ -4,9 +4,9 @@ namespace App;
 
 use \Illuminate\Database\Eloquent\Model;
 
-class Formation extends Model
+class Media extends Model
 {
-    protected $table = "formation";
+    protected $table = "media";
     public $timestamps = true;
 
     /**
@@ -17,9 +17,10 @@ class Formation extends Model
     protected $fillable = [
         'id', 
         'name', 
-        'estimated_duration',
-        'level',
-        'cooperative_id',
-        'local_uri'
+        'type',
+        'size',
+        'downloadable',
+        'hash',
+        'uri'
     ];
 }

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use File;
+use App\ApiResponse;
 use App\Chapter;
-use App\Formation;
 use App\CooperativeUser;
 use App\CooperativeUserFormation;
 use App\ChapterCooperativeUser;
-use App\ApiResponse;
+use App\Formation;
+use App\MediaChapter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -160,16 +161,24 @@ class FormationController extends Controller
                     ])
                     ->select('first_name', 'last_name')
                     ->get()->toArray();
-                $formation['chapters'] = Chapter::select('id', 'name', 'type')
+                $formation['chapters'] = Chapter::select('*')
                     ->where('formation_id', Input::get('formation_id'))
                     ->orderBy('order', 'asc')
                     ->get()->toArray();
                 for ($i = 0; isset($formation['chapters'][$i]); $i++) {
+                    // Is achieved
                     $z = ChapterCooperativeUser::select('is_achieved')->where([['chapter_id', $formation['chapters'][$i]['id']], ['user_id', $User->id]])->get()->first();
                     if (isset($z))
                         $formation['chapters'][$i]['is_achieved'] = ($z->is_achieved) ? "true" : "false";
                     else
                         $formation['chapters'][$i]['is_achieved'] = "false";
+
+                    // Media of chapters
+                    $formation['chapters'][$i]['medias'] = DB::table('media')
+                                                                ->join('media_chapter', 'media_id', '=', 'media.id')
+                                                                ->where('chapter_id', $formation['chapters'][$i]['id'])
+                                                                ->select('media.name', 'media.type', 'uri as local_uri', 'media.size')
+                                                                ->get()->toArray();
                 }
                 $ApiResponse->setData($formation);
             } 
@@ -350,27 +359,20 @@ class FormationController extends Controller
                 return response()->json($ApiResponse->getResponse(), 400);
             }
 
-            $type = CooperativeUserFormation::select('type')
-                ->where([
-                    ['user_id', $User->id],
-                    ['cooperative_id', Input::get('cooperative_id')],
-                    ['formation_id', Input::get('formation_id')]
-                ])
-                ->get();
-
-            if ($type->first() && $type->first()->type == 'collaborator') {
+            if (CooperativeUserFormation::select('type')->where([['user_id', $User->id],['cooperative_id', Input::get('cooperative_id')],['formation_id', Input::get('formation_id')],['type', 'collaborator']])->exists()) {
                 try {
-                    if ($Formation->first()->local_uri) {
+                    if ($Formation->first()->local_uri)
                         File::delete($Formation->first()->local_uri);
-                    }
                     $Formation->delete();
                     $ApiResponse->setMessage("Successfuly removed this formation.");
                 } catch (Exception $ex) {
                     $ApiResponse->setErrorMessage("Failed to remove this formation. Please try again.");
                 }
-            } else
+            } 
+            else
                 $ApiResponse->setErrorMessage("You must be collaborator of this formation.");
-        } else
+        } 
+        else
             $ApiResponse->setErrorMessage("Formation not found.");
 
         if ($ApiResponse->getError())

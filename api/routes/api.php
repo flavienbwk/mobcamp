@@ -66,11 +66,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
 Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], function() {
     Route::post('formations/add', 'FormationController@add');
     Route::post('formations/remove', 'FormationController@remove');
+    Route::post('chapters/uploadMedia', 'ChapterController@uploadMedia');
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], function() {
-
-    // Cooperative user roles
     Route::post('cooperative/user/add', 'CooperativeController@addUser');
     Route::post('cooperative/user/remove', 'CooperativeController@removeUser');
     Route::post('cooperative/roles/add', 'CooperativeController@addRoles');
