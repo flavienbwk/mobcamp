@@ -621,7 +621,7 @@ The response will be an array of objects of the following format :
 |----------|-------------|-------------|
 | item_id | _int_ ||
 | name | _string_ ||
-| formation_id | _int_ | identifier of the formation to acquiere to be able to sell the product |
+| formation_id | _int_ | nullable, identifier of the formation to acquiere to be able to sell the product |
 | image | _string_ ||
 
 ## Cooperative item details
@@ -660,7 +660,7 @@ For commercials only.
 | formation_id | _string_ | nullable, identifier of the formation to acquiere to be able to sell the product |
 | name | _string_ ||
 | description | _string_ ||
-| unit | _string_ | unit with which the quantities will be expressed (can be L, mL, ) |
+| unit | _string_ | unit with which the quantities will be expressed (can be g,mg,kg,t,L,mL) |
 
 ### Response
 
