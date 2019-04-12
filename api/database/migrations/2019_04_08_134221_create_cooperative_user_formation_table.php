@@ -22,6 +22,7 @@ class CreateCooperativeUserFormationTable extends Migration
             $table->foreign('formation_id')->references('id')->on('formation')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
             $table->foreign('cooperative_id')->references('id')->on('cooperative')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

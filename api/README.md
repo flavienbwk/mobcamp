@@ -375,6 +375,7 @@ The response will be an array of objects of the following format :
 | estimated_duration | _int_ | Formation estimated_duration to finish |
 | level | _int_ | Formation level of difficulty |
 | cooperative_id | _int_ | Cooperative id of the formation |
+| local_uri | _string_ | local_uri of the picture |
 | created_at | _datetime(string)_ | Date of addition of the formation in the database |
 | updated_at | _datetime(string)_ | Date of modification of the formation in the database |
 
@@ -384,7 +385,7 @@ Get all detail about a formation in particular
 
 ### Query
 
-| Endpoint | `/api/formations` | Description |
+| Endpoint | `/api/formation` | Description |
 |----------|-------------|-------------|
 |   formation_id    |  _int_ |   id of the formation  |
 
@@ -399,11 +400,20 @@ The response will be an array of objects of the following format :
 | estimated_duration | _int_ | Formation estimated_duration to finish |
 | level | _int_ | Formation level of difficulty |
 | cooperative_id | _int_ | Cooperative id of the formation |
+| local_uri | _string_ | local_uri of the picture |
 | created_at | _datetime(string)_ | Date of addition of the formation in the database |
 | updated_at | _datetime(string)_ | Date of modification of the formation in the database |
+| collaborators | _array(object)_ | List of authors |
 | chapters | _array(object)_ | List of chapters that the formation contains |
 
-The chapters be an array of objects of the following format:
+Collaborators be an array of objects of the following format:
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| first_name | _string_ | first name of user    |
+| last_name | _string_ | last name of user    |
+
+Chapters be an array of objects of the following format:
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|
@@ -420,7 +430,12 @@ The user adding the formation to a cooperative must be an "enseignant" member of
 
 | Endpoint | `/api/formations/add` | Description |
 |----------|-------------|-------------|
-|   cooperative_id    |  _int_ |   id of the cooperative  |
+| name | _string_ | Formation name |
+| estimated_duration | _int_ | Formation estimated_duration to finish |
+| level | _int_ | Formation level of difficulty |
+| cooperative_id | _int_ | Cooperative id of the formation |
+|   main_pic    | _FILE_ | local_uri of the picture |
+
 
 ### Response
 
@@ -434,7 +449,41 @@ The user removing the formation to a cooperative must be an "enseignant" member 
 
 ### Query
 
-| Endpoint | `/api/formations/add` | Description |
+| Endpoint | `/api/formations/remove` | Description |
+|----------|-------------|-------------|
+|   formation_id    |  _int_ |   id of the formation  |
+|   cooperative_id    |  _int_ |   id of the cooperative  |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+
+
+## Check if a formation is followed by the user
+
+### Query
+
+| Endpoint | `/api/formations/isFollowed` | Description |
+|----------|-------------|-------------|
+|   formation_id    |  _int_ |   id of the formation  |
+|   cooperative_id    |  _int_ |   id of the cooperative  |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| is_followed | _boolean(string)_   |   "true" or "false"    |
+
+## Follow a formation in cooperative
+
+The user following the formation of a cooperative must be a member of this cooperative.
+
+### Query
+
+| Endpoint | `/api/formations/follow` | Description |
 |----------|-------------|-------------|
 |   formation_id    |  _int_ |   id of the formation  |
 |   cooperative_id    |  _int_ |   id of the cooperative  |
@@ -489,12 +538,6 @@ The response will be an array of objects of the following format :
 | cooperative_id | _int_ | id of the cooperative |
 | tour_id | _int_ | identifier of the tour to remove |
 
-### Response
-
-| Key name | Value type | Description |
-|----------|-------------|-------------|
-| _No data_ |||
-
 ## Cooperative tour schedules list
 
 ### Query
@@ -541,9 +584,3 @@ The response will be an array of objects of the following format :
 | cooperative_id | _int_ | id of the cooperative |
 | tour_id | _int_ | identifier of the tour of the schedule|
 | schedule_id | _int_ | identifier of the schedule tour to remove |
-
-### Response
-
-| Key name | Value type | Description |
-|----------|-------------|-------------|
-| _No data_ |||
