@@ -515,6 +515,8 @@ The response will be an array of objects of the following format :
 
 ## Cooperative tours add
 
+For commercials only.
+
 ### Query
 
 | Endpoint | `/api/cooperative/tours/add` | Description |
@@ -530,6 +532,8 @@ The response will be an array of objects of the following format :
 | tour_id | _int_ | identifier of the tour created |
 
 ## Cooperative tours remove
+
+For commercials only.
 
 ### Query
 
@@ -559,6 +563,8 @@ The response will be an array of objects of the following format :
 
 ## Cooperative tour schedule add
 
+For commercials only.
+
 ### Query
 
 | Endpoint | `/api/cooperative/tour/schedules/add` | Description |
@@ -577,6 +583,8 @@ The response will be an array of objects of the following format :
 
 ## Cooperative tour schedule remove
 
+For commercials only.
+
 ### Query
 
 | Endpoint | `/api/cooperative/tour/schedules/remove` | Description |
@@ -593,13 +601,17 @@ The response will be an array of objects of the following format :
 
 =======
 
-## Cooperative items inventory
+## Cooperative items list
+
+The cooperative buy and sell items for which it may be mandatory to validate a certification. This route lists the possible items that can be bought and sold.
 
 ### Query
 
 | Endpoint | `/api/cooperative/items` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
+| offset | _int_ | default is 1 |
+| interval | _int_ | default is 20 |
 
 ### Response
 
@@ -607,7 +619,26 @@ The response will be an array of objects of the following format :
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|
-| id | _int_ ||
+| item_id | _int_ ||
+| name | _string_ ||
+| formation_id | _int_ | identifier of the formation to acquiere to be able to sell the product |
+| image | _string_ ||
+
+## Cooperative item details
+
+### Query
+
+| Endpoint | `/api/cooperative/item` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| item_id | _int_ ||
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
 | name | _string_ ||
 | description | _string_ ||
 | created_at | _datetime(string)_ ||
@@ -615,8 +646,11 @@ The response will be an array of objects of the following format :
 | unit | _string_ | Unit on which the quentity is expressed |
 | formation_id | _int_ | identifier of the formation to acquiere to be able to sell the product |
 | formation_name | _string_ | nullable, name of the formation to acquiere to be able to sell the product |
+| images | _array<string>_ | Images of the item |
 
-## Cooperative items add
+## Cooperative item add
+
+For commercials only.
 
 ### Query
 
@@ -632,4 +666,59 @@ The response will be an array of objects of the following format :
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|
-| item_id | _int_ | identifier of the tour added |
+| item_id | _int_ | identifier of the item added |
+
+## Cooperative item remove
+
+For commercials only.
+
+### Query
+
+| Endpoint | `/api/cooperative/items/remove` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| formation_id | _string_ | nullable, identifier of the formation to acquiere to be able to sell the product |
+| item_id | _int_ | identifier of the item to remove |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Cooperative item add image
+
+For commercials only.
+
+### Query
+
+| Endpoint | `/api/cooperative/item/add_image` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| item_id | _int_ | identifier of the item added |
+| image | _file_ | PNG, GIF, JPEG or JPG only |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| image_id | _int_ | identifier of the image |
+| image | _string_ | uri to the image |
+
+## Cooperative item remove image
+
+For commercials only.
+
+### Query
+
+| Endpoint | `/api/cooperative/item/remove_image` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| item_id | _int_ | identifier of the item added |
+| image_id | _int_ | identifier of the image |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||

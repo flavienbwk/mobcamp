@@ -67,6 +67,7 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
 
     // Cooperative items
     Route::post('cooperative/items', 'ItemController@list');
+    Route::post('cooperative/item', 'ItemController@details');
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], function() {
@@ -88,6 +89,8 @@ Route::group(['middleware' => ['web', 'authenticated', "role_commercial"]], func
     // Cooperative items
     Route::post('cooperative/items/add', 'ItemController@add');
     Route::post('cooperative/items/remove', 'ItemController@remove');
+    Route::post('cooperative/item/add_image', 'ItemController@addImage');
+    Route::post('cooperative/item/remove_image', 'ItemController@removeImage');
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], function() {
