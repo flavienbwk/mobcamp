@@ -11,6 +11,7 @@ use App\UserItemCooperative;
 use App\Schedule;
 use App\TourSchedule;
 use App\Media;
+use App\Formation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
@@ -118,7 +119,7 @@ class ItemController extends Controller
         $User = \Request::get("User");
         $validator = Validator::make($request->post(), [
             'cooperative_id' => "required|integer",
-            'formation_id' => "integer",
+            'formation_id' => "present",
             'name' => "required|string",
             'description' => "required|string",
             'unit' => "required|string|in:g,mg,kg,t,L,mL",
@@ -139,7 +140,7 @@ class ItemController extends Controller
                     try {
                         $Item = new Item();
                         $Item->cooperative_id = Input::get("cooperative_id");
-                        $Item->formation_id = formation_id;
+                        $Item->formation_id = $formation_id;
                         $Item->unit = Input::get("unit");
                         $Item->name = Input::get("name");
                         $Item->description = Input::get("description");
@@ -170,23 +171,22 @@ class ItemController extends Controller
         $User = \Request::get("User");
         $validator = Validator::make($request->post(), [
             'cooperative_id' => "required|integer",
-            'formation_id' => "integer",
             'item_id' => "required|integer"
         ]);
 
         if ($validator->fails()) {
             $ApiResponse->setErrorMessage($validator->messages()->first());
         } else {
-            $formation_id = ($request->has("formation_id")) ? Input::get("formation_id") : null;
             $Item = Item::where([
-                ["id" => Input::get("id")],
-                ["cooperative_id" => Input::get("cooperative_id")]
+                ["id", Input::get("item_id")],
+                ["cooperative_id", Input::get("cooperative_id")]
             ]);
+
             if ($Item) {
                 try {
                     ItemMedia::where([
-                        ["item_id" => $Item->id]
-                    ]);
+                        ["item_id", $Item->first()->id]
+                    ])->delete();
                     $Item->delete();
                     $ApiResponse->setMessage("Cet item a bien été supprimé.");
                 } catch (Exception $ex) {
