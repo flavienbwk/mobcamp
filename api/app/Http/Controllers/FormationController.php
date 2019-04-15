@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use File;
 use App\ApiResponse;
+use App\Answer;
 use App\Certificate;
 use App\Chapter;
 use App\CooperativeUser;
 use App\CooperativeUserFormation;
 use App\ChapterCooperativeUser;
 use App\Formation;
+use App\Question;
+use App\Quizz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -129,7 +132,7 @@ class FormationController extends Controller
         if ($formations_response && !empty($formations_response))
             $ApiResponse->setData($formations_response);
         else
-            $ApiResponse->setErrorMessage("No formation found.");
+            $ApiResponse->setMessage("No formation found.");
 
         if ($ApiResponse->getError())
             return response()->json($ApiResponse->getResponse(), 400);
@@ -187,7 +190,7 @@ class FormationController extends Controller
         if ($formations_response && !empty($formations_response))
             $ApiResponse->setData($formations_response);
         else
-            $ApiResponse->setErrorMessage("No formation found.");
+            $ApiResponse->setMessage("No formation found.");
 
         if ($ApiResponse->getError())
             return response()->json($ApiResponse->getResponse(), 400);
@@ -244,7 +247,7 @@ class FormationController extends Controller
         if ($formations_response && !empty($formations_response))
             $ApiResponse->setData($formations_response);
         else
-            $ApiResponse->setErrorMessage("No formation found.");
+            $ApiResponse->setMessage("No formation found.");
 
         if ($ApiResponse->getError())
             return response()->json($ApiResponse->getResponse(), 400);
@@ -265,6 +268,7 @@ class FormationController extends Controller
             $ApiResponse->setErrorMessage($validator->messages()->first());
             return response()->json($ApiResponse->getResponse(), 400);
         }
+
 
         $Formation = Formation::where("id", Input::get("formation_id"));
         $cooperative_id_formation = CooperativeUser::select('cooperative_id')->where('user_id', $User->id)->get()->toArray();
@@ -292,19 +296,32 @@ class FormationController extends Controller
                     ->orderBy('order', 'asc')
                     ->get()->toArray();
                 for ($i = 0; isset($formation['chapters'][$i]); $i++) {
-                    // Is achieved
                     $z = ChapterCooperativeUser::select('is_achieved')->where([['chapter_id', $formation['chapters'][$i]['id']], ['user_id', $User->id]])->get()->first();
                     if (isset($z))
                         $formation['chapters'][$i]['is_achieved'] = ($z->is_achieved) ? "true" : "false";
                     else
                         $formation['chapters'][$i]['is_achieved'] = "false";
 
-                    // Media of chapters
                     $formation['chapters'][$i]['medias'] = DB::table('media')
                                                                 ->join('media_chapter', 'media_id', '=', 'media.id')
                                                                 ->where('chapter_id', $formation['chapters'][$i]['id'])
                                                                 ->select('media.id', 'media.name', 'media.type', 'uri as local_uri', 'media.size')
                                                                 ->get()->toArray();
+
+                    if ($formation['chapters'][$i]['type'] == 'quizz') {
+                        $Quizz = Quizz::where('chapter_id', $formation['chapters'][$i]['id'])->first();
+                        $formation['chapters'][$i]['questions'] = Question::select('id', 'value')->where('quizz_id', $Quizz->id)->get()->toArray();
+                        for ($j = 0; isset($formation['chapters'][$i]['questions'][$j]); $j++) {
+                            $answers = Answer::where([['quizz_id', $Quizz->id], ['question_id', $formation['chapters'][$i]['questions'][$j]['id']]])->get()->toArray();
+                            foreach ($answers as $answer) {
+                                $formation['chapters'][$i]['questions'][$j]['answers'][] = [
+                                    'id' => $answer['id'],
+                                    'value'=> $answer['value'],
+                                    'is_right' => (bool)$answer['is_correct']
+                                ];
+                            }
+                        }
+                    }
                 }
                 $ApiResponse->setData($formation);
             } 
@@ -318,6 +335,7 @@ class FormationController extends Controller
             return response()->json($ApiResponse->getResponse(), 400);
         else
             return response()->json($ApiResponse->getResponse(), 200);
+
     }
 
     public function follow(Request $request)
