@@ -2,20 +2,20 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use \Illuminate\Database\Eloquent\Model;
 
-class MediaChapter extends Model {
-
-    protected $table = "media_chapter";
+class Lesson extends Model
+{
+    protected $table = "lesson";
     public $timestamps = false;
-    
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'chapter_id', 
-        'media_id' 
+        'id',
+        'chapter_id'
     ];
 }
