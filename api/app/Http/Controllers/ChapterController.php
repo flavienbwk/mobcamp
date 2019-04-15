@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use File;
 use App\Activity;
+use App\Answer;
+use App\ApiResponse;
 use App\Chapter;
-use App\Formation;
 use App\CooperativeUserFormation;
+use App\Formation;
 use App\Lesson;
 use App\Media;
 use App\MediaChapter;
-use App\ApiResponse;
+use App\Question;
+use App\Quizz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -27,7 +30,6 @@ class ChapterController extends Controller
 
         $rules = [
             'name' => "bail|required|string", // bail = stop running validation rules on an attribute after the first validation failure.
-            'chapter_id' => 'bail|required|numeric',
             'formation_id' => 'bail|required|numeric',
             'cooperative_id' => 'bail|required|numeric',
             'order' => 'numeric',
@@ -53,8 +55,9 @@ class ChapterController extends Controller
                 try {
                     DB::beginTransaction();
                     $content = ($request->has("content")) ? Input::get("content") : "";
-                    $order = ($request->has("order")) ? intval(Input::get("order")) : count(Chapter::where('formation_id', Input::get('formation_id'))->get()->toArray()) + 1;                    $Chapter = Chapter::create([
-                        'name' => Input::get('cooperative_id'),
+                    $order = ($request->has("order")) ? intval(Input::get("order")) : count(Chapter::where('formation_id', Input::get('formation_id'))->get()->toArray()) + 1;                    
+                    $Chapter = Chapter::create([
+                        'name' => Input::get('name'),
                         'type' => 'lesson',
                         'content' => $content,
                         'order' => $order,
@@ -89,10 +92,9 @@ class ChapterController extends Controller
 
         $rules = [
             'name' => "bail|required|string", // bail = stop running validation rules on an attribute after the first validation failure.
-            'chapter_id' => 'bail|required|numeric',
             'formation_id' => 'bail|required|numeric',
             'cooperative_id' => 'bail|required|numeric',
-            'quizz' => 'bail|required|json',
+            'questions' => 'bail|required',
             'order' => 'numeric',
             'content' => 'string'
         ];
@@ -114,19 +116,39 @@ class ChapterController extends Controller
 
             if (CooperativeUserFormation::select('type')->where([['user_id', $User->id],['cooperative_id', Input::get('cooperative_id')],['formation_id', Input::get('formation_id')],['type', 'collaborator']])->exists()) {
                 try {
-                    DB::beginTransaction();
+                    $questions = Input::get("questions");
                     $content = ($request->has("content")) ? Input::get("content") : "";
                     $order = ($request->has("order")) ? intval(Input::get("order")) : count(Chapter::where('formation_id', Input::get('formation_id'))->get()->toArray()) + 1;
+
+                    DB::beginTransaction();
+
                     $Chapter = Chapter::create([
-                        'name' => Input::get('cooperative_id'),
+                        'name' => Input::get('name'),
                         'type' => 'quizz',
                         'content' => $content,
                         'order' => $order,
                         'formation_id' => Input::get('formation_id')
                     ]);
-                    Quizz::create([
+                    $Quizz = Quizz::create([
                         'chapter_id' => $Chapter->id
                     ]);
+
+                    foreach($questions as $question) {
+                        $Question = Question::create([
+                            'value' => $question['question'],
+                            'quizz_id' => $Quizz->id
+                        ]);
+
+                        foreach($question['responses'] as $answer) {
+                            Answer::create([
+                                'value' => $answer['value'],
+                                'is_correct' => (int)$answer['is_right'],
+                                'quizz_id' => $Quizz->id,
+                                'question_id' => $Question->id
+                            ]);
+                        }
+                    }
+
                     $ApiResponse->setMessage('Quizz created.');
                     DB::commit();
                 } catch (\PDOException $e) {
@@ -153,7 +175,6 @@ class ChapterController extends Controller
 
         $rules = [
             'name' => "bail|required|string", // bail = stop running validation rules on an attribute after the first validation failure.
-            'chapter_id' => 'bail|required|numeric',
             'formation_id' => 'bail|required|numeric',
             'cooperative_id' => 'bail|required|numeric',
             'order' => 'numeric',
@@ -179,8 +200,9 @@ class ChapterController extends Controller
                 try {
                     DB::beginTransaction();
                     $content = ($request->has("content")) ? Input::get("content") : "";
-                    $order = ($request->has("order")) ? intval(Input::get("order")) : count(Chapter::where('formation_id', Input::get('formation_id'))->get()->toArray()) + 1;                    $Chapter = Chapter::create([
-                        'name' => Input::get('cooperative_id'),
+                    $order = ($request->has("order")) ? intval(Input::get("order")) : count(Chapter::where('formation_id', Input::get('formation_id'))->get()->toArray()) + 1;                    
+                    $Chapter = Chapter::create([
+                        'name' => Input::get('name'),
                         'type' => 'activity',
                         'content' => $content,
                         'order' => $order,
