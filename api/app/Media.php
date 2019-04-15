@@ -4,9 +4,9 @@ namespace App;
 
 use \Illuminate\Database\Eloquent\Model;
 
-class Chapter extends Model
+class Media extends Model
 {
-    protected $table = "chapter";
+    protected $table = "media";
     public $timestamps = true;
 
     /**
@@ -16,14 +16,11 @@ class Chapter extends Model
      */
     protected $fillable = [
         'id', 
-        'name',
+        'name', 
         'type',
-        'content', 
-        'order',
-        'formation_id'
+        'size',
+        'downloadable',
+        'hash',
+        'uri'
     ];
-    
-    public static function getAll() {
-        return self::all();
-    }
 }

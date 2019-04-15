@@ -49,6 +49,9 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     // Formations (base)
     Route::post('formations', 'FormationController@formations');
     Route::post('formation', 'FormationController@formation');
+    Route::post('formations/followed', 'FormationController@formationsFollowed');
+    Route::post('formations/search', 'FormationController@formationsByName');
+
 
     // Formations (follow)
     Route::post('formations/follow', 'FormationController@follow');
@@ -57,6 +60,9 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
 
     // Formations (chapter)
     Route::post('formations/chapter', 'FormationController@chapter');
+
+    // Certificates
+    Route::post('certificates', 'CertificateController@certificates');
 
     // Roles routes
     Route::post('cooperative/roles', 'CooperativeController@roles');
@@ -71,6 +77,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
 Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], function() {
     Route::post('formations/add', 'FormationController@add');
     Route::post('formations/remove', 'FormationController@remove');
+    Route::post('chapters/addLesson', 'ChapterController@addLesson');
+    Route::post('chapters/addActivity', 'ChapterController@addActivity');
+    Route::post('chapters/addQuizz', 'ChapterController@addQuizz');
+    Route::post('chapters/uploadMedia', 'ChapterController@uploadMedia');
+    Route::post('chapters/removeMedia', 'ChapterController@removeMedia');
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_commercial"]], function() {
@@ -88,7 +99,6 @@ Route::group(['middleware' => ['web', 'authenticated', "role_commercial"]], func
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], function() {
-
     // Cooperative user roles
     Route::post('cooperative/users/add', 'CooperativeController@addUser');
     Route::post('cooperative/users/remove', 'CooperativeController@removeUser');
