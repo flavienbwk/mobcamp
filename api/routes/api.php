@@ -67,6 +67,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     // Roles routes
     Route::post('cooperative/roles', 'CooperativeController@roles');
     Route::post('roles', 'CooperativeController@rolesList');
+
+    // Tours
+    Route::post('cooperative/tours', 'TourController@list');
+
+    // Panier
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], function() {
@@ -79,13 +84,27 @@ Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], func
     Route::post('chapters/removeMedia', 'ChapterController@removeMedia');
 });
 
+Route::group(['middleware' => ['web', 'authenticated', "role_commercial"]], function() {
+    
+    // Tours
+    Route::post('cooperative/tours/add', 'TourController@add');
+    Route::post('cooperative/tours/remove', 'TourController@remove');
+
+    // Schedules for tours
+    Route::post('cooperative/tour/schedules', 'TourController@listSchedules');
+    Route::post('cooperative/tour/schedules/add', 'TourController@addSchedule');
+    Route::post('cooperative/tour/schedules/remove', 'TourController@removeSchedule');
+
+    // Confirm order reception
+});
+
 Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], function() {
-    Route::post('cooperative/user/add', 'CooperativeController@addUser');
-    Route::post('cooperative/user/remove', 'CooperativeController@removeUser');
+    // Cooperative user roles
+    Route::post('cooperative/users/add', 'CooperativeController@addUser');
+    Route::post('cooperative/users/remove', 'CooperativeController@removeUser');
     Route::post('cooperative/roles/add', 'CooperativeController@addRoles');
     Route::post('cooperative/roles/remove', 'CooperativeController@removeRoles');
 });
-
 
 Route::get('{any?}', function ($any = null) {
     $ApiResponse = new \App\ApiResponse();

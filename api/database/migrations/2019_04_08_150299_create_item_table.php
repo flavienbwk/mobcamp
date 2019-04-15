@@ -20,6 +20,7 @@ class CreateItemTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->string('unit');
+            $table->int('formation_id');
             $table->timestamps();
         });
     }
