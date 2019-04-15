@@ -16,12 +16,16 @@ class CreateUserItemTable extends Migration
         
         Schema::disableForeignKeyConstraints();
         Schema::create('user_item', function (Blueprint $table) {
+            $table->increments('id');
             $table->float('price');
+            $table->text('message');
             $table->integer('quantity');
             $table->integer('item_id')->unsigned();
-            $table->bigInteger('user_id')->unsigned();
+            $table->integer('cooperative_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('item_id')->references('id')->on('item');
             $table->foreign('user_id')->references('id')->on('user');
+            $table->foreign('cooperative_id')->references('id')->on('cooperative');
             $table->timestamps();
         });
     }

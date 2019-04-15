@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Connection;
 use App\ApiResponse;
+use App\CooperativeUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -12,9 +13,11 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Middleware\Authentication;
 
-class AuthController extends Controller {
+class AuthController extends Controller
+{
 
-    public function expiration(Request $request) {
+    public function expiration(Request $request)
+    {
         $ApiResponse = new ApiResponse();
         if (\Request::get("Connection")) {
             $Connection = \Request::get("Connection");
@@ -32,7 +35,8 @@ class AuthController extends Controller {
         }
     }
 
-    public function info(Request $request) {
+    public function info(Request $request)
+    {
         $ApiResponse = new ApiResponse();
         if (\Request::get("Connection")) {
             $Connection = \Request::get("Connection");
@@ -60,11 +64,12 @@ class AuthController extends Controller {
         }
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $ApiResponse = new ApiResponse();
         $validator = Validator::make($request->post(), [
-                    'username' => 'required|string',
-                    'password' => 'required'
+            'username' => 'required|string',
+            'password' => 'required'
         ]);
 
         $details = [];
@@ -101,54 +106,64 @@ class AuthController extends Controller {
         }
     }
 
-    public function register(Request $request) {
+    public function register(Request $request)
+    {
         $ApiResponse = new ApiResponse();
         $validator = Validator::make($request->post(), [
-                    'email' => 'required|email|unique:user',
-                    'username' => 'required|string|max:50|unique:user',
-                    'first_name' => 'required|string|max:50',
-                    'last_name' => 'required|string|max:50',
-                    'password' => 'required|min:4'
+            'email' => 'required|email|unique:user',
+            'username' => 'required|string|max:50|unique:user',
+            'first_name' => 'required|string|max:50',
+            'last_name' => 'required|string|max:50',
+            'password' => 'required|min:4',
+            'cooperative_id' => 'required|integer'
         ]);
 
         $details = [];
         if ($validator->fails()) {
             $ApiResponse->setErrorMessage($validator->messages()->first());
         } else {
-            try {
-                DB::beginTransaction();
-                $user_fields = [
-                    "email" => Input::get("email"),
-                    "username" => Input::get("username"),
-                    "first_name" => Input::get("first_name"),
-                    "last_name" => Input::get("last_name"),
-                    "password" => bcrypt(Input::get("password")),
-                    "ids" => sha1(uniqid(rand(), true))
-                ];
-                $User = User::create($user_fields);
-                if ($User) {
-                    $Connection = $this->connectUser($User->id);
-                    if ($Connection) {
-                        $details = [
-                            "token" => $Connection->token,
-                            "expires_at" => $Connection->expires_at,
-                            "ids" => $User->ids,
-                            "first_name" => $User->first_name,
-                            "last_name" => $User->last_name,
-                            "email" => $User->email,
-                            "username" => $User->username,
-                        ];
-                        $ApiResponse->setData($details);
+            if (Cooperative::find(Input::get("cooperative_id"))->count()) {
+                try {
+                    DB::beginTransaction();
+                    $user_fields = [
+                        "email" => Input::get("email"),
+                        "username" => Input::get("username"),
+                        "first_name" => Input::get("first_name"),
+                        "last_name" => Input::get("last_name"),
+                        "password" => bcrypt(Input::get("password")),
+                        "ids" => sha1(uniqid(rand(), true))
+                    ];
+                    $User = User::create($user_fields);
+                    if ($User) {
+                        $Connection = $this->connectUser($User->id);
+                        if ($Connection) {
+                            $details = [
+                                "token" => $Connection->token,
+                                "expires_at" => $Connection->expires_at,
+                                "ids" => $User->ids,
+                                "first_name" => $User->first_name,
+                                "last_name" => $User->last_name,
+                                "email" => $User->email,
+                                "username" => $User->username,
+                            ];
+                            CooperativeUser::create([
+                                "user_id" => $User->id,
+                                "cooperative_id" => Input::get("cooperative_id")
+                            ]);
+                            $ApiResponse->setData($details);
+                        } else {
+                            $ApiResponse->setErrorMessage("Impossible to create the connection.");
+                        }
                     } else {
-                        $ApiResponse->setErrorMessage("Impossible to create the connection.");
+                        $ApiResponse->setErrorMessage("Impossible to create the user.");
                     }
-                } else {
-                    $ApiResponse->setErrorMessage("Impossible to create the user.");
+                    DB::commit();
+                } catch (\PDOException $e) {
+                    DB::rollBack();
+                    $ApiResponse->setErrorMessage($e->getMessage());
                 }
-                DB::commit();
-            } catch (\PDOException $e) {
-                DB::rollBack();
-                $ApiResponse->setErrorMessage($e->getMessage());
+            } else {
+                $ApiResponse->setMessage("La coopérative n'existe pas.");
             }
         }
 
@@ -160,16 +175,18 @@ class AuthController extends Controller {
         }
     }
 
-    public function connectUser($user_id) {
+    public function connectUser($user_id)
+    {
         return Connection::create([
-                    "User_id" => $user_id,
-                    "token" => sha1(uniqid(rand(), true)),
-                    "expires_at" => date('Y-m-d H:i:s', strtotime('+2 day', time())),
-                    "ip" => $this->getUserIpAddr()
+            "User_id" => $user_id,
+            "token" => sha1(uniqid(rand(), true)),
+            "expires_at" => date('Y-m-d H:i:s', strtotime('+2 day', time())),
+            "ip" => $this->getUserIpAddr()
         ]);
     }
 
-    public function getUserIpAddr() {
+    public function getUserIpAddr()
+    {
         $ipaddress = '';
         if (isset($_SERVER['HTTP_CLIENT_IP']))
             $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
@@ -187,5 +204,4 @@ class AuthController extends Controller {
             $ipaddress = 'UNKNOWN';
         return $ipaddress;
     }
-
 }

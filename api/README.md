@@ -32,6 +32,7 @@ For all routes expect the `Authentication` and `Registration` ones, the queries 
 | password | _string_ ||
 | first_name | _string_ | Optional |
 | last_name | _string_ | Optional |
+| cooperative_id | _int_ | First cooperative to join |
 
 ### Response
 
@@ -273,7 +274,7 @@ User roles regarding to a cooperative.
 
 | Endpoint | `/api/cooperative/roles` | Description |
 |----------|-------------|-------------|
-| user_ids | _int_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
+| user_ids | _string_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
 | cooperative_id | _int_ | id of the cooperative |
 
 ### Response
@@ -293,7 +294,7 @@ Else, the response will be an array of objects of the following format :
 | Endpoint | `/api/cooperative/users/add` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
-| user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
+| user_ids | _string_ | optional, ids of the user you want to add to the cooperative |
 
 ### Response
 
@@ -308,7 +309,7 @@ Else, the response will be an array of objects of the following format :
 | Endpoint | `/api/cooperative/users/remove` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
-| user_ids | _int_ | optional, ids of the user you want to add to the cooperative |
+| user_ids | _string_ | optional, ids of the user you want to add to the cooperative |
 
 ### Response
 
@@ -325,7 +326,7 @@ The user adding the role to a user must be an administration member of the coope
 | Endpoint | `/api/cooperative/roles/add` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
-| user_ids | _int_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
+| user_ids | _string_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
 | role_id | _int_ | id of the role to add |
 
 ### Response
@@ -343,7 +344,7 @@ The user removing the role to a user must be an administration member of the coo
 | Endpoint | `/api/cooperative/roles/remove` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
-| user_ids | _int_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
+| user_ids | _string_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
 | role_id | _int_ | id of the role to remove |
 
 ### Response
@@ -599,8 +600,6 @@ For commercials only.
 |----------|-------------|-------------|
 | _No data_ |||
 
-=======
-
 ## Cooperative items list
 
 The cooperative buy and sell items for which it may be mandatory to validate a certification. This route lists the possible items that can be bought and sold.
@@ -722,3 +721,156 @@ For commercials only.
 | Key name | Value type | Description |
 |----------|-------------|-------------|
 | _No data_ |||
+
+## Cooperative inventory list
+
+### Query
+
+| Endpoint | `/api/cooperative/inventory` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| user_item_id | _int_ ||
+| item_id | _int_ ||
+| name | _string_ ||
+| description | _string_ ||
+| unit | _string_ ||
+| formation_id | _int_ | nullable, identifier of the formation to acquiere to be able to sell the product |
+| image | _string_ | uri |
+| quantity | _int_ | quantity of objects to sell |
+| price | _float(10,2)_ | price for 1 item |
+
+## Cooperative inventory add
+
+For commercials only.
+So users can buy the products.
+
+### Query
+
+| Endpoint | `/api/cooperative/inventory/add` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| item_id | _int_ | identifier of the item added |
+| quantity | _int_ | identifier of the image |
+| price | _float_ | price for 1 item |
+| message | _float_ | custom message for the item |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| user_item_id | _int_ ||
+
+## Cooperative inventory remove
+
+For commercials only.
+
+### Query
+
+| Endpoint | `/api/cooperative/inventory/remove` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| user_item_id | _int_ ||
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## User inventory in cooperative
+
+### Query
+
+| Endpoint | `/api/account/inventory` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| user_ids | _string_ | optional, ids of the user you want to get the inventory. By default, will get the ids of the currently connected user |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| user_item_id | _int_ ||
+| item_id | _int_ ||
+| name | _string_ ||
+| description | _string_ ||
+| unit | _string_ ||
+| message | _string_ ||
+| formation_id | _int_ | nullable, identifier of the formation to acquiere to be able to sell the product |
+| image | _string_ ||
+| quantity | _int_ | quantity of objects to sell |
+| price | _float(10,2)_ | price for 1 item |
+
+## User inventory add
+
+So the cooperative can buy the products.
+
+### Query
+
+| Endpoint | `/api/account/inventory/add` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| item_id | _int_ | identifier of the item added |
+| quantity | _int_ | identifier of the image |
+| price | _float_ | price for 1 item |
+| message | _float_ | price for 1 item |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| user_item_id | _int_ ||
+
+## User inventory remove
+
+For commercials only.
+So users can buy the products.
+
+### Query
+
+| Endpoint | `/api/account/inventory/remove` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| user_item_id | _int_ ||
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Items sold by all users in a cooperative
+
+For commercials.
+For the cooperative to buy the items of user.
+
+### Query
+
+| Endpoint | `/api/cooperative/users/items` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| user_item_id | _int_ ||
+| user_ids | _string_ ||
+| item_id | _int_ ||
+| name | _string_ ||
+| message | _string_ ||
+| formation_id | _int_ | nullable, identifier of the formation to acquiere to be able to sell the product |
+| image | _string_ ||
+| quantity | _int_ | quantity of objects to sell |
+| price | _float(10,2)_ | price for 1 item |

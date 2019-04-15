@@ -7,7 +7,6 @@ use App\Tour;
 use App\Item;
 use App\ItemMedia;
 use App\UserItem;
-use App\UserItemCooperative;
 use App\Schedule;
 use App\TourSchedule;
 use App\Media;
