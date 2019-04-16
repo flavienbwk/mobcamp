@@ -674,20 +674,37 @@ Header:
 |----------|-------------|-------------|
 | _No data_ |||
 
-# Upload media for a chapter
+## Upload a media to a chapter
 
 ### Query
 
-User must be 
+The user uploading the media to the chapter must be a collaborator of this formation.
 
-| Endpoint | `/api/chapters/addQuizz` | Description |
+| Endpoint | `/api/chapters/uploadMedia` | Description |
 |----------|-------------|-------------|
 | name | _string_ | Formation name |
+| chapter_id | _int_ | Chapter id |
 | formation_id | _int_ | Formation id |
 | cooperative_id | _int_ | Cooperative id of the formation |
-|   order    | _int_ | optionnal, By default, will get put at the end of the formation  |
-|   content |   _string_    | description of the formation  |
-|   questions   | _JSON_ |  lists of questions and answers |
+|   media   | _FILE_ |  the media |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Remove a media from a chapter
+
+### Query
+
+The user removing a media to a chapter must be a collaborator of the formation.
+
+| Endpoint | `/api/chapters/removeMedia` | Description |
+|----------|-------------|-------------|
+| media_id | _int_ | Media id |
+| formation_id | _int_ | Formation id |
+| cooperative_id | _int_ | Cooperative id of the formation |
 
 ### Response
 
