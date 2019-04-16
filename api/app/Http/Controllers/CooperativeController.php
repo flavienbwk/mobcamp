@@ -3,29 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Connection;
+use App\Item;
 use App\ApiResponse;
 use App\Cooperative;
 use App\CooperativeUser;
 use App\CooperativeUserRole;
 use App\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Middleware\Authentication;
 use App\Repositories\CooperativeRepository;
 use App\Repositories\UserRepository;
+use App\UserItem;
 
-class CooperativeController extends Controller {
+class CooperativeController extends Controller
+{
 
-    public function addUser(Request $request) {
+    public function addUser(Request $request)
+    {
         $ApiResponse = new ApiResponse();
         $User = \Request::get("User");
         $validator = Validator::make($request->post(), [
-                    'cooperative_id' => "required|integer",
-                    'user_ids' => "required|string"
+            'cooperative_id' => "required|integer",
+            'user_ids' => "required|string"
         ]);
 
         $details = [];
@@ -66,12 +66,13 @@ class CooperativeController extends Controller {
         }
     }
 
-    public function removeUser(Request $request) {
+    public function removeUser(Request $request)
+    {
         $ApiResponse = new ApiResponse();
         $User = \Request::get("User");
         $validator = Validator::make($request->post(), [
-                    'cooperative_id' => "required|integer",
-                    'user_ids' => "required|string"
+            'cooperative_id' => "required|integer",
+            'user_ids' => "required|string"
         ]);
 
         $details = [];
@@ -85,8 +86,8 @@ class CooperativeController extends Controller {
                     $user_cooperative_query = CooperativeRepository::getUserCooperative($User_d->id, Input::get("cooperative_id"));
                     if ($user_cooperative_query) {
                         $Cooperative_User = CooperativeUser::where([
-                                    ["user_id", $User_d->id],
-                                    ["cooperative_id", Input::get("cooperative_id")]
+                            ["user_id", $User_d->id],
+                            ["cooperative_id", Input::get("cooperative_id")]
                         ]);
                         if ($Cooperative_User->get()) {
                             try {
@@ -117,13 +118,14 @@ class CooperativeController extends Controller {
         }
     }
 
-    public function addRoles(Request $request) {
+    public function addRoles(Request $request)
+    {
         $ApiResponse = new ApiResponse();
         $User = \Request::get("User");
         $validator = Validator::make($request->post(), [
-                    'cooperative_id' => "required|integer",
-                    'user_ids' => "required|string",
-                    'role_id' => "required|integer"
+            'cooperative_id' => "required|integer",
+            'user_ids' => "required|string",
+            'role_id' => "required|integer"
         ]);
 
         $details = [];
@@ -139,10 +141,10 @@ class CooperativeController extends Controller {
                         $Role = Role::find(Input::get("role_id"));
                         if ($Role->get()) {
                             $role_exist = CooperativeUserRole::where([
-                                        ["role_id", $Role->id],
-                                        ["user_id", $User_d->id],
-                                        ["cooperative_id", Input::get("cooperative_id")]
-                                    ]);
+                                ["role_id", $Role->id],
+                                ["user_id", $User_d->id],
+                                ["cooperative_id", Input::get("cooperative_id")]
+                            ]);
                             if (!$role_exist->first()) {
                                 try {
                                     $CooperativeUserRole = new CooperativeUserRole();
@@ -179,13 +181,14 @@ class CooperativeController extends Controller {
         }
     }
 
-    public function removeRoles(Request $request) {
+    public function removeRoles(Request $request)
+    {
         $ApiResponse = new ApiResponse();
         $User = \Request::get("User");
         $validator = Validator::make($request->post(), [
-                    'cooperative_id' => "required|integer",
-                    'user_ids' => "required|string",
-                    'role_id' => "required|integer"
+            'cooperative_id' => "required|integer",
+            'user_ids' => "required|string",
+            'role_id' => "required|integer"
         ]);
 
         $details = [];
@@ -201,10 +204,10 @@ class CooperativeController extends Controller {
                         $Role = Role::find(Input::get("role_id"));
                         if ($Role->get()) {
                             $CooperativeUserRole = CooperativeUserRole::where([
-                                        ["role_id", $Role->id],
-                                        ["user_id", $User_d->id],
-                                        ["cooperative_id", Input::get("cooperative_id")]
-                                    ]);
+                                ["role_id", $Role->id],
+                                ["user_id", $User_d->id],
+                                ["cooperative_id", Input::get("cooperative_id")]
+                            ]);
                             if ($CooperativeUserRole->first()) {
                                 try {
                                     $CooperativeUserRole->delete();
@@ -237,12 +240,13 @@ class CooperativeController extends Controller {
         }
     }
 
-    public function roles(Request $request) {
+    public function roles(Request $request)
+    {
         $ApiResponse = new ApiResponse();
         $User = \Request::get("User");
         $validator = Validator::make($request->post(), [
-                    'cooperative_id' => "required|integer",
-                    'user_ids' => "string"
+            'cooperative_id' => "required|integer",
+            'user_ids' => "string"
         ]);
 
         if ($validator->fails()) {
@@ -273,7 +277,8 @@ class CooperativeController extends Controller {
         }
     }
 
-    public function cooperatives(Request $request) {
+    public function cooperatives(Request $request)
+    {
         $ApiResponse = new ApiResponse();
         $User = \Request::get("User");
 
@@ -286,7 +291,8 @@ class CooperativeController extends Controller {
         }
     }
 
-    public function rolesList(Request $request) {
+    public function rolesList(Request $request)
+    {
         $ApiResponse = new ApiResponse();
         $User = \Request::get("User");
 
@@ -299,7 +305,8 @@ class CooperativeController extends Controller {
         }
     }
 
-    public function userCooperatives(Request $request) {
+    public function userCooperatives(Request $request)
+    {
         $ApiResponse = new ApiResponse();
         $User = \Request::get("User");
 
@@ -317,10 +324,11 @@ class CooperativeController extends Controller {
         }
     }
 
-    public function cooperative(Request $request) {
+    public function cooperative(Request $request)
+    {
         $ApiResponse = new ApiResponse();
         $validator = Validator::make($request->post(), [
-                    'id' => 'required|integer'
+            'id' => 'required|integer'
         ]);
 
         $details = [];
@@ -343,4 +351,148 @@ class CooperativeController extends Controller {
         }
     }
 
+    public function inventory(Request $request)
+    {
+        $ApiResponse = new ApiResponse();
+        $validator = Validator::make($request->post(), [
+            'cooperative_id' => 'required|integer'
+        ]);
+
+        $details = [];
+        if ($validator->fails()) {
+            $ApiResponse->setErrorMessage($validator->messages()->first());
+        } else {
+            $Items = Item::select("user_item.id as user_item_id", "user_item.item_id", "item.name", "item.description", "item.unit", "item.formation_id", "media.uri as image", "user_item.quantity", "user_item.price")
+                ->join("user_item", "user_item.user_id", "=", "item.id")
+                ->leftJoin("item_media", "item_media.item_id", "=", "item.id")
+                ->join("media", "media.id", "=", "item_media.media_id")
+                ->where([
+                    ["user_item.cooperative_id", Input::get("cooperative_id")]
+                ]);
+            if ($Items) {
+                if ($Items->count()) {
+                    $details = $Items->get()->toArray();
+                } else {
+                    $ApiResponse->setErrorMessage("Aucun item trouvé.");
+                }
+            } else {
+                $ApiResponse->setError("Cette coopérative n'a pas été trouvée.");
+            }
+        }
+
+        $ApiResponse->setResponse($details);
+        if ($ApiResponse->getError()) {
+            return response()->json($ApiResponse->getResponse(), 400);
+        } else {
+            return response()->json($ApiResponse->getResponse(), 200);
+        }
+    }
+
+    public function inventoryAdd(Request $request)
+    {
+        $ApiResponse = new ApiResponse();
+        $validator = Validator::make($request->post(), [
+            'cooperative_id' => 'required|integer',
+            'item_id' => 'required|integer',
+            'quantity' => 'required|integer',
+            'price' => 'required|float',
+            'message' => 'present|min:1',
+        ]);
+
+        if ($validator->fails()) {
+            $ApiResponse->setErrorMessage($validator->messages()->first());
+        } else {
+            $Item = Item::find(Input::get("item_id"))->where("cooperative_id", Input::get("cooperative_id"));
+            if ($Item->count()) {
+                $Item = $Item->first();
+                try {
+                    $UI = UserItem::create([
+                        "item_id" => $Item->id,
+                        "message" => Input::get("message"),
+                        "price" => Input::get("price"),
+                        "quantity" => Input::get("quantity"),
+                        "cooperative_id" => Input::get("cooperative_id")
+                    ]);
+                    $ApiResponse->setData(["user_item_id" => $UI->id]);
+                    $ApiResponse->setMessage("Item ajouté avec succès à l'inventaire.");
+                } catch (Exception $ex) {
+                    $ApiResponse->setErrorMessage($ex->getMessage());
+                }
+            } else {
+                $ApiResponse->setError("Cet item n'a pas été trouvé.");
+            }
+        }
+
+        if ($ApiResponse->getError()) {
+            return response()->json($ApiResponse->getResponse(), 400);
+        } else {
+            return response()->json($ApiResponse->getResponse(), 200);
+        }
+    }
+
+    public function inventoryRemove(Request $request)
+    {
+        $ApiResponse = new ApiResponse();
+        $validator = Validator::make($request->post(), [
+            'cooperative_id' => 'required|integer',
+            'user_item_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            $ApiResponse->setErrorMessage($validator->messages()->first());
+        } else {
+            $UserItem = UserItem::find(Input::get("user_item_id"));
+            if ($UserItem->count()) {
+                try {
+                    $UserItem->delete();
+                    $ApiResponse->setData("Association d'item supprimée avec succès.");
+                } catch (Exception $ex) {
+                    $ApiResponse->setErrorMessage($ex->getMessage());
+                }
+            } else {
+                $ApiResponse->setError("Cet association d'item n'a pas été trouvée.");
+            }
+        }
+
+        if ($ApiResponse->getError()) {
+            return response()->json($ApiResponse->getResponse(), 400);
+        } else {
+            return response()->json($ApiResponse->getResponse(), 200);
+        }
+    }
+
+    public function inventoryUsers(Request $request)
+    {
+        $ApiResponse = new ApiResponse();
+        $User = \Request::get("User");
+        $validator = Validator::make($request->post(), [
+            'cooperative_id' => 'required|integer'
+        ]);
+
+        $details = [];
+        if ($validator->fails()) {
+            $ApiResponse->setErrorMessage($validator->messages()->first());
+        } else {
+            $Items = Item::select("user_item.id as user_item_id", "user_item.item_id", "item.name", "item.description", "item.unit", "item.formation_id", "media.uri as image", "user_item.quantity", "user_item.price")
+                ->join("user_item", "user_item.user_id", "=", "item.id")
+                ->leftJoin("item_media", "item_media.item_id", "=", "item.id")
+                ->join("media", "media.id", "=", "item_media.media_id");
+            if ($Items) {
+                if ($Items->count()) {
+                    $details = $Items->get()->toArray();
+                } else {
+                    $ApiResponse->setErrorMessage("Aucun item trouvé.");
+                }
+            } else {
+                $ApiResponse->setError("Cette coopérative n'a pas été trouvée.");
+            }
+        }
+
+        $ApiResponse->setResponse($details);
+        if ($ApiResponse->getError()) {
+            return response()->json($ApiResponse->getResponse(), 400);
+        } else {
+            return response()->json($ApiResponse->getResponse(), 200);
+        }
+    }
 }

@@ -67,7 +67,18 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     // Tours
     Route::post('cooperative/tours', 'TourController@list');
 
-    // Panier
+    // Cooperative items
+    Route::post('cooperative/items', 'ItemController@list');
+    Route::post('cooperative/item', 'ItemController@details');
+
+    // Cooperative inventory
+    Route::post('cooperative/inventory', 'CooperativeController@inventory');
+
+    // User inventory in cooperative
+    Route::post('account/inventory', 'AccountController@inventory');
+    Route::post('account/inventory/add', 'AccountController@inventoryAdd');
+    Route::post('account/inventory/remove', 'AccountController@inventoryRemove');
+
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], function() {
@@ -94,7 +105,16 @@ Route::group(['middleware' => ['web', 'authenticated', "role_commercial"]], func
     Route::post('cooperative/tour/schedules/add', 'TourController@addSchedule');
     Route::post('cooperative/tour/schedules/remove', 'TourController@removeSchedule');
 
-    // Confirm order reception
+    // Cooperative items
+    Route::post('cooperative/items/add', 'ItemController@add');
+    Route::post('cooperative/items/remove', 'ItemController@remove');
+    Route::post('cooperative/item/add_image', 'ItemController@addImage');
+    Route::post('cooperative/item/remove_image', 'ItemController@removeImage');
+
+    // Cooperative inventory
+    Route::post('cooperative/inventory/add', 'CooperativeController@inventoryAdd');
+    Route::post('cooperative/inventory/remove', 'CooperativeController@inventoryRemove');
+    Route::post('cooperative/users/items', 'CooperativeController@inventoryUsers');
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], function() {
