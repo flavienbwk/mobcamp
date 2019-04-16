@@ -60,6 +60,9 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('formations/unfollow', 'FormationController@unfollow');
     Route::post('formations/isFollowed', 'FormationController@isFollowed');
 
+    // Chapters (submit)
+    Route::post('chapters/submit', 'ChapterController@submit');
+
     // Certificates
     Route::post('certificates', 'CertificateController@certificates');
 

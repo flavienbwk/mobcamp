@@ -46,7 +46,7 @@ class CertificateController extends Controller
         }
 
         foreach ($cooperative_ids as $cooperative_id) {
-            $certificates = Certificate::select('id', 'formation_id', 'cooperative_id')->where([
+            $certificates = Certificate::select('id', 'formation_id', 'cooperative_id', 'created_at', 'updated_at')->where([
                 ['user_id', $User->id],
                 ['cooperative_id', $cooperative_id],
             ])->orderBy("created_at", "desc")->offset($pagination_start)->limit($pagination_end)->get()->toArray();
