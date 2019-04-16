@@ -2,7 +2,7 @@
 
 This document is intended to present the API routes and their description.
 
-You can get the PostMan version here : [https://documenter.getpostman.com/view/782336/S17ruTKA](https://documenter.getpostman.com/view/782336/S17ruTKA).
+You can get the PostMan version here : [https://documenter.getpostman.com/view/782336/S1EQUeD6](https://documenter.getpostman.com/view/782336/S1EQUeD6).
 
 ## In any case
 
