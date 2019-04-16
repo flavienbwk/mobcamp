@@ -52,6 +52,9 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('formations/followed', 'FormationController@formationsFollowed');
     Route::post('formations/search', 'FormationController@formationsByName');
 
+    // formations items
+    Route::post('formations/items', 'FormationController@items');
+
     // Formations (follow)
     Route::post('formations/follow', 'FormationController@follow');
     Route::post('formations/unfollow', 'FormationController@unfollow');
@@ -85,6 +88,10 @@ Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], func
     // formations actions
     Route::post('formations/add', 'FormationController@add');
     Route::post('formations/remove', 'FormationController@remove');
+
+    // formations items
+    Route::post('formations/items/add', 'FormationController@itemAdd');
+    Route::post('formations/items/remove', 'FormationController@itemRemove');
 
     // chapters actions
     Route::post('chapters/addLesson', 'ChapterController@addLesson');
