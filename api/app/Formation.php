@@ -2,12 +2,10 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use \Illuminate\Database\Eloquent\Model;
 
 class Formation extends Model
 {
-    use Notifiable;
     protected $table = "formation";
     public $timestamps = true;
 
@@ -24,8 +22,4 @@ class Formation extends Model
         'cooperative_id',
         'local_uri'
     ];
-    
-    public static function getAll() {
-        return self::all();
-    }
 }

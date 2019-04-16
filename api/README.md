@@ -377,6 +377,64 @@ The response will be an array of objects of the following format :
 | level | _int_ | Formation level of difficulty |
 | cooperative_id | _int_ | Cooperative id of the formation |
 | local_uri | _string_ | local_uri of the picture |
+| hasCertificate | _boolean(string)_ | return true if the user has completed all the formation |
+| created_at | _datetime(string)_ | Date of addition of the formation in the database |
+| updated_at | _datetime(string)_ | Date of modification of the formation in the database |
+
+## Formations followed list
+
+Get all formations followed by the user
+
+### Query
+
+| Endpoint | `/api/formations/followed` | Description |
+|----------|-------------|-------------|
+|   cooperative_id    |  _int_ |   optional, id of the cooperative you want to see its formations. By default, will get formations in all user's cooperatives |
+|   pagination_start    |  _int_ |   optional |
+|   interval    |  _int_ |   optional |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | Formation id |
+| name | _string_ | Formation name |
+| estimated_duration | _int_ | Formation estimated_duration to finish |
+| level | _int_ | Formation level of difficulty |
+| cooperative_id | _int_ | Cooperative id of the formation |
+| local_uri | _string_ | local_uri of the picture |
+| hasCertificate | _boolean(string)_ | return true if the user has completed all the formation |
+| created_at | _datetime(string)_ | Date of addition of the formation in the database |
+| updated_at | _datetime(string)_ | Date of modification of the formation in the database |
+
+## Search formations
+
+Get all formations existings in the user's cooperatives matching the pattern given in body
+
+### Query
+
+| Endpoint | `/api/formations/search` | Description |
+|----------|-------------|-------------|
+|   pattern    |  _string_ |   required |
+|   cooperative_id    |  _int_ |   optional, id of the cooperative you want to see its formations. By default, will get formations in all user's cooperatives |
+|   pagination_start    |  _int_ |   optional |
+|   interval    |  _int_ |   optional |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | Formation id |
+| name | _string_ | Formation name |
+| estimated_duration | _int_ | Formation estimated_duration to finish |
+| level | _int_ | Formation level of difficulty |
+| cooperative_id | _int_ | Cooperative id of the formation |
+| local_uri | _string_ | local_uri of the picture |
+| hasCertificate | _boolean(string)_ | return true if the user has completed all the formation |
 | created_at | _datetime(string)_ | Date of addition of the formation in the database |
 | updated_at | _datetime(string)_ | Date of modification of the formation in the database |
 
@@ -402,19 +460,21 @@ The response will be an array of objects of the following format :
 | level | _int_ | Formation level of difficulty |
 | cooperative_id | _int_ | Cooperative id of the formation |
 | local_uri | _string_ | local_uri of the picture |
+| hasCertificate | _boolean(string)_ | return true if the user has completed all the formation |
 | created_at | _datetime(string)_ | Date of addition of the formation in the database |
 | updated_at | _datetime(string)_ | Date of modification of the formation in the database |
 | collaborators | _array(object)_ | List of authors |
 | chapters | _array(object)_ | List of chapters that the formation contains |
 
-Collaborators be an array of objects of the following format:
+Collaborators will be an array of objects of the following format:
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|
+|   id  | _int_ | id of the user    |
 | first_name | _string_ | first name of user    |
 | last_name | _string_ | last name of user    |
 
-Chapters be an array of objects of the following format:
+Chapters will be an array of objects of the following format:
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|
@@ -422,6 +482,17 @@ Chapters be an array of objects of the following format:
 | name | _string_ | chapter name |
 | type | _string_ | chapter type (lesson, quizz or activity) |
 | is_achieved | _boolean_ | return if the user doing the request have done this chapter |
+| medias | _array(object)_ | List of media that the chapter contains |
+
+Media will be an array of objects of the following format:
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | chapter id |
+| name | _string_ | media name |
+| type | _string_ | media type  |
+| local_uri | _string_ | local uri of the media |
+| size | _int_ | size of the media |
 
 ## Add formation in cooperative
 

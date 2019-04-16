@@ -4,9 +4,9 @@ namespace App;
 
 use \Illuminate\Database\Eloquent\Model;
 
-class Chapter extends Model
+class Certificate extends Model
 {
-    protected $table = "chapter";
+    protected $table = "certificate";
     public $timestamps = true;
 
     /**
@@ -16,11 +16,9 @@ class Chapter extends Model
      */
     protected $fillable = [
         'id', 
-        'name',
-        'type',
-        'content', 
-        'order',
-        'formation_id'
+        'formation_id',
+        'user_id',
+        'cooperative_id'
     ];
     
     public static function getAll() {
