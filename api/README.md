@@ -566,6 +566,70 @@ The user following the formation of a cooperative must be a member of this coope
 |----------|-------------|-------------|
 | _No data_ |||
 
+## Formation items
+
+Items needed to realize the formation.
+The user must be able to add the products to a cart.
+
+### Query
+
+| Endpoint | `/api/formations/items` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| formation_id |  _int_ |   id of the formation  |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| item_id | _int_ ||
+| name | _string_ ||
+| description | _string_ ||
+| message | _string_ ||
+| image | _string_ ||
+| quantity | _int_ | quantity of objects to sell |
+| unit | _string_ ||
+
+## Add formation item
+
+For teachers.
+
+### Query
+
+| Endpoint | `/api/formations/items/add` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| formation_id |  _int_ |   id of the formation  |
+| item_id | _int_ ||
+| quantity | _int_ | quantity of objects to sell |
+| message | _string_ ||
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Remove formation item
+
+For teachers.
+
+### Query
+
+| Endpoint | `/api/formations/items/remove` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| formation_id |  _int_ |   id of the formation  |
+| item_id | _int_ ||
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
 ## Cooperative tours list
 
 ### Query

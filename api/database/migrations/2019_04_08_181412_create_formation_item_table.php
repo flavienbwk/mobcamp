@@ -17,6 +17,7 @@ class CreateFormationItemTable extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('formation_item', function (Blueprint $table) {
             $table->integer('quantity');
+            $table->text('message');
             $table->integer('formation_id')->unsigned();
             $table->integer('cooperative_id')->unsigned();
             $table->integer('item_id')->unsigned();
