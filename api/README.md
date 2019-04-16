@@ -377,6 +377,7 @@ The response will be an array of objects of the following format :
 | level | _int_ | Formation level of difficulty |
 | cooperative_id | _int_ | Cooperative id of the formation |
 | local_uri | _string_ | local_uri of the picture |
+| is_followed | _boolean(string)_ | return true if the user follow the formation |
 | hasCertificate | _boolean(string)_ | return true if the user has completed all the formation |
 | created_at | _datetime(string)_ | Date of addition of the formation in the database |
 | updated_at | _datetime(string)_ | Date of modification of the formation in the database |
@@ -532,8 +533,6 @@ The user removing the formation to a cooperative must be an "enseignant" member 
 |----------|-------------|-------------|
 | _No data_ |||
 
-
-
 ## Check if a formation is followed by the user
 
 ### Query
@@ -559,6 +558,136 @@ The user following the formation of a cooperative must be a member of this coope
 |----------|-------------|-------------|
 |   formation_id    |  _int_ |   id of the formation  |
 |   cooperative_id    |  _int_ |   id of the cooperative  |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Unfollow a formation in cooperative
+
+The user unfollowing the formation of a cooperative must be a member of this cooperative.
+
+### Query
+
+| Endpoint | `/api/formations/unfollow` | Description |
+|----------|-------------|-------------|
+|   formation_id    |  _int_ |   id of the formation  |
+|   cooperative_id    |  _int_ |   id of the cooperative  |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+
+## Certifications list
+
+Get all the certifcates earned by the user
+
+### Query
+
+| Endpoint | `/api/certificates` | Description |
+|----------|-------------|-------------|
+|   cooperative_id    |  _int_ |   optional, id of the cooperative you want to see its certificated earned. By default, will get certificates in all user's cooperatives |
+|   pagination_start    |  _int_ |   optional |
+|   interval    |  _int_ |   optional |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | certificate id |
+| cooperative_id | _int_ | id of the cooperative |
+| formation | _string_ | id of the formation |
+| created_at | _datetime(string)_ | Date of addition of the certificate in the database |
+| updated_at | _datetime(string)_ | Date of modification of the certificate in the database |
+
+## Create a lesson chapter
+
+The user creating the chapter to a formation must be a collaborator of this formation.
+
+### Query
+
+| Endpoint | `/api/chapters/addLesson` | Description |
+|----------|-------------|-------------|
+| name | _string_ | Formation name |
+| formation_id | _int_ | Formation id |
+| cooperative_id | _int_ | Cooperative id of the formation |
+|   order    | _int_ | optionnal, By default, will get put at the end of the formation  |
+|   content |   _string_    | description of the formation  |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Create an activity chapter
+
+The user creating the chapter to a formation must be a collaborator of this formation.
+
+### Query
+
+| Endpoint | `/api/chapters/addActivity` | Description |
+|----------|-------------|-------------|
+| name | _string_ | Formation name |
+| formation_id | _int_ | Formation id |
+| cooperative_id | _int_ | Cooperative id of the formation |
+|   order    | _int_ | optionnal, By default, will get put at the end of the formation  |
+|   content |   _string_    | description of the formation  |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Create a quizz chapter
+
+The user creating the chapter to a formation must be a collaborator of this formation.
+
+### Query
+
+Header:
+
+| Key   | Value |
+|----------|-------------|
+|   Content-Type |  application/json    |
+
+| Endpoint | `/api/chapters/addQuizz` | Description |
+|----------|-------------|-------------|
+| name | _string_ | Formation name |
+| formation_id | _int_ | Formation id |
+| cooperative_id | _int_ | Cooperative id of the formation |
+|   order    | _int_ | optionnal, By default, will get put at the end of the formation  |
+|   content |   _string_    | description of the formation  |
+|   questions   | _JSON_ |  lists of questions and answers |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+# Upload media for a chapter
+
+### Query
+
+User must be 
+
+| Endpoint | `/api/chapters/addQuizz` | Description |
+|----------|-------------|-------------|
+| name | _string_ | Formation name |
+| formation_id | _int_ | Formation id |
+| cooperative_id | _int_ | Cooperative id of the formation |
+|   order    | _int_ | optionnal, By default, will get put at the end of the formation  |
+|   content |   _string_    | description of the formation  |
+|   questions   | _JSON_ |  lists of questions and answers |
 
 ### Response
 
