@@ -31,7 +31,7 @@ class FormationController extends Controller
             'estimated_duration' => "bail|required|numeric",
             'level' => 'bail|string|min:1|max:20',
             'cooperative_id' => 'required|numeric',
-            'main_pic' => 'required|image|mimes:jpeg,png,PNG,jpg,gif|max:1000000'
+            'main_pic' => 'required|image|mimes:jpeg,png,jpg,gif|max:1000000'
         ];
 
         $validator = Validator::make($request->post(), $rules);
@@ -120,6 +120,7 @@ class FormationController extends Controller
         foreach ($cooperative_ids as $cooperative_id) {
             $formations = Formation::select('*')->where('cooperative_id', $cooperative_id)->orderBy("created_at", "desc")->offset($pagination_start)->limit($pagination_end)->get()->toArray();
             foreach ($formations as $formation) {
+                $formation['is_followed'] = (bool)CooperativeUserFormation::where([['user_id', $User->id], ['cooperative_id', Input::get('cooperative_id')], ['formation_id', Input::get('formation_id')], ['type', 'student']])->exists();
                 $formation['hasCertificate'] = (bool)Certificate::where([
                     ['user_id', $User->id],
                     ['formation_id', $formation['id']],
