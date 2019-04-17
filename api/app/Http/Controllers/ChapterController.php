@@ -243,10 +243,10 @@ class ChapterController extends Controller
             'chapter_id' => 'bail|required|numeric',
             'formation_id' => 'bail|required|numeric',
             'cooperative_id' => 'bail|required|numeric',
-            'media.*' => 'required|file'
+            'media.*' => 'bail|required|file'
         ];
 
-        $validator = Validator::make($request->post(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $ApiResponse->setErrorMessage($validator->messages()->first());
@@ -290,9 +290,11 @@ class ChapterController extends Controller
 
                             $media->move(UPLOAD_PATH, $filename);
                         }
+                        $ApiResponse->setMessage('Media uploaded.');
+                        DB::commit();
                     }
-                    $ApiResponse->setMessage('Media uploaded.');
-                    DB::commit();
+                    else
+                        $ApiResponse->setErrorMessage('no file.');
                 } catch (\PDOException $e) {
                     DB::rollBack();
                     $ApiResponse->setErrorMessage($e->getMessage());
@@ -366,10 +368,10 @@ class ChapterController extends Controller
             'chapter_id' => 'bail|required|numeric',
             'formation_id' => 'bail|required|numeric',
             'cooperative_id' => 'bail|required|numeric',
-            'media.*' => 'required|file|max:1000000'
+            'media.*' => 'bail|required|file|max:1000000'
         ];
 
-        $validator = Validator::make($request->post(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $ApiResponse->setErrorMessage($validator->messages()->first());
@@ -422,9 +424,11 @@ class ChapterController extends Controller
 
                                         $media->move(UPLOAD_PATH, $filename);
                                     }
+                                    $ApiResponse->setMessage('Media(s) uploaded.');
+                                    DB::commit();
                                 }
-                                $ApiResponse->setMessage('Media(s) uploaded.');
-                                DB::commit();
+                                else
+                                    $ApiResponse->setErrorMessage('no file.');
                             } catch (\PDOException $e) {
                                 DB::rollBack();
                                 $ApiResponse->setErrorMessage($e->getMessage());
