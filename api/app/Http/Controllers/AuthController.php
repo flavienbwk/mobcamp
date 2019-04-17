@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Cooperative;
 use App\Connection;
 use App\ApiResponse;
 use App\CooperativeUser;
