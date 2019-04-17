@@ -18,7 +18,6 @@ class SubmissionCooperativeUser extends Model
         'submission_id',
         'formation_id',
         'activity_id',
-        'user_id',
         'corrector_user_id',
         'cooperative_id',
         'is_validated',

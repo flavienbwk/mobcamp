@@ -505,7 +505,7 @@ class FormationController extends Controller
                 return response()->json($ApiResponse->getResponse(), 400);
             }
 
-            if (CooperativeUserFormation::select('type')->where([['user_id', $User->id],['cooperative_id', Input::get('cooperative_id')],['formation_id', Input::get('formation_id')],['type', 'collaborator']])->exists()) {
+            if (CooperativeUserFormation::where([['user_id', $User->id],['cooperative_id', Input::get('cooperative_id')],['formation_id', Input::get('formation_id')],['type', 'collaborator']])->exists()) {
                 try {
                     if ($Formation->first()->local_uri)
                         File::delete($Formation->first()->local_uri);
