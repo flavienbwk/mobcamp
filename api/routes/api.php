@@ -25,6 +25,8 @@ Route::group(['middleware' => ['web']], function() {
     Route::post('auth/login', 'AuthController@login');
     Route::post('auth/register', 'AuthController@register');
     Route::post('auth/expiration', 'AuthController@expiration');
+    Route::post('cooperatives', 'CooperativeController@cooperatives');
+    Route::post('cooperative', 'CooperativeController@cooperative');
 });
 
 Route::group(['middleware' => ['web', 'authenticated']], function() {
@@ -42,8 +44,6 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('account/notification/seen', 'AccountController@notificationSeen');
 
     // Cooperatives routes
-    Route::post('cooperatives', 'CooperativeController@cooperatives');
-    Route::post('cooperative', 'CooperativeController@cooperative');
     Route::post('account/cooperatives', 'CooperativeController@userCooperatives');
 
     // Formations (base)
