@@ -674,11 +674,11 @@ The user creating the chapter to a formation must be a collaborator of this form
 |----------|-------------|-------------|
 | _No data_ |||
 
-## Upload a media to a chapter
+## Upload medias to a chapter
 
 ### Query
 
-The user uploading the media to the chapter must be a collaborator of this formation.
+The user uploading the medias to the chapter must be a collaborator of this formation.
 
 | Endpoint | `/api/chapters/uploadMedia` | Description |
 |----------|-------------|-------------|
@@ -686,7 +686,7 @@ The user uploading the media to the chapter must be a collaborator of this forma
 | chapter_id | _int_ | Chapter id |
 | formation_id | _int_ | Formation id |
 | cooperative_id | _int_ | Cooperative id of the formation |
-|   media   | _FILE_ |  the media |
+|   medias[]   | _array(FILE)_ | all the medias to upload |
 
 ### Response
 
