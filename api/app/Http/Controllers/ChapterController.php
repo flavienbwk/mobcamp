@@ -243,7 +243,7 @@ class ChapterController extends Controller
             'chapter_id' => 'bail|required|numeric',
             'formation_id' => 'bail|required|numeric',
             'cooperative_id' => 'bail|required|numeric',
-            'media' => 'required|file'
+            'media.*' => 'required|file'
         ];
 
         $validator = Validator::make($request->post(), $rules);
@@ -263,29 +263,34 @@ class ChapterController extends Controller
 
             if (CooperativeUserFormation::select('type')->where([['user_id', $User->id],['cooperative_id', Input::get('cooperative_id')],['formation_id', Input::get('formation_id')],['type', 'collaborator']])->exists()) {
                 try {
-                    $media = Input::file('media');
-                    $mime = $media->getMimeType();
-                    $size = $media->getSize();
-                    $extension = $media->getClientOriginalExtension();
-                    $filename = md5($User->username) . '_' . uniqid() . '.' . $extension;
-                    $uri = UPLOAD_PATH . '/' . $filename;
+                    if (Input::hasFile('medias')) {
+                        foreach (Input::file('medias') as $media) {
+                            $media = Input::file('media');
+                            $mime = $media->getMimeType();
+                            $size = $media->getSize();
+                            $extension = $media->getClientOriginalExtension();
+                            $uniqid = uniqid();
+                            $filename = md5($User->username) . '_' . $uniqid . '.' . $extension;
+                            $uri = UPLOAD_PATH . '/' . $filename;
 
-                    DB::beginTransaction();
-                    $Media = Media::create([
-                        'name' => Input::get('name'),
-                        'type' => $mime,
-                        'uri' => $uri,
-                        'size' => $size,
-                        'downloadable' => 1,
-                        'hash' => NULL
-                    ]);
+                            DB::beginTransaction();
+                            $Media = Media::create([
+                                'name' => Input::get('name') . '_' . $uniqid,
+                                'type' => $mime,
+                                'uri' => $uri,
+                                'size' => $size,
+                                'downloadable' => 1,
+                                'hash' => NULL
+                            ]);
 
-                    MediaChapter::create([
-                        'media_id' => $Media->id,
-                        'chapter_id' => Input::get('chapter_id')
-                    ]);
+                            MediaChapter::create([
+                                'media_id' => $Media->id,
+                                'chapter_id' => Input::get('chapter_id')
+                            ]);
 
-                    $media->move(UPLOAD_PATH, $filename);
+                            $media->move(UPLOAD_PATH, $filename);
+                        }
+                    }
                     $ApiResponse->setMessage('Media uploaded.');
                     DB::commit();
                 } catch (\PDOException $e) {
@@ -396,7 +401,7 @@ class ChapterController extends Controller
                                     'activity_id' => $Activity->id
                                 ]);
 
-                                if (Input::hasFile('files')) {
+                                if (Input::hasFile('medias')) {
                                     foreach (Input::file('medias') as $media) {
                                         $mime = $media->getMimeType();
                                         $size = $media->getSize();
