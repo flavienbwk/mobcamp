@@ -26,15 +26,16 @@ class FormationController extends Controller
     {
         $User = \Request::get("User");
         $ApiResponse = new ApiResponse();
+        var_dump($request->all());
         $rules = [
             'name' => "bail|required|string", // bail = stop running validation rules on an attribute after the first validation failure.
             'estimated_duration' => "bail|required|numeric",
-            'level' => 'bail|string|min:1|max:20',
+            'level' => 'bail|required|string|min:1|max:20',
             'cooperative_id' => 'required|numeric',
             'main_pic' => 'required|image|mimes:jpeg,png,jpg,gif|max:1000000'
         ];
 
-        $validator = Validator::make($request->post(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             $ApiResponse->setErrorMessage($validator->messages()->first());
