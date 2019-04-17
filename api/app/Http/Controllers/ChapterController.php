@@ -243,7 +243,7 @@ class ChapterController extends Controller
             'chapter_id' => 'bail|required|numeric',
             'formation_id' => 'bail|required|numeric',
             'cooperative_id' => 'bail|required|numeric',
-            'media' => 'required|file|max:1000000'
+            'media' => 'required|file'
         ];
 
         $validator = Validator::make($request->post(), $rules);
