@@ -243,7 +243,7 @@ class ChapterController extends Controller
             'chapter_id' => 'bail|required|numeric',
             'formation_id' => 'bail|required|numeric',
             'cooperative_id' => 'bail|required|numeric',
-            'media.*' => 'bail|required|file'
+            'medias.*' => 'bail|required|file'
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -265,7 +265,6 @@ class ChapterController extends Controller
                 try {
                     if (Input::hasFile('medias')) {
                         foreach (Input::file('medias') as $media) {
-                            $media = Input::file('media');
                             $mime = $media->getMimeType();
                             $size = $media->getSize();
                             $extension = $media->getClientOriginalExtension();
@@ -368,7 +367,7 @@ class ChapterController extends Controller
             'chapter_id' => 'bail|required|numeric',
             'formation_id' => 'bail|required|numeric',
             'cooperative_id' => 'bail|required|numeric',
-            'media.*' => 'bail|required|file|max:1000000'
+            'medias.*' => 'bail|required|file|max:1000000'
         ];
 
         $validator = Validator::make($request->all(), $rules);
