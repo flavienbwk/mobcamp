@@ -263,8 +263,11 @@ class ChapterController extends Controller
 
             if (CooperativeUserFormation::select('type')->where([['user_id', $User->id],['cooperative_id', Input::get('cooperative_id')],['formation_id', Input::get('formation_id')],['type', 'collaborator']])->exists()) {
                 try {
-                    if (Input::hasFile('medias')) {
-                        foreach (Input::file('medias') as $media) {
+                    if ($request->hasFile('medias')) {
+                        DB::beginTransaction();
+                        $medias = $request->file('medias');
+
+                        foreach ($medias as $media) {
                             $mime = $media->getMimeType();
                             $size = $media->getSize();
                             $extension = $media->getClientOriginalExtension();
@@ -272,7 +275,6 @@ class ChapterController extends Controller
                             $filename = md5($User->username) . '_' . $uniqid . '.' . $extension;
                             $uri = UPLOAD_PATH . '/' . $filename;
 
-                            DB::beginTransaction();
                             $Media = Media::create([
                                 'name' => Input::get('name') . '_' . $uniqid,
                                 'type' => $mime,
@@ -402,8 +404,10 @@ class ChapterController extends Controller
                                     'activity_id' => $Activity->id
                                 ]);
 
-                                if (Input::hasFile('medias')) {
-                                    foreach (Input::file('medias') as $media) {
+                                if ($request->hasFile('medias')) {
+                                    $medias = $request->file('medias');
+
+                                    foreach ($medias as $media) {
                                         $mime = $media->getMimeType();
                                         $size = $media->getSize();
                                         $extension = $media->getClientOriginalExtension();
