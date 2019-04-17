@@ -253,7 +253,7 @@ The response will be an array of objects of the following format :
 
 ### Query
 
-| Endpoint | `/api/cooperative/roles` | Description |
+| Endpoint | `/api/roles` | Description |
 |----------|-------------|-------------|
 | _No parameter_ |||
 
@@ -996,6 +996,7 @@ The response will be an array of objects of the following format :
 
 For commercials.
 If the item has successfuly been received by the cooperative.
+Or if the item has successfuly been given to the user.
 
 ### Query
 
@@ -1044,24 +1045,48 @@ The response will be an array of objects of the following format :
 |----------|-------------|-------------|
 | order_id | _int_ ||
 | tour_id | _int_ ||
-| buyer_username | _string_ ||
+| username | _string_ ||
+| type | _string_ | 'buy' if the user buys the item to the cooperative, 'sell' if the user sells the item to the cooperative |
 | from | _datetime(string)_ ||
 | to | _datetime(string)_ ||
 | place | _string_ | Place where the tour will operate. Generally, a postal address |
 
-## Place order
+## Buy - Place order
 
-This route verifies if the user has the formation certificate to place the order.
+User buys to cooperative.
 
 ### Query
 
-| Endpoint | `/api/cooperative/order/place` | Description |
+| Endpoint | `/api/cooperative/buy` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
 | schedule_id | _int_ | id of the cooperative |
 | tour_id | _int_ | id of the cooperative |
 | items_id | _array<int>_ | Identifiers list of "user_item" to get |
 | quantities | _array<int>_ | List of "user_item" quantities to get (length must match the number of items_id) |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| order_id | _int_ ||
+
+## Place sell
+
+User sells to cooperative.
+This route verifies if the user has the formation certificate to sell its products.
+
+### Query
+
+| Endpoint | `/api/cooperative/sell` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| schedule_id | _int_ | id of the cooperative |
+| tour_id | _int_ | id of the cooperative |
+| items_id | _array<int>_ | Identifiers list of "user_item" to sell |
+| quantities | _array<int>_ | List of "user_item" quantities to sell (length must match the number of items_id) |
 
 ### Response
 
