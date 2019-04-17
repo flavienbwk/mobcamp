@@ -102,6 +102,9 @@ Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], func
     Route::post('chapters/addQuizz', 'ChapterController@addQuizz');
     Route::post('chapters/uploadMedia', 'ChapterController@uploadMedia');
     Route::post('chapters/removeMedia', 'ChapterController@removeMedia');
+
+    // Search by username
+    Route::post('account/search', 'AccountController@searchUsername');
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_commercial"]], function() {
