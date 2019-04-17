@@ -945,3 +945,128 @@ The response will be an array of objects of the following format :
 | image | _string_ ||
 | quantity | _int_ | quantity of objects to sell |
 | price | _float(10,2)_ | price for 1 item |
+
+=======
+
+## Cooperative orders
+
+For commercials.
+
+### Query
+
+| Endpoint | `/api/cooperative/orders` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| order_id | _int_ ||
+| buyer_ids| _string_ ||
+| buyer_username | _string_ ||
+| from | _datetime(string)_ ||
+| to | _datetime(string)_ ||
+| place | _string_ | Place where the tour will operate. Generally, a postal address |
+
+## Order items list
+
+### Query
+
+| Endpoint | `/api/cooperative/order/items` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| name | _string_ ||
+| description | _string_ ||
+| created_at | _datetime(string)_ ||
+| updated_at | _datetime(string)_ ||
+| unit | _string_ | Unit on which the quentity is expressed |
+| formation_id | _int_ | identifier of the formation to acquiere to be able to sell the product |
+| formation_name | _string_ | nullable, name of the formation to acquiere to be able to sell the product |
+| images | _array<string>_ | Images of the item |
+
+## Cooperative approve order
+
+For commercials.
+If the item has successfuly been received by the cooperative.
+
+### Query
+
+| Endpoint | `/api/cooperative/order/approve` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| order_id | _int_ ||
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Cooperative desapprove order
+
+For commercials.
+
+### Query
+
+| Endpoint | `/api/cooperative/order/desapprove` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| order_id | _int_ ||
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## User orders in cooperative
+
+### Query
+
+| Endpoint | `/api/account/orders` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| user_ids | _string_ | optional, ids of the user you want to check the roles. By default, will get the ids of the currently connected user |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| order_id | _int_ ||
+| tour_id | _int_ ||
+| buyer_username | _string_ ||
+| from | _datetime(string)_ ||
+| to | _datetime(string)_ ||
+| place | _string_ | Place where the tour will operate. Generally, a postal address |
+
+## Place order
+
+This route verifies if the user has the formation certificate to place the order.
+
+### Query
+
+| Endpoint | `/api/cooperative/order/place` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| schedule_id | _int_ | id of the cooperative |
+| tour_id | _int_ | id of the cooperative |
+| items_id | _array<int>_ | Identifiers list of "user_item" to get |
+| quantities | _array<int>_ | List of "user_item" quantities to get (length must match the number of items_id) |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| order_id | _int_ ||
