@@ -38,7 +38,7 @@ class CooperativeController extends Controller
                 $User_d = User::find($user_query);
                 if ($User_d) {
                     $user_cooperative_query = CooperativeRepository::getUserCooperative($User_d->id, Input::get("cooperative_id"));
-                    if (!$user_cooperative_query) {
+                    if (!$user_cooperative_query->count()) {
                         try {
                             $CooperativeUser = new CooperativeUser();
                             $CooperativeUser->user_id = $User_d->id;
