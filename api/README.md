@@ -833,6 +833,7 @@ The response will be an array of objects of the following format :
 
 | Key name | Value type | Description |
 |----------|-------------|-------------|
+| schedule_id |||
 | from | _datetime(string)_ ||
 | to | _datetime(string)_ ||
 | place | _string_ | Place where the tour will operate. Generally, a postal address |

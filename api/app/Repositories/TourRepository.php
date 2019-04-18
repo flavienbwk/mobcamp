@@ -22,7 +22,7 @@ class TourRepository
 
     public static function getTourSchedules($tour_id, $cooperative_id)
     {
-        return TourSchedule::select("schedule.from", "schedule.to", "tour_schedule.place")
+        return TourSchedule::select("schedule.id", "schedule.from", "schedule.to", "tour_schedule.place")
             ->join("tour", "tour.id", "=", "tour_schedule.tour_id")
             ->join("schedule", "schedule.id", "=", "tour_schedule.schedule_id")
             ->where([
