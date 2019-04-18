@@ -140,7 +140,7 @@ class CooperativeController extends Controller
                     $user_cooperative_query = CooperativeRepository::getUserCooperative($User->id, Input::get("cooperative_id"));
                     if ($user_cooperative_query) {
                         $Role = Role::find(Input::get("role_id"));
-                        if ($Role->get()) {
+                        if ($Role && $Role->get()) {
                             $role_exist = CooperativeUserRole::where([
                                 ["role_id", $Role->id],
                                 ["user_id", $User_d->id],
