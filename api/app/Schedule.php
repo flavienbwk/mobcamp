@@ -8,6 +8,7 @@ class Schedule extends Model
 {
 
     protected $table = "schedule";
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
