@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ApiResponse;
+use App\Certificate;
 use App\Chapter;
 use App\CooperativeUser;
 use App\CooperativeUserFormation;
@@ -274,11 +275,11 @@ class SubmissionController extends Controller
 
                                 if (Input::get('grade') >= 5) {
                                     DB::table('chapter_cooperative_user')
-                                        ->where([['formation', $Formation->first()->id], ['user_id', $Submission->user_id], ['cooperative_id', $Formation->first()->cooperative_id]])
+                                        ->where([['chapter_id', $Chapter->first()->id], ['user_id', $Submission->user_id], ['cooperative_id', $Formation->first()->cooperative_id]])
                                         ->update(['is_achieved' => 1]);
                                 }
 
-                                $chapters = ChapterCooperativeUser::where([['formation_id', $Formation->first()->id], ['cooperative_id', $Formation->first()->cooperative_id], ['user_id', $Submission->id]])->get()->toArray();
+                                $chapters = ChapterCooperativeUser::join('chapter', 'chapter.id', '=', 'chapter_id')->where([['formation_id', '=', $Formation->first()->id],['cooperative_id', $Formation->first()->cooperative_id], ['user_id', $Submission->user_id]])->get()->toArray();
 
                                 $all_validated = true;
                                 foreach ($chapters as $chapter) {
@@ -289,7 +290,7 @@ class SubmissionController extends Controller
                                     Certificate::create([
                                         'formation_id' => $Formation->first()->id,
                                         'cooperative_id' => $Formation->first()->cooperative_id,
-                                        'user_id' => $Submission->id
+                                        'user_id' => $Submission->user_id
                                     ]);
                                 }
                             } catch (\PDOException $e) {

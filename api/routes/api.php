@@ -60,6 +60,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     // Submission
     Route::post('submissions/submit', 'SubmissionController@submit');
 
+    // Chapters
+    Route::post('chapters/answerQuizz', 'ChapterController@answerQuizz');
+    Route::post('chapters/validateLesson', 'ChapterController@validateLesson');
+
     // Certificates
     Route::post('certificates', 'CertificateController@certificates');
 
