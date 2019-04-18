@@ -321,8 +321,7 @@ class FormationController extends Controller
                             foreach ($answers as $answer) {
                                 $formation['chapters'][$i]['questions'][$j]['answers'][] = [
                                     'id' => $answer['id'],
-                                    'value'=> $answer['value'],
-                                    'is_right' => (bool)$answer['is_correct']
+                                    'value'=> $answer['value']
                                 ];
                             }
                         }
@@ -380,6 +379,18 @@ class FormationController extends Controller
                             'cooperative_id' => Input::get("cooperative_id"),
                             'type' => "student"
                         ]);
+
+                        $chapters = Chapter::where('formation_id', $Formation->formation_id)->get()->toArray();
+                        foreach ($chapters as $chapter) {
+                            if (ChapterCooperativeUser::where([['user_id', $User->id],['chapter_id', $chapter['id']],['cooperative_id', Input::get("cooperative_id")]])->doesntExist()) {
+                                ChapterCooperativeUser::create([
+                                    'user_id' => $User->id,
+                                    'chapter_id' => $chapter['id'],
+                                    'cooperative_id' => Input::get("cooperative_id"),
+                                    'is_achieved' => 0
+                                ]);
+                            }
+                        }
                         $ApiResponse->setMessage("Formation followed.");
                         DB::commit();
                     } catch (\PDOException $e) {
@@ -508,7 +519,7 @@ class FormationController extends Controller
                 return response()->json($ApiResponse->getResponse(), 400);
             }
 
-            if (CooperativeUserFormation::select('type')->where([['user_id', $User->id],['cooperative_id', Input::get('cooperative_id')],['formation_id', Input::get('formation_id')],['type', 'collaborator']])->exists()) {
+            if (CooperativeUserFormation::where([['user_id', $User->id],['cooperative_id', Input::get('cooperative_id')],['formation_id', Input::get('formation_id')],['type', 'collaborator']])->exists()) {
                 try {
                     if ($Formation->first()->local_uri)
                         File::delete($Formation->first()->local_uri);

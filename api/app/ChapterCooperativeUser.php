@@ -2,14 +2,12 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use \Illuminate\Database\Eloquent\Model;
 
 class ChapterCooperativeUser extends Model
 {
-    use Notifiable;
     protected $table = "chapter_cooperative_user";
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.

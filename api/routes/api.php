@@ -60,8 +60,12 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('formations/unfollow', 'FormationController@unfollow');
     Route::post('formations/isFollowed', 'FormationController@isFollowed');
 
-    // Chapters (submit)
-    Route::post('chapters/submit', 'ChapterController@submit');
+    // Submission
+    Route::post('submissions/submit', 'SubmissionController@submit');
+
+    // Chapters
+    Route::post('chapters/answerQuizz', 'ChapterController@answerQuizz');
+    Route::post('chapters/validateLesson', 'ChapterController@validateLesson');
 
     // Certificates
     Route::post('certificates', 'CertificateController@certificates');
@@ -109,6 +113,11 @@ Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], func
     Route::post('chapters/addQuizz', 'ChapterController@addQuizz');
     Route::post('chapters/uploadMedia', 'ChapterController@uploadMedia');
     Route::post('chapters/removeMedia', 'ChapterController@removeMedia');
+
+    // submissions actions
+    Route::post('submission', 'SubmissionController@submission');
+    Route::post('submissions', 'SubmissionController@submissions');
+    Route::post('submissions/correct', 'SubmissionController@correct');
 
     // Search by username
     Route::post('account/search', 'AccountController@searchUsername');
