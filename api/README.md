@@ -814,7 +814,8 @@ The response will be an array of objects of the following format :
 | unit | _string_ ||
 | formation_id | _int_ | nullable, identifier of the formation to acquiere to be able to sell the product |
 | image | _string_ | uri |
-| quantity | _int_ | quantity of objects to sell |
+| quantity | _int_ | quantity of objects to sell at the origin (without counting the orders) |
+| quantity_now | _int_ | quantity of objects to currently sell |
 | price | _float(10,2)_ | price for 1 item |
 
 ## Cooperative inventory add
@@ -946,8 +947,6 @@ The response will be an array of objects of the following format :
 | quantity | _int_ | quantity of objects to sell |
 | price | _float(10,2)_ | price for 1 item |
 
-=======
-
 ## Cooperative orders
 
 For commercials.
@@ -965,6 +964,7 @@ For commercials.
 | order_id | _int_ ||
 | buyer_ids| _string_ ||
 | buyer_username | _string_ ||
+| type | _string_ | 'buy' if the user buys the item to the cooperative, 'sell' if the user sells the item to the cooperative |
 | from | _datetime(string)_ ||
 | to | _datetime(string)_ ||
 | place | _string_ | Place where the tour will operate. Generally, a postal address |
@@ -976,6 +976,7 @@ For commercials.
 | Endpoint | `/api/cooperative/order/items` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
+| order_id | _int_ | id of the order |
 
 ### Response
 
@@ -990,7 +991,7 @@ The response will be an array of objects of the following format :
 | unit | _string_ | Unit on which the quentity is expressed |
 | formation_id | _int_ | identifier of the formation to acquiere to be able to sell the product |
 | formation_name | _string_ | nullable, name of the formation to acquiere to be able to sell the product |
-| images | _array<string>_ | Images of the item |
+| image | _string_ | image uri of the item |
 
 ## Cooperative approve order
 
@@ -1060,9 +1061,8 @@ User buys to cooperative.
 | Endpoint | `/api/cooperative/buy` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
-| schedule_id | _int_ | id of the cooperative |
-| tour_id | _int_ | id of the cooperative |
-| items_id | _array<int>_ | Identifiers list of "user_item" to get |
+| schedule_id | _int_ | id of the schedule chosen |
+| user_items_id | _array<int>_ | Identifiers list of "user_item" to get |
 | quantities | _array<int>_ | List of "user_item" quantities to get (length must match the number of items_id) |
 
 ### Response
@@ -1073,7 +1073,7 @@ The response will be an array of objects of the following format :
 |----------|-------------|-------------|
 | order_id | _int_ ||
 
-## Place sell
+## Sell - Place sell
 
 User sells to cooperative.
 This route verifies if the user has the formation certificate to sell its products.
@@ -1083,9 +1083,8 @@ This route verifies if the user has the formation certificate to sell its produc
 | Endpoint | `/api/cooperative/sell` | Description |
 |----------|-------------|-------------|
 | cooperative_id | _int_ | id of the cooperative |
-| schedule_id | _int_ | id of the cooperative |
-| tour_id | _int_ | id of the cooperative |
-| items_id | _array<int>_ | Identifiers list of "user_item" to sell |
+| schedule_id | _int_ | id of the schedule chosen |
+| user_items_id | _array<int>_ | Identifiers list of "user_item" to sell |
 | quantities | _array<int>_ | List of "user_item" quantities to sell (length must match the number of items_id) |
 
 ### Response
@@ -1095,3 +1094,22 @@ The response will be an array of objects of the following format :
 | Key name | Value type | Description |
 |----------|-------------|-------------|
 | order_id | _int_ ||
+
+## Remove an order (sell or buy)
+
+From the user perspective.
+
+### Query
+
+| Endpoint | `/api/cooperative/order/remove` | Description |
+|----------|-------------|-------------|
+| cooperative_id | _int_ | id of the cooperative |
+| order_id | _int_ ||
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||

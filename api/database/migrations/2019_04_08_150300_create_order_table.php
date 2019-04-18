@@ -17,14 +17,12 @@ class CreateOrderTable extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('order', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('item_id')->unsigned();
+            $table->string('type')->default('buy');
             $table->bigInteger('buyer_user_id')->unsigned();
             $table->integer('cooperative_id')->unsigned();
-            $table->foreign('item_id')->references('id')->on('item');
             $table->foreign('buyer_user_id')->references('id')->on('user');
             $table->foreign('cooperative_id')->references('id')->on('cooperative');
-            $table->integer('quantity');
-            $table->dateTime('confirmed_at');
+            $table->dateTime('confirmed_at')->nullable();
             $table->timestamps();
         });
     }

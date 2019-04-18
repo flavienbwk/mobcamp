@@ -80,9 +80,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('account/inventory/remove', 'AccountController@inventoryRemove');
 
     // Orders
+    Route::post('cooperative/order/items', 'OrderController@listItems');
     Route::post('account/orders', 'OrderController@listUser');
-    Route::post('cooperative/buy', 'OrderController@sell');
+    Route::post('cooperative/buy', 'OrderController@buy');
     Route::post('cooperative/sell', 'OrderController@sell');
+    Route::post('cooperative/order/remove', 'OrderController@remove');
 
 });
 
@@ -123,7 +125,6 @@ Route::group(['middleware' => ['web', 'authenticated', "role_commercial"]], func
 
     // Orders
     Route::post('cooperative/orders', 'OrderController@list');
-    Route::post('cooperative/order/items', 'OrderController@listItems');
     Route::post('cooperative/order/approve', 'OrderController@approve');
     Route::post('cooperative/order/desapprove', 'OrderController@desapprove');
 });
