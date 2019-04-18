@@ -2,25 +2,26 @@
 
 namespace App;
 
-use \Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
-class Media extends Model
+class Item extends Model
 {
-    protected $table = "media";
-    public $timestamps = true;
+
+    protected $table = "item";
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id',
         'name',
-        'type',
-        'size',
-        'downloadable',
-        'hash',
-        'uri'
+        'description',
+        'unit',
+        'formation_id',
+        'cooperative_id',
+        'updated_at',
+        'created_at',
     ];
 
     /**

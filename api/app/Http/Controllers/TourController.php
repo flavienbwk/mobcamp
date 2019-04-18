@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Connection;
 use App\ApiResponse;
-use App\Cooperative;
 use App\Tour;
 use App\Schedule;
 use App\TourSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
-use App\Repositories\CooperativeRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\TourRepository;
 
