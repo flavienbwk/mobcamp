@@ -27,7 +27,7 @@ class ItemController extends Controller
         $validator = Validator::make($request->post(), [
             'cooperative_id' => "required|integer",
             'offset' => "integer|min:1",
-            'interval' => "interger|min:1"
+            'interval' => "integer|min:1"
         ]);
 
         if ($validator->fails()) {
