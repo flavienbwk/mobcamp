@@ -654,6 +654,7 @@ Header:
 |----------|-------------|-------------|
 | _No data_ |||
 
+
 ## Create an activity chapter
 
 The user creating the chapter to a formation must be a collaborator of this formation.
@@ -673,6 +674,173 @@ The user creating the chapter to a formation must be a collaborator of this form
 | Key name | Value type | Description |
 |----------|-------------|-------------|
 | _No data_ |||
+
+## Validate a lesson
+
+The user post this answers to validate the quizz
+
+### Query
+
+The user validating the lesson must follow the formation.
+
+| Endpoint | `/api/chapters/validateLesson` | Description |
+|----------|-------------|-------------|
+| chapter_id | _int_ | Chapter id |
+| formation_id | _int_ | Formation id |
+| cooperative_id | _int_ | Cooperative id of the formation |
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+
+## Answer to a quizz
+
+The user post this answers to validate the quizz
+
+### Query
+
+The user answering to the quizz must follow the formation.
+
+| Endpoint | `/api/chapters/answerQuizz` | Description |
+|----------|-------------|-------------|
+| chapter_id | _int_ | Chapter id |
+| formation_id | _int_ | Formation id |
+| cooperative_id | _int_ | Cooperative id of the formation |
+|   responses   | _JSON_ | the questions and the answers of the user |
+
+### Response
+
+The response will be an object of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| grade | _int_ | number of correct answers |
+| is_validated | _bool_ | return true if the user has validated the quizz |
+
+## Submit media to an activity
+
+The user post this answers to an activity to validate this chapter
+
+### Query
+
+The user submitting to the activity must follow the formation.
+
+| Endpoint | `/api/submission/submit` | Description |
+|----------|-------------|-------------|
+| chapter_id | _int_ | Chapter id |
+| formation_id | _int_ | Formation id |
+| cooperative_id | _int_ | Cooperative id of the formation |
+|   medias[]   | _array(FILE)_ | the medias to submit|
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Correct a submission
+
+The user correct the submit and gave it a grade
+
+### Query
+
+The user submitting to the activity must be an enseignant.
+
+| Endpoint | `/api/submission/correct` | Description |
+|----------|-------------|-------------|
+|   grade   |  _int_ | grade max:10 |
+|   message | _string_  | commentary |
+|   submission_id    |  _int_ |   id of the submission  |
+| chapter_id | _int_ | Chapter id |
+| formation_id | _int_ | Formation id |
+| cooperative_id | _int_ | Cooperative id of the formation |
+|   medias[]   | _array(FILE)_ | the medias to submit|
+
+### Response
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| _No data_ |||
+
+## Submissions pending list
+
+Get all submissions existings in the user's cooperatives and not corrected
+
+### Query
+
+You must be an "enseignant"
+
+| Endpoint | `/api/submissions` | Description |
+|----------|-------------|-------------|
+|   cooperative_id    |  _int_ |   id of the cooperative you want to see its submissions. |
+|   pagination_start    |  _int_ |   optional |
+|   interval    |  _int_ |   optional |
+
+### Response
+
+The response will be an array of objects of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | Formation id |
+| user_id | _string_ | User who submitted the submission |
+| formation_id | _int_ | Formation id of the formation |
+| activity_id | _int_ | Activity id of the formation |
+| created_at | _datetime(string)_ | Date of addition of the formation in the database |
+| updated_at | _datetime(string)_ | Date of modification of the formation in the database |
+
+## Submission detail
+
+Get all detail about a submission in particular
+
+### Query
+
+The user must be collaborator of the formation of the submission
+
+| Endpoint | `/api/submission` | Description |
+|----------|-------------|-------------|
+|   submission_id    |  _int_ |   id of the submission  |
+|   cooperative_id    |  _int_ |   id of the cooperative  |
+|   formation_id    |  _int_ |   id of the formation  |
+
+### Response
+
+The response will be an object of the following format :
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | Formation id |
+| user_id | _string_ | User who submitted the submission |
+| formation_id | _int_ | Formation id of the formation |
+| activity_id | _int_ | Activity id of the formation |
+| created_at | _datetime(string)_ | Date of addition of the formation in the database |
+| updated_at | _datetime(string)_ | Date of modification of the formation in the database |
+| is_corrected | _bool_ | return if the submission is already corrected |
+| correction | _object_ | null if not corrected |
+| media | _array(Object)_ | medias |
+
+Correction will be an objects of the following format:
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | chapter id |
+| name | _string_ | chapter name |
+| type | _string_ | chapter type (lesson, quizz or activity) |
+| is_achieved | _boolean_ | return if the user doing the request have done this chapter |
+| medias | _array(object)_ | List of media that the chapter contains |
+
+Media will be an array of objects of the following format:
+
+| Key name | Value type | Description |
+|----------|-------------|-------------|
+| id | _int_ | chapter id |
+| name | _string_ | media name |
+| type | _string_ | media type  |
+| local_uri | _string_ | local uri of the media |
+| size | _int_ | size of the media |
 
 ## Upload medias to a chapter
 
