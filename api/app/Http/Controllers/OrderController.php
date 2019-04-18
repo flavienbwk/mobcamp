@@ -266,10 +266,15 @@ class OrderController extends Controller
                         for ($i = 0; $i < sizeof($quantities); $i++) {
                             $object_quantity_ordered = OrderRepository::getItemQuantityOrdered($items_id[$i]);
                             $object_quantity_total = OrderRepository::getItemQuantityTotal($items_id[$i]);
+                            
                             if (!($object_quantity_ordered < $object_quantity_total && $object_quantity_ordered + $quantities[$i] <= $object_quantity_total)) {
+                                $ApiResponse->setErrorMessage("Stock épuisé pour certains items ou vous ne pouvez pas acheter + d'items que ceux disponibles.");
                                 $valid = false;
                                 break;
                             }
+
+                            // Checking if the item requires formation 
+                            
                         }
 
                         if ($valid) {
@@ -302,8 +307,6 @@ class OrderController extends Controller
                             } catch (Exception $ex) {
                                 $ApiResponse->setErrorMessage($ex->getMessage());
                             }
-                        } else {
-                            $ApiResponse->setErrorMessage("Stock épuisé pour certains items ou vous ne pouvez pas acheter + d'items que ceux disponibles.");
                         }
                     } else {
                         $ApiResponse->setErrorMessage("Certains items sont invalides.");
