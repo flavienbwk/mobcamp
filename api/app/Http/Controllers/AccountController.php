@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Item;
+use App\UserItem;
 use App\User;
 use App\Avatar;
 use App\ApiResponse;
@@ -233,12 +235,13 @@ class AccountController extends Controller
             $user_id = ($request->has('user_ids')) ? UserRepository::getIdByIds(Input::get("user_ids")) : $User->id;
             if ($user_id == $User->id || CooperativeRepository::hasUserRole($user_id, Input::get("cooperative_id"), "commercial")) {
                 $Items = Item::select("user_item.id as user_item_id", "user_item.item_id", "item.name", "item.description", "item.unit", "item.formation_id", "media.uri as image", "user_item.quantity", "user_item.price")
-                    ->join("user_item", "user_item.user_id", "=", "item.id")
+                    ->join("user_item", "user_item.item_id", "=", "item.id")
                     ->leftJoin("item_media", "item_media.item_id", "=", "item.id")
-                    ->join("media", "media.id", "=", "item_media.media_id")
+                    ->leftJoin("media", "media.id", "=", "item_media.media_id")
                     ->where([
-                        ["user_item.user_id", Input::get($user_id)]
+                        ["user_item.user_id", $user_id]
                     ]);
+                var_dump($Items->get()->toArray());
                 if ($Items) {
                     if ($Items->count()) {
                         $details = $Items->get()->toArray();
@@ -264,11 +267,12 @@ class AccountController extends Controller
     public function inventoryAdd(Request $request)
     {
         $ApiResponse = new ApiResponse();
+        $User = \Request::get("User");
         $validator = Validator::make($request->post(), [
             'cooperative_id' => 'required|integer',
             'item_id' => 'required|integer',
             'quantity' => 'required|integer',
-            'price' => 'required|float',
+            'price' => "required|regex:/^\d+(\.\d{1,2})?$/",
             'message' => 'present|min:1',
         ]);
 
@@ -277,20 +281,34 @@ class AccountController extends Controller
         } else {
             $Item = Item::find(Input::get("item_id"))->where("cooperative_id", Input::get("cooperative_id"));
             if ($Item->count()) {
-                $Item = $Item->first();
-                try {
-                    $UI = UserItem::create([
-                        "item_id" => $Item->id,
-                        "message" => Input::get("message"),
-                        "price" => Input::get("price"),
-                        "quantity" => Input::get("quantity"),
-                        "cooperative_id" => Input::get("cooperative_id")
-                    ]);
-                    $ApiResponse->setData(["user_item_id" => $UI->id]);
-                    $ApiResponse->setMessage("Item ajouté avec succès à l'inventaire.");
-                } catch (Exception $ex) {
-                    $ApiResponse->setErrorMessage($ex->getMessage());
+                /*
+                $exist = UserItem::where([
+                    ["user_id", Input::get("user_id")],
+                    ["quantity", Input::get("quantity")],
+                    ["price", Input::get("price")]
+                ]);
+                if (!$exist) {
+                    */
+                    $Item = $Item->first();
+                    try {
+                        $UI = UserItem::create([
+                            "item_id" => $Item->id,
+                            "message" => Input::get("message"),
+                            "price" => Input::get("price"),
+                            "user_id" => $User->id,
+                            "quantity" => Input::get("quantity"),
+                            "cooperative_id" => Input::get("cooperative_id")
+                        ]);
+                        $ApiResponse->setData(["user_item_id" => $UI->id]);
+                        $ApiResponse->setMessage("Item ajouté avec succès à l'inventaire.");
+                    } catch (Exception $ex) {
+                        $ApiResponse->setErrorMessage($ex->getMessage());
+                    }
+                    /*
+                } else {
+                    $ApiResponse->setError("L'item existe déjà avec cette quantity et ce prix.");
                 }
+                */
             } else {
                 $ApiResponse->setError("Cet item n'a pas été trouvé.");
             }
@@ -315,7 +333,7 @@ class AccountController extends Controller
             $ApiResponse->setErrorMessage($validator->messages()->first());
         } else {
             $UserItem = UserItem::find(Input::get("user_item_id"));
-            if ($UserItem->count()) {
+            if ($UserItem && $UserItem->count()) {
                 try {
                     $UserItem->delete();
                     $ApiResponse->setData("Association d'item supprimée avec succès.");

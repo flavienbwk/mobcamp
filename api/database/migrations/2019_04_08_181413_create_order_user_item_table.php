@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateItemTable extends Migration
+class CreateOrderUserItemTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,15 +15,11 @@ class CreateItemTable extends Migration
     {
         
         Schema::disableForeignKeyConstraints();
-        Schema::create('item', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->text('description');
-            $table->string('unit');
-            $table->integer('formation_id')->unsigned()->nullable();
+        Schema::create('order_user_item', function (Blueprint $table) {
+            $table->integer('quantity');
+            $table->integer('order_id')->unsigned();
             $table->integer('cooperative_id')->unsigned();
-            $table->foreign('formation_id')->references('id')->on('formation')->nullable();
-            $table->foreign('cooperative_id')->references('id')->on('cooperative');
+            $table->integer('user_item_id')->unsigned();
             $table->timestamps();
         });
     }

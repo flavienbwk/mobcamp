@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Repositories\CooperativeRepository;
 use App\Repositories\UserRepository;
 use App\UserItem;
+use App\Repositories\OrderRepository;
 
 class CooperativeController extends Controller
 {
@@ -363,15 +364,20 @@ class CooperativeController extends Controller
             $ApiResponse->setErrorMessage($validator->messages()->first());
         } else {
             $Items = Item::select("user_item.id as user_item_id", "user_item.item_id", "item.name", "item.description", "item.unit", "item.formation_id", "media.uri as image", "user_item.quantity", "user_item.price")
-                ->join("user_item", "user_item.user_id", "=", "item.id")
+                ->join("user_item", "user_item.item_id", "=", "item.id")
                 ->leftJoin("item_media", "item_media.item_id", "=", "item.id")
-                ->join("media", "media.id", "=", "item_media.media_id")
+                ->leftJoin("media", "media.id", "=", "item_media.media_id")
                 ->where([
                     ["user_item.cooperative_id", Input::get("cooperative_id")]
                 ]);
             if ($Items) {
                 if ($Items->count()) {
                     $details = $Items->get()->toArray();
+                    foreach($details as &$item) {
+                        // Quantities
+                        $quantity = OrderRepository::getItemQuantityTotal($item["user_item_id"]) - OrderRepository::getItemQuantityOrdered($item["user_item_id"]);
+                        $item["quantity_now"] = $quantity;
+                    }
                 } else {
                     $ApiResponse->setErrorMessage("Aucun item trouvé.");
                 }

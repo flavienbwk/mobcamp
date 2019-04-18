@@ -85,6 +85,13 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('account/inventory/add', 'AccountController@inventoryAdd');
     Route::post('account/inventory/remove', 'AccountController@inventoryRemove');
 
+    // Orders
+    Route::post('cooperative/order/items', 'OrderController@listItems');
+    Route::post('account/orders', 'OrderController@listUser');
+    Route::post('cooperative/buy', 'OrderController@buy');
+    Route::post('cooperative/sell', 'OrderController@sell');
+    Route::post('cooperative/order/remove', 'OrderController@remove');
+
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], function() {
@@ -128,6 +135,11 @@ Route::group(['middleware' => ['web', 'authenticated', "role_commercial"]], func
     Route::post('cooperative/inventory/add', 'CooperativeController@inventoryAdd');
     Route::post('cooperative/inventory/remove', 'CooperativeController@inventoryRemove');
     Route::post('cooperative/users/items', 'CooperativeController@inventoryUsers');
+
+    // Orders
+    Route::post('cooperative/orders', 'OrderController@list');
+    Route::post('cooperative/order/approve', 'OrderController@approve');
+    Route::post('cooperative/order/desapprove', 'OrderController@desapprove');
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], function() {
