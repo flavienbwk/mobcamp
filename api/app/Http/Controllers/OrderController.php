@@ -31,7 +31,7 @@ class OrderController extends Controller
         if ($validator->fails()) {
             $ApiResponse->setErrorMessage($validator->messages()->first());
         } else {
-            $Orders = Order::select("order.id as order_id", "user.ids as buyer_ids", "user.username as buyer_username", "schedule.from", "schedule.to", "tour_schedule.place", "order.type")
+            $Orders = Order::select("order.id as order_id", "user.ids as buyer_ids", "user.username as buyer_username", "schedule.from", "schedule.to", "tour_schedule.place", "order.type", "order.confirmed_at")
                 ->join("user", "user.id", "=", "order.buyer_user_id")
                 ->leftJoin("order_tour_schedule", "order_tour_schedule.order_id", "=", "order.id")
                 ->leftJoin("schedule", "schedule.id", "=", "order_tour_schedule.schedule_id")
@@ -273,8 +273,19 @@ class OrderController extends Controller
                                 break;
                             }
 
-                            // Checking if the item requires formation 
-                            
+                            // Checking if the item requires formation, and the user has realized this formation
+                            $Item = Item::join("user_item", "user_item.item_id", "=", "item.id")
+                            ->where([["user_item.id", $items_id[$i]]])->first();
+                            $Certificate = Certificate::join("item", "item.formation_id", "=", "certificate.formation_id")
+                            ->where([
+                                ["certificate.user_id", $User->id],
+                                ["certificate.formation_id", $Item->id]
+                            ])->whereNotNull("item.formation");
+                            if ($Certificate && $Certificate->count()){
+                                $ApiResponse->setErrorMessage("Vous n'êtes pas habilité à vendre ce produit, vous devez avoir un certificat.");
+                                $valid = false;
+                                break;
+                            }
                         }
 
                         if ($valid) {

@@ -37,7 +37,7 @@ class ItemController extends Controller
             $interval = ($request->has("interval")) ? Input::get("interval") : 20;
             $in_cooperative = UserRepository::inCooperative($User->id, Input::get("cooperative_id"));
             if ($in_cooperative) {
-                $Items = Item::select("id", "name", "formation_id")->where("cooperative_id", Input::get("cooperative_id"))->limit($interval)->offset(($offset - 1) * $interval);
+                $Items = Item::select("id", "name", "formation_id", "description")->where("cooperative_id", Input::get("cooperative_id"))->limit($interval)->offset(($offset - 1) * $interval);
                 if ($Items->get()) {
                     $items = $Items->get()->toArray();
                     foreach ($items as &$item) {

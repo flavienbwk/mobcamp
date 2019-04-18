@@ -896,6 +896,7 @@ The response will be an array of objects of the following format :
 |----------|-------------|-------------|
 | item_id | _int_ ||
 | name | _string_ ||
+| description | _string_ ||
 | formation_id | _int_ | nullable, identifier of the formation to acquiere to be able to sell the product |
 | image | _string_ ||
 
@@ -1169,6 +1170,7 @@ For commercials.
 | order_id | _int_ ||
 | buyer_ids| _string_ ||
 | buyer_username | _string_ ||
+| confirmed_at | _string_ | NULL if never confirmed or datetime of confirmation |
 | type | _string_ | 'buy' if the user buys the item to the cooperative, 'sell' if the user sells the item to the cooperative |
 | from | _datetime(string)_ ||
 | to | _datetime(string)_ ||
