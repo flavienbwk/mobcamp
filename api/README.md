@@ -214,7 +214,7 @@ The response will be an array of objects of the following format :
 
 | Endpoint | `/api/account/cooperatives` | Description |
 |----------|-------------|-------------|
-| _No parameter_ |||
+| user_ids | _string_ ||
 
 ### Response
 

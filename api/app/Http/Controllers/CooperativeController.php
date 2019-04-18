@@ -311,7 +311,8 @@ class CooperativeController extends Controller
         $ApiResponse = new ApiResponse();
         $User = \Request::get("User");
 
-        $cooperatives = CooperativeRepository::getUserCooperatives($User->id);
+        $user_id = ($request->has('user_ids')) ? UserRepository::getIdByIds(Input::get("user_ids")) : $User->id;
+        $cooperatives = CooperativeRepository::getUserCooperatives($user_id);
         if ($cooperatives) {
             $ApiResponse->setResponse($cooperatives->toArray());
         } else {
