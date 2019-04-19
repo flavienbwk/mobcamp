@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Activity;
 use App\ApiResponse;
 use App\Certificate;
 use App\Chapter;
@@ -10,6 +11,7 @@ use App\CooperativeUserFormation;
 use App\Formation;
 use App\Submission;
 use App\SubmissionCooperativeUser;
+use App\SubmissionMedia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
