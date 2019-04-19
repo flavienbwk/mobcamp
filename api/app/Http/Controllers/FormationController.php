@@ -281,10 +281,9 @@ class FormationController extends Controller
         if ($Formation->first()) {
             if (($key = array_search($Formation->first()->cooperative_id, $cooperative_id_column)) !== FALSE) {
                 $formation = $Formation->first()->toArray();
-                $formation['hasCertificate'] = (bool)Certificate::where([
+                $formation['hasCertificate'] = Certificate::where([
                     ['user_id', $User->id],
-                    ['formation_id', Input::get("formation_id")],
-                    ['cooperative_id', Input::get("cooperative_id")]
+                    ['formation_id', Input::get("formation_id")]
                 ])->exists();
                 $formation['collaborators'] = DB::table('user')
                     ->join('cooperative_user_formation', 'user.id', '=', 'user_id')
