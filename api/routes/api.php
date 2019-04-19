@@ -25,6 +25,8 @@ Route::group(['middleware' => ['web']], function() {
     Route::post('auth/login', 'AuthController@login');
     Route::post('auth/register', 'AuthController@register');
     Route::post('auth/expiration', 'AuthController@expiration');
+    Route::post('cooperatives', 'CooperativeController@cooperatives');
+    Route::post('cooperative', 'CooperativeController@cooperative');
 });
 
 Route::group(['middleware' => ['web', 'authenticated']], function() {
@@ -42,8 +44,6 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('account/notification/seen', 'AccountController@notificationSeen');
 
     // Cooperatives routes
-    Route::post('cooperatives', 'CooperativeController@cooperatives');
-    Route::post('cooperative', 'CooperativeController@cooperative');
     Route::post('account/cooperatives', 'CooperativeController@userCooperatives');
 
     // Formations (base)
@@ -51,6 +51,9 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('formation', 'FormationController@formation');
     Route::post('formations/followed', 'FormationController@formationsFollowed');
     Route::post('formations/search', 'FormationController@formationsByName');
+
+    // formations items
+    Route::post('formations/items', 'FormationController@items');
 
     // Formations (follow)
     Route::post('formations/follow', 'FormationController@follow');
@@ -74,13 +77,35 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     // Tours
     Route::post('cooperative/tours', 'TourController@list');
 
-    // Panier
+    // Cooperative items
+    Route::post('cooperative/items', 'ItemController@list');
+    Route::post('cooperative/item', 'ItemController@details');
+
+    // Cooperative inventory
+    Route::post('cooperative/inventory', 'CooperativeController@inventory');
+
+    // User inventory in cooperative
+    Route::post('account/inventory', 'AccountController@inventory');
+    Route::post('account/inventory/add', 'AccountController@inventoryAdd');
+    Route::post('account/inventory/remove', 'AccountController@inventoryRemove');
+
+    // Orders
+    Route::post('cooperative/order/items', 'OrderController@listItems');
+    Route::post('account/orders', 'OrderController@listUser');
+    Route::post('cooperative/buy', 'OrderController@buy');
+    Route::post('cooperative/sell', 'OrderController@sell');
+    Route::post('cooperative/order/remove', 'OrderController@remove');
+
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], function() {
     // formations actions
     Route::post('formations/add', 'FormationController@add');
     Route::post('formations/remove', 'FormationController@remove');
+
+    // formations items
+    Route::post('formations/items/add', 'FormationController@itemAdd');
+    Route::post('formations/items/remove', 'FormationController@itemRemove');
 
     // chapters actions
     Route::post('chapters/addLesson', 'ChapterController@addLesson');
@@ -93,6 +118,9 @@ Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], func
     Route::post('submission', 'SubmissionController@submission');
     Route::post('submissions', 'SubmissionController@submissions');
     Route::post('submissions/correct', 'SubmissionController@correct');
+
+    // Search by username
+    Route::post('account/search', 'AccountController@searchUsername');
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_commercial"]], function() {
@@ -106,7 +134,21 @@ Route::group(['middleware' => ['web', 'authenticated', "role_commercial"]], func
     Route::post('cooperative/tour/schedules/add', 'TourController@addSchedule');
     Route::post('cooperative/tour/schedules/remove', 'TourController@removeSchedule');
 
-    // Confirm order reception
+    // Cooperative items
+    Route::post('cooperative/items/add', 'ItemController@add');
+    Route::post('cooperative/items/remove', 'ItemController@remove');
+    Route::post('cooperative/item/add_image', 'ItemController@addImage');
+    Route::post('cooperative/item/remove_image', 'ItemController@removeImage');
+
+    // Cooperative inventory
+    Route::post('cooperative/inventory/add', 'CooperativeController@inventoryAdd');
+    Route::post('cooperative/inventory/remove', 'CooperativeController@inventoryRemove');
+    Route::post('cooperative/users/items', 'CooperativeController@inventoryUsers');
+
+    // Orders
+    Route::post('cooperative/orders', 'OrderController@list');
+    Route::post('cooperative/order/approve', 'OrderController@approve');
+    Route::post('cooperative/order/desapprove', 'OrderController@desapprove');
 });
 
 Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], function() {

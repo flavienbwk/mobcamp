@@ -7,6 +7,9 @@ use App\ApiResponse;
 use App\Answer;
 use App\Certificate;
 use App\Chapter;
+use App\FormationItem;
+use App\UserItem;
+use App\Item;
 use App\CooperativeUser;
 use App\CooperativeUserFormation;
 use App\ChapterCooperativeUser;
@@ -535,5 +538,123 @@ class FormationController extends Controller
             return response()->json($ApiResponse->getResponse(), 400);
         else
             return response()->json($ApiResponse->getResponse(), 200);
+    }
+
+    public function items(Request $request)
+    {
+        $ApiResponse = new ApiResponse();
+        $User = \Request::get("User");
+        $validator = Validator::make($request->post(), [
+            'cooperative_id' => 'required|integer',
+            'formation_id' => 'required|integer'
+        ]);
+
+        $details = [];
+        if ($validator->fails()) {
+            $ApiResponse->setErrorMessage($validator->messages()->first());
+        } else {
+            $Items = Item::select("formation_item.item_id", "formation_item.item_id", "item.name", "item.description", "item.unit", "media.uri as image", "user_item.quantity", "user_item.price")
+                ->join("formation_item", "formation_item.user_id", "=", "item.id")
+                ->leftJoin("item_media", "item_media.item_id", "=", "item.id")
+                ->join("media", "media.id", "=", "item_media.media_id")
+                ->where([
+                    ["formation_item.formation_id", Input::get("formation_id")],
+                    ["formation_item.cooperative_id", Input::get("cooperative_id")]
+                ]);
+            if ($Items) {
+                if ($Items->count()) {
+                    $details = $Items->get()->toArray();
+                } else {
+                    $ApiResponse->setErrorMessage("Aucun item trouvé.");
+                }
+            } else {
+                $ApiResponse->setError("Cette coopérative n'a pas été trouvée.");
+            }
+        }
+
+        $ApiResponse->setResponse($details);
+        if ($ApiResponse->getError()) {
+            return response()->json($ApiResponse->getResponse(), 400);
+        } else {
+            return response()->json($ApiResponse->getResponse(), 200);
+        }
+    }
+    
+    public function itemAdd(Request $request)
+    {
+        $ApiResponse = new ApiResponse();
+        $validator = Validator::make($request->post(), [
+            'cooperative_id' => 'required|integer',
+            'formation_id' => 'required|integer',
+            'item_id' => 'required|integer',
+            'quantity' => 'required|integer',
+            'message' => 'present|min:1',
+        ]);
+
+        if ($validator->fails()) {
+            $ApiResponse->setErrorMessage($validator->messages()->first());
+        } else {
+            $Item = Item::find(Input::get("item_id"))->where("cooperative_id", Input::get("cooperative_id"));
+            if ($Item->count()) {
+                $Item = $Item->first();
+                try {
+                    $UI = FormationItem::create([
+                        "message" => Input::get("message"),
+                        "quantity" => Input::get("quantity"),
+                        "cooperative_id" => Input::get("cooperative_id"),
+                        "formation_id" => Input::get("formation_id"),
+                        "item_id" => $Item->id,
+                    ]);
+                    $ApiResponse->setData([]);
+                    $ApiResponse->setMessage("Item ajouté avec succès à l'inventaire.");
+                } catch (Exception $ex) {
+                    $ApiResponse->setErrorMessage($ex->getMessage());
+                }
+            } else {
+                $ApiResponse->setError("Cet item n'a pas été trouvé.");
+            }
+        }
+
+        if ($ApiResponse->getError()) {
+            return response()->json($ApiResponse->getResponse(), 400);
+        } else {
+            return response()->json($ApiResponse->getResponse(), 200);
+        }
+    }
+
+    public function itemRemove(Request $request)
+    {
+        $ApiResponse = new ApiResponse();
+        $validator = Validator::make($request->post(), [
+            'cooperative_id' => 'required|integer',
+            'formation_id' => 'required|integer',
+            'item_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            $ApiResponse->setErrorMessage($validator->messages()->first());
+        } else {
+            $FormationItem = FormationItem::where([
+                ["cooperative_id", Input::get("cooperative_id")],
+                ["formation_id", Input::get("formation_id")],
+                ["item_id", Input::get("item_id")],
+            ]);
+            if ($FormationItem->count()) {
+                try {
+                    $FormationItem->delete();
+                    $ApiResponse->setData("Association d'item supprimée avec succès.");
+                } catch (Exception $ex) {
+                    $ApiResponse->setErrorMessage($ex->getMessage());
+                }
+            } else {
+                $ApiResponse->setError("Cet association d'item n'a pas été trouvée.");
+            }
+        }
+
+        if ($ApiResponse->getError()) {
+            return response()->json($ApiResponse->getResponse(), 400);
+        } else {
+            return response()->json($ApiResponse->getResponse(), 200);
+        }
     }
 }

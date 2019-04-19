@@ -2,25 +2,25 @@
 
 namespace App;
 
-use \Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
-class Media extends Model
+class OrderTourSchedule extends Model
 {
-    protected $table = "media";
-    public $timestamps = true;
+
+    protected $table = "order_tour_schedule";
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id',
-        'name',
-        'type',
-        'size',
-        'downloadable',
-        'hash',
-        'uri'
+        'order_id',
+        'cooperative_id',
+        'tour_id',
+        'schedule_id',
+        'updated_at',
+        'created_at',
     ];
 
     /**
