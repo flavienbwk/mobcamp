@@ -185,6 +185,7 @@ class SubmissionController extends Controller
                                         $filename = md5($User->username) . '_' . uniqid() . '.' . $extension;
                                         $uri = UPLOAD_PATH . '/' . $filename;
                                         $Media = Media::create([
+                                            'name' => $Chapter->first()->name . "_" . uniqid(),
                                             'type' => $mime,
                                             'uri' => $uri,
                                             'size' => $size,
