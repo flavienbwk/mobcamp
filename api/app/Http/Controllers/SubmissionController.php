@@ -6,6 +6,7 @@ use App\Activity;
 use App\ApiResponse;
 use App\Certificate;
 use App\Chapter;
+use App\ChapterCooperativeUser;
 use App\CooperativeUser;
 use App\CooperativeUserFormation;
 use App\Media;
