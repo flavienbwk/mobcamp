@@ -233,7 +233,7 @@ class SubmissionController extends Controller
             'grade' => 'bail|required|numeric',
             'submission_id' => 'bail|required|numeric',
             'message' => 'bail|required|string',
-            'activity_d' => 'bail|required|numeric',
+            'activity_id' => 'bail|required|numeric',
             'formation_id' => 'bail|required|numeric',
             'cooperative_id' => 'bail|required|numeric',
         ];
