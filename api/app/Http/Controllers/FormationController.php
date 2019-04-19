@@ -26,7 +26,6 @@ class FormationController extends Controller
     {
         $User = \Request::get("User");
         $ApiResponse = new ApiResponse();
-        var_dump($request->all());
         $rules = [
             'name' => "bail|required|string", // bail = stop running validation rules on an attribute after the first validation failure.
             'estimated_duration' => "bail|required|numeric",
