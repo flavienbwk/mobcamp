@@ -25,6 +25,10 @@ class ApiResponse {
         $this->_data = $var;
     }
 
+    public function setResponse($var) {
+        $this->_data = $var;
+    }
+
     public function getError() {
         return $this->_error;
     }

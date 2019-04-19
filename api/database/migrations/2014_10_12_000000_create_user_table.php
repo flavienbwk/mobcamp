@@ -13,7 +13,7 @@ class CreateUserTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('user');
+        Schema::disableForeignKeyConstraints();
         Schema::create('user', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('ids')->unique();
@@ -33,6 +33,6 @@ class CreateUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        
     }
 }

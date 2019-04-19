@@ -25,6 +25,8 @@ Route::group(['middleware' => ['web']], function() {
     Route::post('auth/login', 'AuthController@login');
     Route::post('auth/register', 'AuthController@register');
     Route::post('auth/expiration', 'AuthController@expiration');
+    Route::post('cooperatives', 'CooperativeController@cooperatives');
+    Route::post('cooperative', 'CooperativeController@cooperative');
 });
 
 Route::group(['middleware' => ['web', 'authenticated']], function() {
@@ -37,45 +39,124 @@ Route::group(['middleware' => ['web', 'authenticated']], function() {
     Route::post('account/avatar/add', 'AccountController@addAvatar');
     Route::post('account/avatar', 'AccountController@avatar');
 
-    // Notifications route
+    // Notifications routes
     Route::post('account/notifications', 'AccountController@notifications');
     Route::post('account/notification/seen', 'AccountController@notificationSeen');
 
-    // User subscriptions
-    Route::post('account/subscriptions', 'AccountController@subscriptionsList');
-    Route::post('account/subscribed', 'AccountController@subscribedList');
-    Route::post('account/subscription', 'AccountController@subscription');
-    Route::post('account/issubscribed', 'AccountController@issubscribed');
+    // Cooperatives routes
+    Route::post('account/cooperatives', 'CooperativeController@userCooperatives');
+
+    // Formations (base)
+    Route::post('formations', 'FormationController@formations');
+    Route::post('formation', 'FormationController@formation');
+    Route::post('formations/followed', 'FormationController@formationsFollowed');
+    Route::post('formations/search', 'FormationController@formationsByName');
+
+    // formations items
+    Route::post('formations/items', 'FormationController@items');
+
+    // Formations (follow)
+    Route::post('formations/follow', 'FormationController@follow');
+    Route::post('formations/unfollow', 'FormationController@unfollow');
+    Route::post('formations/isFollowed', 'FormationController@isFollowed');
+
+    // Submission
+    Route::post('submissions/submit', 'SubmissionController@submit');
+
+    // Chapters
+    Route::post('chapters/answerQuizz', 'ChapterController@answerQuizz');
+    Route::post('chapters/validateLesson', 'ChapterController@validateLesson');
+
+    // Certificates
+    Route::post('certificates', 'CertificateController@certificates');
+
+    // Roles routes
+    Route::post('cooperative/roles', 'CooperativeController@roles');
+    Route::post('roles', 'CooperativeController@rolesList');
+
+    // Tours
+    Route::post('cooperative/tours', 'TourController@list');
+
+    // Cooperative items
+    Route::post('cooperative/items', 'ItemController@list');
+    Route::post('cooperative/item', 'ItemController@details');
+
+    // Cooperative inventory
+    Route::post('cooperative/inventory', 'CooperativeController@inventory');
+
+    // User inventory in cooperative
+    Route::post('account/inventory', 'AccountController@inventory');
+    Route::post('account/inventory/add', 'AccountController@inventoryAdd');
+    Route::post('account/inventory/remove', 'AccountController@inventoryRemove');
+
+    // Orders
+    Route::post('cooperative/order/items', 'OrderController@listItems');
+    Route::post('account/orders', 'OrderController@listUser');
+    Route::post('cooperative/buy', 'OrderController@buy');
+    Route::post('cooperative/sell', 'OrderController@sell');
+    Route::post('cooperative/order/remove', 'OrderController@remove');
+
+});
+
+Route::group(['middleware' => ['web', 'authenticated', "role_enseignant"]], function() {
+    // formations actions
+    Route::post('formations/add', 'FormationController@add');
+    Route::post('formations/remove', 'FormationController@remove');
+
+    // formations items
+    Route::post('formations/items/add', 'FormationController@itemAdd');
+    Route::post('formations/items/remove', 'FormationController@itemRemove');
+
+    // chapters actions
+    Route::post('chapters/addLesson', 'ChapterController@addLesson');
+    Route::post('chapters/addActivity', 'ChapterController@addActivity');
+    Route::post('chapters/addQuizz', 'ChapterController@addQuizz');
+    Route::post('chapters/uploadMedia', 'ChapterController@uploadMedia');
+    Route::post('chapters/removeMedia', 'ChapterController@removeMedia');
+
+    // submissions actions
+    Route::post('submission', 'SubmissionController@submission');
+    Route::post('submissions', 'SubmissionController@submissions');
+    Route::post('submissions/correct', 'SubmissionController@correct');
+
+    // Search by username
     Route::post('account/search', 'AccountController@searchUsername');
+});
 
-    // Publications (base)
-    Route::post('publications/add', 'PublicationController@add');
-    Route::post('publications/remove', 'PublicationController@remove');
-    Route::post('publications', 'PublicationController@publications');
-    Route::post('publication', 'PublicationController@publication');
+Route::group(['middleware' => ['web', 'authenticated', "role_commercial"]], function() {
     
-    // Publications (comments)
-    Route::post('publication/comments', 'PublicationController@comments');
-    Route::post('publication/comment', 'PublicationController@comment');
+    // Tours
+    Route::post('cooperative/tours/add', 'TourController@add');
+    Route::post('cooperative/tours/remove', 'TourController@remove');
 
-    // Publications (reactions)
-    Route::post('publication/reactions', 'PublicationController@reactions');
-    Route::post('reaction', 'ReactionController@reaction');
-    Route::post('reactions', 'ReactionController@reactions');
-    
-    // Conversations
-    Route::post('conversations', 'ConversationController@conversations');
-    Route::post('conversations/add', 'ConversationController@add');
-    Route::post('conversations/add_user', 'ConversationController@addUser');
-    Route::post('conversation/messages', 'ConversationController@messages');
-    Route::post('conversation/message', 'ConversationController@message');
-    Route::post('conversation/users', 'ConversationController@conversationUsers');
-    
-    // - Populate the database with images, users and publications
-    // - Seeders & migrate tests
-    // - Remove docker compose init.d sql file
-    // - Commit on GitLab
+    // Schedules for tours
+    Route::post('cooperative/tour/schedules', 'TourController@listSchedules');
+    Route::post('cooperative/tour/schedules/add', 'TourController@addSchedule');
+    Route::post('cooperative/tour/schedules/remove', 'TourController@removeSchedule');
 
+    // Cooperative items
+    Route::post('cooperative/items/add', 'ItemController@add');
+    Route::post('cooperative/items/remove', 'ItemController@remove');
+    Route::post('cooperative/item/add_image', 'ItemController@addImage');
+    Route::post('cooperative/item/remove_image', 'ItemController@removeImage');
+
+    // Cooperative inventory
+    Route::post('cooperative/inventory/add', 'CooperativeController@inventoryAdd');
+    Route::post('cooperative/inventory/remove', 'CooperativeController@inventoryRemove');
+    Route::post('cooperative/users/items', 'CooperativeController@inventoryUsers');
+
+    // Orders
+    Route::post('cooperative/orders', 'OrderController@list');
+    Route::post('cooperative/order/approve', 'OrderController@approve');
+    Route::post('cooperative/order/desapprove', 'OrderController@desapprove');
+});
+
+Route::group(['middleware' => ['web', 'authenticated', "role_administrator"]], function() {
+    // Cooperative user roles
+    Route::post('cooperative/users/add', 'CooperativeController@addUser');
+    Route::post('cooperative/users/remove', 'CooperativeController@removeUser');
+    Route::post('cooperative/roles/add', 'CooperativeController@addRoles');
+    Route::post('cooperative/roles/remove', 'CooperativeController@removeRoles');
 });
 
 Route::get('{any?}', function ($any = null) {
