@@ -117,11 +117,9 @@ class SubmissionController extends Controller
                     ->select('media.id', 'media.name', 'media.type', 'uri as local_uri', 'media.size')
                     ->get()->toArray();
                 $ApiResponse->setData($submission);
-            } 
-            else
+            } else
                 $ApiResponse->setErrorMessage('Submission not found.');
-        } 
-        else
+        } else
             $ApiResponse->setErrorMessage('You must be a collaborator of the formation.');
 
         if ($ApiResponse->getError())
@@ -231,7 +229,7 @@ class SubmissionController extends Controller
             'grade' => 'bail|required|numeric',
             'submission_id' => 'bail|required|numeric',
             'message' => 'bail|required|string',
-            'chapter_id' => 'bail|required|numeric',
+            'activity_d' => 'bail|required|numeric',
             'formation_id' => 'bail|required|numeric',
             'cooperative_id' => 'bail|required|numeric',
         ];
@@ -252,12 +250,13 @@ class SubmissionController extends Controller
             }
 
             if (CooperativeUserFormation::select('type')->where([['user_id', $User->id], ['cooperative_id', Input::get('cooperative_id')], ['formation_id', Input::get('formation_id')], ['type', 'collaborator']])->exists()) {
-                $Chapter = Chapter::where('id', Input::get('chapter_id'));
+
+                $Activity = Activity::where('id', Input::get('activity_id'))->first();
+                $Submission = Submission::where('id', Input::get('submission_id'))->first();
+                $Chapter = Chapter::where('id', $Activity->chapter_id);
+
                 if ($Chapter->first()) {
                     if ($Chapter->first()->type == 'activity') {
-                        $Activity = Activity::where('chapter_id', $Chapter->first()->id)->first();
-                        $Submission = Submission::where('id', Input::get('submission_id'))->first();
-
                         if (isset($Submission) && SubmissionCooperativeUser::where([['submission_id', $Submission->id], ['activity_id',  $Activity->id], ['formation_id', $Formation->first()->id], ['cooperative_id', Input::get('cooperative_id')]])->doesntExist()) {
                             try {
                                 DB::beginTransaction();
@@ -279,7 +278,7 @@ class SubmissionController extends Controller
                                         ->update(['is_achieved' => 1]);
                                 }
 
-                                $chapters = ChapterCooperativeUser::join('chapter', 'chapter.id', '=', 'chapter_id')->where([['formation_id', '=', $Formation->first()->id],['cooperative_id', $Formation->first()->cooperative_id], ['user_id', $Submission->user_id]])->get()->toArray();
+                                $chapters = ChapterCooperativeUser::join('chapter', 'chapter.id', '=', 'chapter_id')->where([['formation_id', '=', $Formation->first()->id], ['cooperative_id', $Formation->first()->cooperative_id], ['user_id', $Submission->user_id]])->get()->toArray();
 
                                 $all_validated = true;
                                 foreach ($chapters as $chapter) {
