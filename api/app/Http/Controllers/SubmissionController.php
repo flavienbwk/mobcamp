@@ -8,6 +8,7 @@ use App\Certificate;
 use App\Chapter;
 use App\CooperativeUser;
 use App\CooperativeUserFormation;
+use App\Media;
 use App\Formation;
 use App\Submission;
 use App\SubmissionCooperativeUser;
