@@ -297,6 +297,8 @@ class SubmissionController extends Controller
                                         'user_id' => $Submission->user_id
                                     ]);
                                 }
+                                $ApiResponse->setMessage('submission corrected.');
+                                DB::commit();
                             } catch (\PDOException $e) {
                                 DB::rollBack();
                                 $ApiResponse->setErrorMessage($e->getMessage());
