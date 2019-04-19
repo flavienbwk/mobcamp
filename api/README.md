@@ -754,10 +754,9 @@ The user submitting to the activity must be an enseignant.
 |   grade   |  _int_ | grade max:10 |
 |   message | _string_  | commentary |
 |   submission_id    |  _int_ |   id of the submission  |
-| chapter_id | _int_ | Chapter id |
+| activity_id | _int_ | Activity id |
 | formation_id | _int_ | Formation id |
 | cooperative_id | _int_ | Cooperative id of the formation |
-|   medias[]   | _array(FILE)_ | the medias to submit|
 
 ### Response
 
